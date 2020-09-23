@@ -1,0 +1,67 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+// Android Gradle Data//
+android {
+
+    // Newest Version App Could Run On//
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    // All Build Types For App//
+    buildTypes {
+
+        // Settings For Release Build//
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // How App Is Configured//
+    defaultConfig {
+
+        // ID Of Application//
+        applicationId "dev.jzdevelopers.cstracker"
+
+        // Lowest Android Version App Can Run On//
+        minSdkVersion 24
+
+        // Latest Version Of Android App Can Run On//
+        targetSdkVersion 30
+
+        // Number Of Times App Was Updated//
+        versionCode 1
+
+        // App Version Number//
+        versionName "1.0.0"
+
+        // Tests Runner For The Application//
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    // Repositories For App//
+    repositories {
+
+        // Repository Types//
+        jcenter()
+        mavenCentral()
+
+        // Maven Repository Urls//
+        maven {url 'https://jitpack.io'}
+        maven {url "https://maven.google.com"}
+    }
+}
+
+// App Libraries//
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.core:core-ktx:1.3.1'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    testImplementation 'junit:junit:4.12'
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- String Resources For Application -->
+<resources>
+
+    <!-- Activity Name Strings -->
+    <string name="app_name">CS Tracker</string>
+
+</resources>
