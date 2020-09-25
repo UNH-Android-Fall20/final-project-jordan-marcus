@@ -59,7 +59,8 @@ abstract class JZActivity: AppCompatActivity() {
         // Handles Back Button Click Listener//
         return when (keyCode) {
             KeyEvent.KEYCODE_BACK -> {
-                clickBack?.invoke() ?: return true; false
+                clickBack?.invoke() ?: return true
+                false
             }
             else -> false
         }
@@ -72,7 +73,7 @@ abstract class JZActivity: AppCompatActivity() {
     protected abstract fun createActivity()
 
     /**.
-     * Function That Handles All Listeners For The Activity
+     * Abstract Function That Handles All Listeners For The Activity
      */
     protected abstract fun createListeners()
 

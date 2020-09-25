@@ -31,8 +31,8 @@ class JZRecyclerAdapter<TYPE>(@LayoutRes private val layoutId : Int,
     companion object {
 
         // Defines multiSelect And scroll Variables//
-        private var multiSelect: MultiSelect? = null
-        private var scroll     : Scroll?      = null
+        private var multiSelect : MultiSelect? = null
+        private var scroll      : Scroll?      = null
 
         /**.
          * Function That Invokes A Function When The RecyclerAdapter Is Multi Selected
@@ -166,7 +166,8 @@ class JZRecyclerAdapter<TYPE>(@LayoutRes private val layoutId : Int,
             spacing.bottom = height
 
             // Sets The Spacing For The Last Item//
-            if (parent.getChildAdapterPosition(view) == parent.adapter!!.itemCount - 1) spacing.bottom = 280
+            if (parent.getChildAdapterPosition(view) == parent.adapter!!.itemCount - 1 )
+                spacing.bottom = 280
         }
     }
 
