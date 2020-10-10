@@ -4,6 +4,19 @@
 <resources>
 
     <!-- Activity Name Strings -->
-    <string name="app_name">CS Tracker</string>
+    <string name="app_name" >CS Tracker </string>
+
+    <!-- CheckBox Strings -->
+    <string name="signUpCheckBox" >Are you keeping track of someone else\'s hours?</string>
+
+    <!-- EditText Strings -->
+    <string name="first_name"       >First Name       </string>
+    <string name="last_name"        >Last Name        </string>
+    <string name="email"            >Email            </string>
+    <string name="password"         >Password         </string>
+    <string name="confirm_password" >Confirm Password </string>
+
+    <!-- FAB Strings -->
+    <string name="signup" >Sign Up </string>
 
 </resources>

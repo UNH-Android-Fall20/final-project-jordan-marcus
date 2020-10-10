@@ -1,4 +1,4 @@
-package dev.jzdevelopers.libs
+package dev.jzdevelopers.cstracker.libs
 
 import android.graphics.Rect
 import android.view.LayoutInflater
@@ -40,7 +40,7 @@ class JZRecyclerAdapter<TYPE>(@LayoutRes private val layoutId : Int,
          * @param [multiSelect]     The invoked function when the recycler adapter is multi selected
          */
         fun onMultiSelect(recyclerAdapter: JZRecyclerAdapter<*>, multiSelect: MultiSelect) {
-            this.multiSelect = multiSelect
+            Companion.multiSelect = multiSelect
             onMultiSelect(recyclerAdapter)
         }
 
@@ -50,7 +50,7 @@ class JZRecyclerAdapter<TYPE>(@LayoutRes private val layoutId : Int,
          * @param [scroll]       The invoked function when the recycler view is scrolling
          */
         fun onScroll(recyclerView: RecyclerView, scroll: Scroll) {
-            this.scroll = scroll
+            Companion.scroll = scroll
             onScroll(recyclerView)
         }
 
@@ -112,7 +112,7 @@ class JZRecyclerAdapter<TYPE>(@LayoutRes private val layoutId : Int,
      * @param [parent] The parent view
      * @return The custom view
      */
-    override fun onCreateViewHolder(parent: ViewGroup, a: Int): JZRecyclerAdapter<TYPE>.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, a: Int): ViewHolder {
 
         // Returns The Custom View//
         return ViewHolder(LayoutInflater.from(parent.context).inflate(layoutId, parent, false))

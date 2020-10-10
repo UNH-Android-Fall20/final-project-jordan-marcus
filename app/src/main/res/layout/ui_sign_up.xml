@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- ConstraintLayout UI For Class SignUp-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android         ="http://schemas.android.com/apk/res/android"
+    xmlns:node            ="http://schemas.android.com/apk/res-auto"
+    xmlns:tools           ="http://schemas.android.com/tools"
+    android:id            ="@+id/uiSignUp"
+    android:padding       ="16dip"
+    android:layout_height ="match_parent"
+    android:layout_width  ="match_parent"
+    tools:context         =".common.SignUp">
+
+    <!-- TextView appName -->
+    <TextView
+        android:id                            ="@+id/appName"
+        android:gravity                       ="center"
+        android:text                          ="@string/app_name"
+        android:textColor                     ="?colorPrimary"
+        android:textSize                      ="30sp"
+        android:textStyle                     ="bold"
+        android:layout_height                 ="wrap_content"
+        android:layout_width                  ="match_parent"
+        node:layout_constraintTop_toTopOf     ="parent"
+        node:layout_constraintStart_toStartOf ="parent"
+        node:layout_constraintEnd_toEndOf     ="parent"
+    />
+
+    <!-- ImageView signupLogo -->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id                            ="@+id/signupLogo"
+        android:src                           ="@drawable/signup_logo"
+        android:layout_marginTop              ="16dip"
+        android:layout_height                 ="200dip"
+        android:layout_width                  ="match_parent"
+        node:layout_constraintTop_toBottomOf  ="@id/appName"
+        node:layout_constraintStart_toStartOf ="parent"
+        node:layout_constraintEnd_toEndOf     ="parent"
+    />
+
+    <!-- EditText firstNameBox -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id                                  ="@+id/firstNameBox"
+        style                                       ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:paddingEnd                          ="5dip"
+        android:layout_marginTop                    ="16dip"
+        android:layout_height                       ="wrap_content"
+        android:layout_width                        ="0dip"
+        node:boxStrokeColor                         ="?colorPrimary"
+        node:hintTextColor                          ="?colorPrimary"
+        node:layout_constraintHorizontal_chainStyle ="spread"
+        node:layout_constraintTop_toBottomOf        ="@id/signupLogo"
+        node:layout_constraintStart_toStartOf       ="parent"
+        node:layout_constraintEnd_toStartOf         ="@id/lastNameBox"
+        tools:ignore                                ="RtlSymmetry">
+
+        <!-- EditText firstName -->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id            ="@+id/firstName"
+            android:hint          ="@string/first_name"
+            android:layout_height ="wrap_content"
+            android:layout_width  ="match_parent"
+        />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- EditText lastNameBox -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id                                  ="@+id/lastNameBox"
+        style                                       ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:paddingStart                        ="5dip"
+        android:layout_marginTop                    ="16dip"
+        android:layout_height                       ="wrap_content"
+        android:layout_width                        ="0dip"
+        node:boxStrokeColor                         ="?colorPrimary"
+        node:hintTextColor                          ="?colorPrimary"
+        node:layout_constraintHorizontal_chainStyle ="spread"
+        node:layout_constraintTop_toBottomOf        ="@id/signupLogo"
+        node:layout_constraintStart_toEndOf         ="@id/firstNameBox"
+        node:layout_constraintEnd_toEndOf           ="parent"
+        tools:ignore                                ="RtlSymmetry">
+
+        <!-- EditText lastName -->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id            ="@+id/lastName"
+            android:hint          ="@string/last_name"
+            android:layout_height ="wrap_content"
+            android:layout_width  ="match_parent"
+        />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- EditText emailBox -->
+    <com.google.android.material.textfield.TextInputLayout
+        style                                ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id                           ="@+id/emailBox"
+        android:layout_marginTop             ="16dip"
+        android:layout_height                ="wrap_content"
+        android:layout_width                 ="match_parent"
+        node:boxStrokeColor                  ="?colorPrimary"
+        node:hintTextColor                   ="?colorPrimary"
+        node:layout_constraintTop_toBottomOf ="@id/firstNameBox">
+
+        <!-- EditText email -->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id            ="@+id/email"
+            android:hint          ="@string/email"
+            android:layout_height ="wrap_content"
+            android:layout_width  ="match_parent"
+        />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- EditText passwordBox -->
+    <com.google.android.material.textfield.TextInputLayout
+        style                                ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id                           ="@+id/passwordBox"
+        android:layout_marginTop             ="16dip"
+        android:layout_height                ="wrap_content"
+        android:layout_width                 ="match_parent"
+        node:boxStrokeColor                  ="?colorPrimary"
+        node:hintTextColor                   ="?colorPrimary"
+        node:layout_constraintTop_toBottomOf ="@id/emailBox">
+
+        <!-- EditText password -->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id            ="@+id/password"
+            android:hint          ="@string/password"
+            android:inputType     ="textPassword"
+            android:layout_height ="wrap_content"
+            android:layout_width  ="match_parent"
+        />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- EditText confirmPasswordBox -->
+    <com.google.android.material.textfield.TextInputLayout
+        style                                ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id                           ="@+id/confirmPasswordBox"
+        android:layout_marginTop             ="16dip"
+        android:layout_height                ="wrap_content"
+        android:layout_width                 ="match_parent"
+        node:boxStrokeColor                  ="?colorPrimary"
+        node:hintTextColor                   ="?colorPrimary"
+        node:layout_constraintTop_toBottomOf ="@id/passwordBox">
+
+        <!-- EditText confirmPassword -->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id            ="@+id/confirmPassword"
+            android:hint          ="@string/confirm_password"
+            android:inputType     ="textPassword"
+            android:layout_height ="wrap_content"
+            android:layout_width  ="match_parent"
+        />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- CheckBox signUpCheckBox -->
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id                            ="@+id/signUpCheckBox"
+        android:text                          ="@string/signUpCheckBox"
+        android:textSize                      ="16sp"
+        android:layout_marginTop              ="16dip"
+        android:layout_width                  ="match_parent"
+        android:layout_height                 ="wrap_content"
+        android:buttonTint                    ="?colorPrimary"
+        node:layout_constraintTop_toBottomOf  ="@id/confirmPasswordBox"
+        node:layout_constraintStart_toStartOf ="parent"
+        node:layout_constraintEnd_toEndOf     ="parent"
+    />
+
+    <!-- Button SignUp -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id                            ="@+id/signUp"
+        android:background                    ="@drawable/oval_button"
+        android:fitsSystemWindows             ="true"
+        android:foreground                    ="@drawable/ripple"
+        android:text                          ="@string/signup"
+        android:textColor                     ="@color/white"
+        android:textSize                      ="16sp"
+        android:stateListAnimator             ="@null"
+        android:layout_marginTop              ="20dip"
+        android:layout_height                 ="wrap_content"
+        android:layout_width                  ="wrap_content"
+        node:layout_constraintTop_toBottomOf  ="@id/signUpCheckBox"
+        node:layout_constraintStart_toStartOf ="parent"
+        node:layout_constraintEnd_toEndOf     ="parent"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

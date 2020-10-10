@@ -3,15 +3,19 @@
 <!-- Android Global Style Themes For Application -->
 <resources>
 
-    <!-- Red Theme -->
-    <style name="RedTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!-- Green Theme -->
+    <style name="GreenTheme" parent="Theme.MaterialComponents.Light.NoActionBar" >
 
-        <!-- Default Android Specific Options -->
-        <item name="android:navigationBarColor">@color/redDark </item>
-        <item name="android:statusBarColor"    >@color/redDark </item>
-        <item name="colorAccent"               >@color/redDark </item>
-        <item name="colorPrimary"              >@color/red     </item>
-        <item name="colorPrimaryDark"          >@color/redDark </item>
+        <!-- Default Android Specific Theme Options -->
+        <item name="android:navigationBarColor" >@color/white     </item>
+        <item name="android:statusBarColor"     >@color/white     </item>
+        <item name="colorAccent"                >@color/white     </item>
+        <item name="colorPrimary"               >@color/green     </item>
+        <item name="colorPrimaryDark"           >@color/greenDark </item>
+
+        <!-- Custom Theme Options -->
+        <item name="rippleColor" >@color/white </item>
+
     </style>
 
 </resources>

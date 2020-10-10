@@ -1,4 +1,4 @@
-package dev.jzdevelopers.libs
+package dev.jzdevelopers.cstracker.libs
 
 import android.content.Intent
 import android.os.Bundle
@@ -83,7 +83,10 @@ abstract class JZActivity: AppCompatActivity() {
      * @param [adapters]        Any type of recycler adapter
      * @param [clickedRecycler] The invoked function when the recycler adapter is clicked (lambda)
      */
-    protected inline fun click(vararg adapters: JZRecyclerAdapter<*>, crossinline clickedRecycler: ClickRecycler) {
+    protected inline fun click(
+        vararg adapters: JZRecyclerAdapter<*>,
+        crossinline clickedRecycler: ClickRecycler
+    ) {
 
         // Sets The Click Listener//
         for (adapter in adapters) adapter.onItemClick { position, view ->
@@ -210,7 +213,10 @@ abstract class JZActivity: AppCompatActivity() {
      * Function That Gets A [color] Resource id From The Colors.xml File In The Res Folder
      * @return The color
      */
-    protected fun getColorCompat(@ColorRes color: Int): Int {return ContextCompat.getColor(this, color)}
+    protected fun getColorCompat(@ColorRes color: Int): Int {return ContextCompat.getColor(
+        this,
+        color
+    )}
 
     /**.
      * Replaces The BottomBar Menu UI With A New One
@@ -289,8 +295,8 @@ abstract class JZActivity: AppCompatActivity() {
         /**.
          * Function That Sets A Custom Theme For The Activity.
          * It must go before every other function in createUI
-         * @param [theme]                The style resource id for the activity
-         * @param [isDarkStatusBar] Checks whether the status bar color is dark
+         * @param [theme]           The style resource id for the activity
+         * @param [isDarkStatusBar] Checks whether the status bar color is a dark color
          */
         fun theme(@StyleRes theme: Int, isDarkStatusBar: Boolean? = null) {
 
@@ -304,21 +310,24 @@ abstract class JZActivity: AppCompatActivity() {
                 isDarkStatusBar == null -> {}
 
                 // When The Status Bar Icons Should Be Black//
-                isDarkStatusBar -> {
+                !isDarkStatusBar -> {
 
                     // Enables Dark Status Bar Icons//
-                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    window.insetsController?.setSystemBarsAppearance(
+                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                    )
                 }
 
                 // When The Status Bar Icons Should Be White And Color Should Be Primary Dark//
-                !isDarkStatusBar -> {
+                isDarkStatusBar -> {
 
                     // Define And Initialize TypedValue Value//
                     val typedValue = TypedValue()
 
                     // Gets The Primary Attribute Color For The Current Theme//
                     this@JZActivity.theme.resolveAttribute(
-                        R.attr.colorPrimaryDark,
+                        R.attr.colorPrimary,
                         typedValue,
                         true
                     )
