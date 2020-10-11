@@ -46,20 +46,21 @@ class UserSignUp: JZActivity() {
         // When signUp Is Clicked//
         click(signUp) {
 
-            // Whether The User Is Keeping Track Of Multiple Peoples Hours//
-            val isMultiUser = signUpCheckBox.isChecked
+            // Gets The Primary User Data//
+            val firstName       = firstName.text.toString()
+            val lastName        = lastName.text.toString()
+            val email           = email.text.toString()
+            val password        = password.text.toString()
+            val confirmPassword = confirmPassword.text.toString()
+            val isMultiUser     = signUpCheckBox.isChecked
 
             // Define And Instantiates The Primary User//
-            val primaryUser = PrimaryUser()
-            primaryUser.firstName       = firstName.text.toString()
-            primaryUser.lastName        = lastName.text.toString()
-            primaryUser.email           = email.text.toString()
-            primaryUser.password        = password.text.toString()
-            primaryUser.confirmPassword = confirmPassword.text.toString()
-            primaryUser.isMultiUser     = isMultiUser
+            val primaryUser = PrimaryUser(isMultiUser, email)
+            primaryUser.firstName = firstName
+            primaryUser.lastName  = lastName
 
             // Saves The New User//
-            primaryUser.save(this, progressBar) {
+            primaryUser.save(this, progressBar, password, confirmPassword) {
 
                 // Logs The User In//
                 when(isMultiUser) {

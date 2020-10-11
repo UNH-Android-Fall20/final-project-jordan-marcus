@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.View
 import android.widget.ProgressBar
 import androidx.core.util.PatternsCompat
-import com.google.firebase.auth.FirebaseAuth
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import java.util.*
@@ -15,15 +14,10 @@ import kotlin.collections.ArrayList
  *  @author Jordan Zimmitti, Marcus Novoa
  */
 data class PrimaryUser(
-            var isMultiUser      : Boolean = false,
-            var email            : String  = "",
-            var password         : String  = "",
-            var confirmPassword  : String  = "",
-            var secondaryUserIds : ArrayList<Int> = ArrayList(),
+    var isMultiUser      : Boolean        = false,
+    var email            : String         = "",
+    val secondaryUserIds : ArrayList<Int> = ArrayList(),
 ) : User() {
-
-    // Gets The Firebase Authorization Instance//
-    private val firebaseAuth = FirebaseAuth.getInstance()
 
     /**.
      * Function That Authenticates And Saves A Primary User To The Database
@@ -31,12 +25,18 @@ data class PrimaryUser(
      * @param [progressBar]     Circular progress bar to alert the user when the sign-up is in progress
      * @param [onSuccess]       The invoked function for when the primary user is saved successfully (lambda)
      */
-    fun save(context: Context, progressBar: ProgressBar, onSuccess: () -> Unit) {
+    fun save(
+        context         : Context,
+        progressBar     : ProgressBar,
+        password        : String,
+        confirmPassword : String,
+        onSuccess       : () -> Unit
+    ) {
 
         // Checks If The User Input Is Valid//
         if (!super.save(context))   return
         if (!isValidEmail(context)) return
-        if (!isValidPassword(context, confirmPassword)) return
+        if (!isValidPassword(context, password, confirmPassword)) return
 
         // Takes The User Data And Prepares It For The Database//
         userToSave["isMultiUser"]      = isMultiUser
@@ -47,7 +47,7 @@ data class PrimaryUser(
         progressBar.visibility = View.VISIBLE
 
         // Signs Up The User//
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
+        firebaseAuth.createUserWithEmailAndPassword(email, password.trim())
             .addOnFailureListener {
 
                 // Hides The Progress Bar//
@@ -63,10 +63,10 @@ data class PrimaryUser(
             .addOnSuccessListener {
 
                 // Gets The Newly Created User Id//
-                val userId = firebaseAuth.currentUser?.uid ?: return@addOnSuccessListener
+                id = firebaseAuth.currentUser?.uid ?: return@addOnSuccessListener
 
                 // Saves The User Data To The Database//
-                val primaryUser = fireStore.collection("Users").document(userId)
+                val primaryUser = fireStore.collection("Users").document(id)
                 primaryUser.set(userToSave)
 
                 // Hides The Progress Bar//
@@ -126,7 +126,11 @@ data class PrimaryUser(
      * @param [confirmPassword] Used for making sure the password was inputted properly
      * @return whether the password is valid
      */
-    private fun isValidPassword(context: Context, confirmPassword: String): Boolean {
+    private fun isValidPassword(
+        context         : Context,
+        password        : String,
+        confirmPassword : String
+    ): Boolean {
 
         // Checks The Password For Validity//
         return when {
@@ -162,10 +166,7 @@ data class PrimaryUser(
             }
 
             // When The Password Is Valid
-            else -> {
-                password = password.trim()
-                true
-            }
+            else -> true
         }
     }
 }

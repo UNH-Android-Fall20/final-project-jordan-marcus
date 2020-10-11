@@ -1,6 +1,7 @@
 package dev.jzdevelopers.cstracker.user
 
 import android.content.Context
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
@@ -18,8 +19,13 @@ abstract class User(
 
     //<editor-fold desc="Class Variables">
 
-    // Gets The FireStore Database Instance//
-    protected val fireStore = FirebaseFirestore.getInstance()
+    // Defines The User Id Variable//
+    var id : String = ""
+        protected set
+
+    // Gets The Different FireBase Instances//
+    protected val firebaseAuth = FirebaseAuth.getInstance()
+    protected val fireStore    = FirebaseFirestore.getInstance()
 
     // Define And Instantiates HashMap Values//
     protected val userToSave   = HashMap<String, Any>()
