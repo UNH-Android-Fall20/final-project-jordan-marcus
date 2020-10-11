@@ -46,23 +46,20 @@ class UserSignUp: JZActivity() {
         // When signUp Is Clicked//
         click(signUp) {
 
-            // Gets The Confirm Password Text//
-            val confirmPassword = confirmPassword.text.toString()
-            val isMultiUser     = signUpCheckBox.isChecked
+            // Whether The User Is Keeping Track Of Multiple Peoples Hours//
+            val isMultiUser = signUpCheckBox.isChecked
 
             // Define And Instantiates The Primary User//
             val primaryUser = PrimaryUser()
-            primaryUser.firstName   = firstName.text.toString()
-            primaryUser.lastName    = lastName.text.toString()
-            primaryUser.email       = email.text.toString()
-            primaryUser.password    = password.text.toString()
-            primaryUser.isMultiUser = isMultiUser
+            primaryUser.firstName       = firstName.text.toString()
+            primaryUser.lastName        = lastName.text.toString()
+            primaryUser.email           = email.text.toString()
+            primaryUser.password        = password.text.toString()
+            primaryUser.confirmPassword = confirmPassword.text.toString()
+            primaryUser.isMultiUser     = isMultiUser
 
-            // Code For When The Sign-Up Is Successful//
-            val onSuccess = {
-
-                // Hides The Progress Bar//
-                progressBar.hide()
+            // Saves The New User//
+            primaryUser.save(this, progressBar) {
 
                 // Logs The User In//
                 when(isMultiUser) {
@@ -70,24 +67,6 @@ class UserSignUp: JZActivity() {
                     false -> startActivity(EventView::class, R.anim.faze_in, R.anim.faze_out)
                 }
             }
-
-            // Code For When The Sign-Up Is Not Successful//
-            val onFail = {
-
-                // Hides The Progress Bar//
-                progressBar.hide()
-
-                // Hides The Error Dialog//
-                showErrorDialog(
-                    this,
-                    R.string.user_sign_up_error_title,
-                    R.string.error_general
-                )
-            }
-
-            // Saves The New User//
-            progressBar.show()
-            primaryUser.save(this, confirmPassword, onSuccess, onFail)
         }
     }
 }

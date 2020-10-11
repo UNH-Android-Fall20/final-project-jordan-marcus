@@ -1,6 +1,8 @@
 package dev.jzdevelopers.cstracker.user
 
 import android.content.Context
+import android.view.View
+import android.widget.ProgressBar
 import androidx.core.util.PatternsCompat
 import com.google.firebase.auth.FirebaseAuth
 import dev.jzdevelopers.cstracker.R
@@ -16,6 +18,7 @@ data class PrimaryUser(
             var isMultiUser      : Boolean = false,
             var email            : String  = "",
             var password         : String  = "",
+            var confirmPassword  : String  = "",
             var secondaryUserIds : ArrayList<Int> = ArrayList(),
 ) : User() {
 
@@ -23,13 +26,12 @@ data class PrimaryUser(
     private val firebaseAuth = FirebaseAuth.getInstance()
 
     /**.
-     * Function That Saves A Primary User To The Database
+     * Function That Authenticates And Saves A Primary User To The Database
      * @param [context]         Gets the instance from the caller activity
-     * @param [confirmPassword] Used for making sure the password was inputted properly
+     * @param [progressBar]     Circular progress bar to alert the user when the sign-up is in progress
      * @param [onSuccess]       The invoked function for when the primary user is saved successfully (lambda)
-     * @param [onFail]          The invoked function for when the primary user is not saved successfully (lambda)
      */
-    fun save(context: Context, confirmPassword: String, onSuccess:() -> Unit, onFail:() -> Unit) {
+    fun save(context: Context, progressBar: ProgressBar, onSuccess: () -> Unit) {
 
         // Checks If The User Input Is Valid//
         if (!super.save(context))   return
@@ -37,14 +39,42 @@ data class PrimaryUser(
         if (!isValidPassword(context, confirmPassword)) return
 
         // Takes The User Data And Prepares It For The Database//
+        userToSave["isMultiUser"]      = isMultiUser
         userToSave["email"]            = email
-        userToSave["password"]         = password
         userToSave["secondaryUserIds"] = secondaryUserIds
 
-        // Saves The New User To The Database//
+        // Shows The Progress Bar//
+        progressBar.visibility = View.VISIBLE
+
+        // Signs Up The User//
         firebaseAuth.createUserWithEmailAndPassword(email, password)
-            .addOnSuccessListener { onSuccess.invoke() }
-            .addOnFailureListener { onFail.invoke() }
+            .addOnFailureListener {
+
+                // Hides The Progress Bar//
+                progressBar.visibility = View.GONE
+
+                // Hides The Error Dialog//
+                JZActivity.showErrorDialog(
+                    context,
+                    R.string.user_sign_up_error_title,
+                    R.string.error_general
+                )
+            }
+            .addOnSuccessListener {
+
+                // Gets The Newly Created User Id//
+                val userId = firebaseAuth.currentUser?.uid ?: return@addOnSuccessListener
+
+                // Saves The User Data To The Database//
+                val primaryUser = fireStore.collection("Users").document(userId)
+                primaryUser.set(userToSave)
+
+                // Hides The Progress Bar//
+                progressBar.visibility = View.GONE
+
+                // The User Was Signed In Successfully//
+                onSuccess.invoke()
+            }
     }
 
     /**.
