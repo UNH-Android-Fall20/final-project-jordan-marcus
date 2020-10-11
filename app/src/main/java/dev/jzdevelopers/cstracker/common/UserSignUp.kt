@@ -58,9 +58,6 @@ class UserSignUp: JZActivity() {
             primaryUser.password    = password.text.toString()
             primaryUser.isMultiUser = isMultiUser
 
-            // Shows The Progress Bar//
-            progressBar.show()
-
             // Code For When The Sign-Up Is Successful//
             val onSuccess = {
 
@@ -89,6 +86,7 @@ class UserSignUp: JZActivity() {
             }
 
             // Saves The New User//
+            progressBar.show()
             primaryUser.save(this, confirmPassword, onSuccess, onFail)
         }
     }
