@@ -4,19 +4,38 @@
 <resources>
 
     <!-- Activity Name Strings -->
-    <string name="app_name" >CS Tracker </string>
+    <string name="app_name"   >CS Tracker </string>
+    <string name="event_view" >Events     </string>
+    <string name="user_add"   >Add A User </string>
 
     <!-- CheckBox Strings -->
     <string name="signUpCheckBox" >Are you keeping track of someone else\'s hours?</string>
 
     <!-- EditText Strings -->
+    <string name="email"            >Email            </string>
     <string name="first_name"       >First Name       </string>
     <string name="last_name"        >Last Name        </string>
-    <string name="email"            >Email            </string>
     <string name="password"         >Password         </string>
-    <string name="confirm_password" >Confirm Password </string>
+    <string name="password_confirm" >Confirm Password </string>
 
     <!-- FAB Strings -->
     <string name="signup" >Sign Up </string>
+
+    <!-- Material Dialogs -->
+    <string name="negative_button"          > Cancel                                            </string>
+    <string name="negative_button_only"     > OK                                                </string>
+    <string name="user_sign_up_error_title" > Uh Oh                                             </string>
+    <string name="error_email_blank"        > The email must not be blank                       </string>
+    <string name="error_email_match"        > The text entered is not an email                  </string>
+    <string name="error_first_name_blank"   > The first name must not be blank                  </string>
+    <string name="error_first_name_long"    > The first name must be smaller than 20 characters </string>
+    <string name="error_first_name_symbol"  > The first name must not contain a symbol          </string>
+    <string name="error_general"            > There seems to be a problem, please try again     </string>
+    <string name="error_last_name_blank"    > The last name must not be blank                   </string>
+    <string name="error_last_name_long"     > The last name must be smaller than 40 characters  </string>
+    <string name="error_last_name_symbol"   > The last name must not contain a symbol           </string>
+    <string name="error_password_blank"     > The password must not be blank                    </string>
+    <string name="error_password_match"     > The two passwords do not match                    </string>
+    <string name="error_password_short"     > The password must be longer than 12 characters    </string>
 
 </resources>

@@ -1,5 +1,6 @@
 package dev.jzdevelopers.cstracker.libs
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
@@ -8,6 +9,7 @@ import android.widget.TextView
 import androidx.annotation.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.bottomappbar.BottomAppBar
 import dev.jzdevelopers.cstracker.R
 import kotlin.reflect.KClass
@@ -25,6 +27,8 @@ private typealias LongClick     = ()                          -> Unit
 @Suppress("unused")
 abstract class JZActivity: AppCompatActivity() {
 
+    //<editor-fold desc="Class Variables">
+
     // Define Menu Variable For Late Initialization//
     protected lateinit var menu: Menu
 
@@ -33,6 +37,31 @@ abstract class JZActivity: AppCompatActivity() {
 
     // Define And Initialize Function Value//
     private val empty: UI.() -> Unit = {}
+
+    //</editor-fold>
+
+
+    /**.
+     * Configures Static Variables And Functions
+     */
+    companion object {
+
+        /**.
+         * Function That Shows An Error Dialog
+         * @param [context] Gets the instance from the caller activity
+         * @param [title]   the title of the error dialog
+         * @param [error]   The error message for the error dialog
+         */
+        fun showErrorDialog(context: Context, @StringRes title: Int, @StringRes error: Int) {
+
+            // Shows The Error Dialog//
+            MaterialDialog(context).show {
+                title(title)
+                message(error)
+                negativeButton(R.string.negative_button_only)
+            }
+        }
+    }
 
 
     /**.
@@ -213,10 +242,9 @@ abstract class JZActivity: AppCompatActivity() {
      * Function That Gets A [color] Resource id From The Colors.xml File In The Res Folder
      * @return The color
      */
-    protected fun getColorCompat(@ColorRes color: Int): Int {return ContextCompat.getColor(
-        this,
-        color
-    )}
+    protected fun getColorCompat(@ColorRes color: Int): Int {
+        return ContextCompat.getColor(this, color)
+    }
 
     /**.
      * Replaces The BottomBar Menu UI With A New One

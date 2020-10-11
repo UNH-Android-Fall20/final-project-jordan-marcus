@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- ConstraintLayout UI For Class SignUp-->
+<!-- ConstraintLayout UI For Class UserSignUp-->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android         ="http://schemas.android.com/apk/res/android"
     xmlns:node            ="http://schemas.android.com/apk/res-auto"
     xmlns:tools           ="http://schemas.android.com/tools"
-    android:id            ="@+id/uiSignUp"
+    android:id            ="@+id/uiUserSignUp"
     android:padding       ="16dip"
     android:layout_height ="match_parent"
     android:layout_width  ="match_parent"
-    tools:context         =".common.SignUp">
+    tools:context         =".common.UserSignUp">
 
     <!-- TextView appName -->
     <TextView
@@ -147,7 +147,7 @@
         <!-- EditText confirmPassword -->
         <com.google.android.material.textfield.TextInputEditText
             android:id            ="@+id/confirmPassword"
-            android:hint          ="@string/confirm_password"
+            android:hint          ="@string/password_confirm"
             android:inputType     ="textPassword"
             android:layout_height ="wrap_content"
             android:layout_width  ="match_parent"
@@ -185,6 +185,21 @@
         node:layout_constraintTop_toBottomOf  ="@id/signUpCheckBox"
         node:layout_constraintStart_toStartOf ="parent"
         node:layout_constraintEnd_toEndOf     ="parent"
+    />
+
+    <!-- ContentLoadingProgressBar progressBar -->
+    <androidx.core.widget.ContentLoadingProgressBar
+        style                                   ="?android:attr/progressBarStyleLarge"
+        android:id                              ="@+id/progressBar"
+        android:indeterminate                   ="true"
+        android:indeterminateTint               ="?colorPrimary"
+        android:visibility                      ="gone"
+        android:layout_height                   ="wrap_content"
+        android:layout_width                    ="wrap_content"
+        node:layout_constraintTop_toTopOf       ="parent"
+        node:layout_constraintBottom_toBottomOf ="parent"
+        node:layout_constraintStart_toStartOf   ="parent"
+        node:layout_constraintEnd_toEndOf       ="parent"
     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
