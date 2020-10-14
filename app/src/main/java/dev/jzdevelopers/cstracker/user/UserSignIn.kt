@@ -100,8 +100,8 @@ class UserSignIn: JZActivity() {
 
         // Starts The Activity Based On The User Mode//
         when(multiUser) {
-            YES.ordinal        -> startActivity(SecondaryUserAdd::class, false)
-            NO.ordinal         -> startActivity(EventView::class, false)
+            YES.ordinal        -> startActivity(SecondaryUserAdd::class, R.anim.faze_in, R.anim.faze_out)
+            NO.ordinal         -> startActivity(EventView::class, R.anim.faze_in, R.anim.faze_out)
             SIGNED_OUT.ordinal -> return
         }
     }

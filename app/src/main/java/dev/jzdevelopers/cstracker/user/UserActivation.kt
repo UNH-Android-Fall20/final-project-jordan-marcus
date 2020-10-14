@@ -41,11 +41,7 @@ class UserActivation: JZActivity() {
     override fun createListeners() {
 
         // When Back Is Clicked//
-        clickBack {
-
-            // Goes Back To Activity UserSignUp//
-            exitActivity(R.anim.faze_in, R.anim.faze_out)
-        }
+        clickBack {}
 
         // When checkActivation Is Clicked//
         click(checkActivation) {
@@ -59,8 +55,8 @@ class UserActivation: JZActivity() {
 
             // Starts The Activity Based On The User Mode//
             when(multiUser) {
-                YES.ordinal        -> startActivity(SecondaryUserAdd::class, false)
-                NO.ordinal         -> startActivity(EventView::class, false)
+                YES.ordinal        -> startActivity(SecondaryUserAdd::class, R.anim.faze_in, R.anim.faze_out)
+                NO.ordinal         -> startActivity(EventView::class, R.anim.faze_in, R.anim.faze_out)
                 SIGNED_OUT.ordinal -> return@click
             }
         }
@@ -68,8 +64,8 @@ class UserActivation: JZActivity() {
         // When resendEmail Is Clicked//
         click(resendEmail) {
 
-            // Starts The Activity UserSignUp//
-            startActivity(UserSignUp::class, R.anim.faze_in, R.anim.faze_out)
+            // Resends The Activation Email//
+            PrimaryUser.activate(this)
         }
     }
 }

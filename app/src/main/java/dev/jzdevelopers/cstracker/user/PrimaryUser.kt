@@ -8,7 +8,7 @@ import androidx.core.util.PatternsCompat
 import com.google.firebase.auth.FirebaseAuth
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.libs.JZPrefs
+import dev.jzdevelopers.cstracker.libs.JZPrefs.savePref
 import dev.jzdevelopers.cstracker.user.MultiUser.SIGNED_OUT
 import dev.jzdevelopers.cstracker.user.MultiUser.valueOf
 import kotlinx.coroutines.tasks.await
@@ -47,7 +47,7 @@ data class PrimaryUser(
             if (isSignedIn) return true
 
             // Signs Out The User//
-            JZPrefs.savePref(context, PREF_MULTI_USER, SIGNED_OUT.ordinal)
+            savePref(context, PREF_MULTI_USER, SIGNED_OUT.ordinal)
             return false
         }
 
@@ -58,7 +58,7 @@ data class PrimaryUser(
         fun signOut(context: Context) {
 
             // Clears Primary User's Multi-User Preference//
-            JZPrefs.savePref(context, PREF_MULTI_USER, SIGNED_OUT.ordinal)
+            savePref(context, PREF_MULTI_USER, SIGNED_OUT.ordinal)
             firebaseAuth.signOut()
 
             // Logs That The Primary User Was Signed Out//
@@ -225,7 +225,7 @@ data class PrimaryUser(
             get(context)
 
             // Saves Primary User's Multi-User Preference//
-            JZPrefs.savePref(context, PREF_MULTI_USER, multiUser.ordinal)
+            savePref(context, PREF_MULTI_USER, multiUser.ordinal)
 
             // Logs That The Primary User Was Signed In//
             Log.v("Primary_User", "Primary User [$email] was signed in")
@@ -273,7 +273,7 @@ data class PrimaryUser(
             progressBar.visibility = View.GONE
 
             // Saves Primary User's Multi-User Preference//
-            JZPrefs.savePref(context, PREF_MULTI_USER, multiUser.ordinal)
+            savePref(context, PREF_MULTI_USER, multiUser.ordinal)
 
             // Logs That The Primary User Was Signed In//
             Log.v("Primary_User", "Primary User [$email] has signed up")
