@@ -34,11 +34,30 @@ abstract class User(
     //</editor-fold>
 
     /**.
+     * Configures Static Variables And Functions
+     */
+    companion object {
+
+        // Gets The FireBase Authorization Instances//
+        private val firebaseAuth = FirebaseAuth.getInstance()
+
+        /**.
+         * Function That Checks If The User Is Logged In
+         */
+        fun isSignedIn(): Boolean {
+
+            // Gets The State Of The Signed In User//
+            val user = firebaseAuth.currentUser
+            return user != null
+        }
+    }
+
+    /**.
      * Base Function That Saves A New User To The Database
      * @param [context] Gets the instance from the caller activity
      * @return Whether all the base user properties are valid and ready to be saved
      */
-    protected open fun save(context: Context): Boolean {
+    protected open fun signUp(context: Context): Boolean {
 
         // Checks If The User Input Is Valid//
         if (!isValidFirstName(context)) return false
@@ -48,6 +67,20 @@ abstract class User(
         userToSave["firstName"] = firstName
         userToSave["lastName"]  = lastName
         return true
+    }
+
+    /**.
+     * Function That Shows A General Error Dialog
+     * @param [context] Gets the instance from the caller activity
+     */
+    protected fun showGeneralError(context: Context) {
+
+        // Shows The Error Dialog//
+        JZActivity.showGeneralDialog(
+            context,
+            R.string.title_user_sign_up_error,
+            R.string.error_general
+        )
     }
 
     /**.
@@ -62,9 +95,9 @@ abstract class User(
 
             // When The First-Name Is Blank//
             firstName.isBlank() -> {
-                JZActivity.showErrorDialog(
+                JZActivity.showGeneralDialog(
                     context,
-                    R.string.user_sign_up_error_title,
+                    R.string.title_user_sign_up_error,
                     R.string.error_first_name_blank
                 )
                 false
@@ -72,9 +105,9 @@ abstract class User(
 
             // When First-Name Contains A Symbol//
             !firstName.matches(Regex("[a-zA-Z]+")) -> {
-                JZActivity.showErrorDialog(
+                JZActivity.showGeneralDialog(
                     context,
-                    R.string.user_sign_up_error_title,
+                    R.string.title_user_sign_up_error,
                     R.string.error_first_name_symbol
                 )
                 false
@@ -82,9 +115,9 @@ abstract class User(
 
             // When First-Name Has A Length Greater Than Twenty//
             firstName.length > 20 -> {
-                JZActivity.showErrorDialog(
+                JZActivity.showGeneralDialog(
                     context,
-                    R.string.user_sign_up_error_title,
+                    R.string.title_user_sign_up_error,
                     R.string.error_first_name_long
                 )
                 false
@@ -113,9 +146,9 @@ abstract class User(
 
             // When The Last-Name Is Blank//
             lastName.isBlank() -> {
-                JZActivity.showErrorDialog(
+                JZActivity.showGeneralDialog(
                     context,
-                    R.string.user_sign_up_error_title,
+                    R.string.title_user_sign_up_error,
                     R.string.error_last_name_blank
                 )
                 false
@@ -123,9 +156,9 @@ abstract class User(
 
             // When The Last-Name Contains A Symbol//
             !lastName.matches(Regex("[a-zA-Z]+")) -> {
-                JZActivity.showErrorDialog(
+                JZActivity.showGeneralDialog(
                     context,
-                    R.string.user_sign_up_error_title,
+                    R.string.title_user_sign_up_error,
                     R.string.error_last_name_symbol
                 )
                 false
@@ -133,9 +166,9 @@ abstract class User(
 
             // When The Last-Name Has A Length Greater Than Twenty//
             lastName.length > 40 -> {
-                JZActivity.showErrorDialog(
+                JZActivity.showGeneralDialog(
                     context,
-                    R.string.user_sign_up_error_title,
+                    R.string.title_user_sign_up_error,
                     R.string.error_last_name_long
                 )
                 false

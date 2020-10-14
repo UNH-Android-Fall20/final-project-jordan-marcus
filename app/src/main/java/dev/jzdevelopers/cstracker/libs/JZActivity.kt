@@ -1,7 +1,10 @@
 package dev.jzdevelopers.cstracker.libs
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.*
@@ -9,16 +12,18 @@ import android.widget.TextView
 import androidx.annotation.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.bottomappbar.BottomAppBar
 import dev.jzdevelopers.cstracker.R
+import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
 // Type Aliases For Lambda Functions//
-private typealias Click         = ()                          -> Unit
-private typealias ClickBack     = ()                          -> Unit
-private typealias ClickRecycler = (position: Int, view: View) -> Unit
-private typealias LongClick     = ()                          -> Unit
+private typealias Click         = suspend ()                          -> Unit
+private typealias ClickBack     = suspend ()                          -> Unit
+private typealias ClickRecycler = suspend (position: Int, view: View) -> Unit
+private typealias LongClick     = suspend ()                          -> Unit
 
 /** Kotlin Abstract Class JZActivity
  *  Abstract Class That Streamlines Various Android Activity Functions
@@ -52,7 +57,7 @@ abstract class JZActivity: AppCompatActivity() {
          * @param [title]   the title of the error dialog
          * @param [error]   The error message for the error dialog
          */
-        fun showErrorDialog(context: Context, @StringRes title: Int, @StringRes error: Int) {
+        fun showGeneralDialog(context: Context, @StringRes title: Int, @StringRes error: Int) {
 
             // Shows The Error Dialog//
             MaterialDialog(context).show {
@@ -74,6 +79,9 @@ abstract class JZActivity: AppCompatActivity() {
         // Calls Starting Functions//
         createActivity()
         createListeners()
+
+        // Handles API Calls//
+        lifecycleScope.launch { apiCalls() }
     }
 
     /**.
@@ -88,7 +96,7 @@ abstract class JZActivity: AppCompatActivity() {
         // Handles Back Button Click Listener//
         return when (keyCode) {
             KeyEvent.KEYCODE_BACK -> {
-                clickBack?.invoke() ?: return true
+                lifecycleScope.launch { clickBack?.invoke() }
                 false
             }
             else -> false
@@ -106,20 +114,22 @@ abstract class JZActivity: AppCompatActivity() {
      */
     protected abstract fun createListeners()
 
+    /**.
+     * Abstract Function That Handles All API Calls For The Activity
+     */
+    protected open suspend fun apiCalls() {}
+
 
     /**.
      * Function That Handles When A Recycler Adapter Is Clicked
      * @param [adapters]        Any type of recycler adapter
      * @param [clickedRecycler] The invoked function when the recycler adapter is clicked (lambda)
      */
-    protected inline fun click(
-        vararg adapters: JZRecyclerAdapter<*>,
-        crossinline clickedRecycler: ClickRecycler
-    ) {
+    protected fun click(vararg adapters: JZRecyclerAdapter<*>, clickedRecycler: ClickRecycler) {
 
         // Sets The Click Listener//
         for (adapter in adapters) adapter.onItemClick { position, view ->
-            clickedRecycler.invoke(position, view)
+            lifecycleScope.launch { clickedRecycler.invoke(position, view) }
         }
     }
 
@@ -128,10 +138,13 @@ abstract class JZActivity: AppCompatActivity() {
      * @param [items]   Any Menu Item
      * @param [clicked] The invoked function for when the menu item is clicked (lambda)
      */
-    protected inline fun click(vararg items: MenuItem, crossinline clicked: Click) {
+    protected fun click(vararg items: MenuItem, clicked: Click) {
 
         // Sets The Click Listener For All Menu Items//
-        for (item in items) item.setOnMenuItemClickListener {clicked.invoke(); true}
+        for (item in items) item.setOnMenuItemClickListener {
+            lifecycleScope.launch { clicked.invoke() }
+            true
+        }
     }
 
     /**.
@@ -139,10 +152,12 @@ abstract class JZActivity: AppCompatActivity() {
      * @param [views]   Any type of view
      * @param [clicked] The invoked function for when the view is clicked (lambda)
      */
-    protected inline fun click(vararg views: View, crossinline clicked: Click) {
+    protected fun click(vararg views: View, clicked: Click) {
 
         // Sets The Click Listener For All Views//
-        for (view in views) view.setOnClickListener {clicked.invoke()}
+        for (view in views) view.setOnClickListener {
+            lifecycleScope.launch { clicked.invoke() }
+        }
     }
 
     /**.
@@ -150,21 +165,32 @@ abstract class JZActivity: AppCompatActivity() {
      * @param [layouts] Any type of layout
      * @param [clicked] The invoked function for when the layout is clicked (lambda)
      */
-    protected inline fun click(vararg layouts: ViewGroup, crossinline clicked: Click) {
+    protected fun click(vararg layouts: ViewGroup, clicked: Click) {
 
         // Sets The Click Listener For All Layouts//
-        for (layout in layouts) layout.setOnClickListener {clicked.invoke()}
+        for (layout in layouts) layout.setOnClickListener {
+            lifecycleScope.launch { clicked.invoke() }
+        }
     }
+
+    /**.
+     * Function That Handles When The System Back Button Is Clicked
+     * @param [clickBack] The invoked function for when the back button is clicked
+     */
+    protected fun clickBack(clickBack: ClickBack) {this.clickBack = clickBack}
 
     /**.
      * Function That Handles When A Layout Is Long Clicked
      * @param [layouts]     Any type of layout
      * @param [longClicked] The invoked function for when the layout is Long clicked
      */
-    protected inline fun longClick(vararg layouts: ViewGroup, crossinline longClicked: LongClick) {
+    protected fun longClick(vararg layouts: ViewGroup, longClicked: LongClick) {
 
         // Sets The Long Click Listener//
-        for (layout in layouts) layout.setOnLongClickListener {longClicked.invoke(); true}
+        for (layout in layouts) layout.setOnLongClickListener {
+            lifecycleScope.launch { longClicked.invoke() }
+            true
+        }
     }
 
     /**.
@@ -172,18 +198,15 @@ abstract class JZActivity: AppCompatActivity() {
      * @param [views]       Any type of view
      * @param [longClicked] The invoked function for when the view is long clicked
      */
-    protected inline fun longClick(vararg views: View, crossinline longClicked: LongClick) {
+    protected fun longClick(vararg views: View, longClicked: LongClick) {
 
         // Sets The Long Click Listener//
-        for (view in views) view.setOnLongClickListener {longClicked.invoke(); true}
+        for (view in views) view.setOnLongClickListener {
+            lifecycleScope.launch { longClicked.invoke() }
+            true
+        }
     }
 
-
-    /**.
-     * Function That Handles When The System Back Button Is Clicked
-     * @param [clickBack] The invoked function for when the back button is clicked
-     */
-    protected fun clickBack(clickBack: ClickBack) {this.clickBack = clickBack}
 
     /**.
      * Function That Shows The Layout And Theme Configurations
@@ -340,11 +363,21 @@ abstract class JZActivity: AppCompatActivity() {
                 // When The Status Bar Icons Should Be Black//
                 !isDarkStatusBar -> {
 
-                    // Enables Dark Status Bar Icons//
-                    window.insetsController?.setSystemBarsAppearance(
-                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
-                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-                    )
+                    @SuppressLint("ObsoleteSdkInt")
+                    @Suppress("DEPRECATION")
+                    if (VERSION.SDK_INT == VERSION_CODES.M && VERSION.SDK_INT <= VERSION_CODES.Q) {
+
+                        // Enables Dark Status Bar//
+                        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    }
+                    else if (VERSION.SDK_INT >= VERSION_CODES.R) {
+
+                        // Enables Dark Status Bar//
+                        window.insetsController?.setSystemBarsAppearance(
+                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                        )
+                    }
                 }
 
                 // When The Status Bar Icons Should Be White And Color Should Be Primary Dark//

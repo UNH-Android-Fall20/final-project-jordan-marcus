@@ -7,6 +7,7 @@ import androidx.core.content.edit
  *  Object That Streamlines The Getting And Saving Of Shared Preferences
  *  @author Jordan Zimmitti
  */
+@Suppress("unused")
 object JZPrefs {
 
     /**.

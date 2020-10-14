@@ -1,27 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dev.jzdevelopers.cstracker" >
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="dev.jzdevelopers.cstracker">
 
+    <!-- Allows App To Access The Internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Application Manifest Settings -->
     <application
-        android:allowBackup="true"
-        android:fullBackupContent="true"
-        android:hardwareAccelerated="true"
-        android:icon="@mipmap/ic_launcher_round"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/GreenTheme" >
-        <activity android:name=".event.EventView" >
-        </activity>
-        <activity android:name=".user.SecondaryUserAdd" >
-        </activity> <!-- Activity SignUp -->
-        <activity android:name=".common.UserSignUp" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        android:allowBackup         ="true"
+        android:fullBackupContent   ="true"
+        android:hardwareAccelerated ="true"
+        android:icon                ="@mipmap/ic_launcher_round"
+        android:label               ="@string/app_name"
+        android:roundIcon           ="@mipmap/ic_launcher_round"
+        android:supportsRtl         ="true"
+        android:theme               ="@style/GreenTheme">
 
+        <!-- Activity EventView -->
+        <activity
+            android:name=".event.EventView"
+            android:screenOrientation="portrait"
+        />
+
+        <!-- Activity SecondaryUserAdd -->
+        <activity
+            android:name=".user.SecondaryUserAdd"
+            android:screenOrientation="portrait"
+        />
+
+        <!-- Activity UserActivation -->
+        <activity
+            android:name=".user.UserActivation"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <!-- Activity UserPasswordReset -->
+        <activity
+            android:name=".user.UserPasswordReset"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <!-- Activity UserSignIn -->
+        <activity
+            android:name=".user.UserSignIn"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action   android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Activity UserSignUp -->
+        <activity
+            android:name=".user.UserSignUp"
+            android:screenOrientation="portrait"
+        />
+
     </application>
 
 </manifest>

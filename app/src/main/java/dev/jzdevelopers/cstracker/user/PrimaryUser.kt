@@ -1,11 +1,17 @@
 package dev.jzdevelopers.cstracker.user
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.core.util.PatternsCompat
+import com.google.firebase.auth.FirebaseAuth
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
+import dev.jzdevelopers.cstracker.libs.JZPrefs
+import dev.jzdevelopers.cstracker.user.MultiUser.SIGNED_OUT
+import dev.jzdevelopers.cstracker.user.MultiUser.valueOf
+import kotlinx.coroutines.tasks.await
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -14,67 +20,268 @@ import kotlin.collections.ArrayList
  *  @author Jordan Zimmitti, Marcus Novoa
  */
 data class PrimaryUser(
-    var isMultiUser      : Boolean        = false,
+    var multiUser        : MultiUser      = SIGNED_OUT,
     var email            : String         = "",
     val secondaryUserIds : ArrayList<Int> = ArrayList(),
 ) : User() {
 
     /**.
-     * Function That Authenticates And Saves A Primary User To The Database
-     * @param [context]         Gets the instance from the caller activity
-     * @param [progressBar]     Circular progress bar to alert the user when the sign-up is in progress
-     * @param [onSuccess]       The invoked function for when the primary user is saved successfully (lambda)
+     * Configures Static Variables And Functions
      */
-    fun save(
-        context         : Context,
-        progressBar     : ProgressBar,
-        password        : String,
-        confirmPassword : String,
-        onSuccess       : () -> Unit
-    ) {
+    companion object {
 
-        // Checks If The User Input Is Valid//
-        if (!super.save(context))   return
-        if (!isValidEmail(context)) return
-        if (!isValidPassword(context, password, confirmPassword)) return
+        // Define And Initialize Saved Preferences Value//
+        const val PREF_MULTI_USER = "dev.jzdevelopers.cstracker.prefMultiUser"
 
-        // Takes The User Data And Prepares It For The Database//
-        userToSave["isMultiUser"]      = isMultiUser
-        userToSave["email"]            = email
-        userToSave["secondaryUserIds"] = secondaryUserIds
+        // Gets The FireBase Authorization Instances//
+        private val firebaseAuth = FirebaseAuth.getInstance()
 
-        // Shows The Progress Bar//
-        progressBar.visibility = View.VISIBLE
+        /**.
+         * Function That Checks If The User Is Logged In
+         * @param [context] Gets the instance from the caller activity
+         */
+        fun isSignedIn(context: Context): Boolean {
 
-        // Signs Up The User//
-        firebaseAuth.createUserWithEmailAndPassword(email, password.trim())
-            .addOnFailureListener {
+            // Checks If The User Is Signed In//
+            val isSignedIn = isSignedIn()
+            if (isSignedIn) return true
 
-                // Hides The Progress Bar//
-                progressBar.visibility = View.GONE
+            // Signs Out The User//
+            JZPrefs.savePref(context, PREF_MULTI_USER, SIGNED_OUT.ordinal)
+            return false
+        }
 
-                // Hides The Error Dialog//
-                JZActivity.showErrorDialog(
+        /**.
+         * Function That Signs Out The User
+         * @param [context] Gets the instance from the caller activity
+         */
+        fun signOut(context: Context) {
+
+            // Clears Primary User's Multi-User Preference//
+            JZPrefs.savePref(context, PREF_MULTI_USER, SIGNED_OUT.ordinal)
+            firebaseAuth.signOut()
+
+            // Logs That The Primary User Was Signed Out//
+            Log.v("Primary_User", "Primary user was signed out")
+        }
+
+        /**.
+         * Function That Checks Whether The Primary User's Account Is Activated
+         * @param [context] Gets the instance from the caller activity
+         * @return Whether the primary user's Account is activated
+         */
+        suspend fun isActivated(context: Context): Boolean {
+            return try {
+
+                // Send An Email Verification To The User//
+                firebaseAuth.currentUser?.reload()?.await()
+                val user = firebaseAuth.currentUser ?: throw Error()
+                val isVerified = user.isEmailVerified
+
+                // Checks If The Email Is Verified//
+                if (isVerified) true
+                else {
+
+                    // Shows The Error Dialog//
+                    JZActivity.showGeneralDialog(
+                        context,
+                        R.string.title_user_sign_up_error,
+                        R.string.error_email_verification
+                    )
+                    false
+                }
+            }
+            catch (_: Exception) {
+
+                // Shows The Error Dialog//
+                JZActivity.showGeneralDialog(
                     context,
-                    R.string.user_sign_up_error_title,
+                    R.string.title_user_sign_up_error,
+                    R.string.error_general
+                )
+                false
+            }
+        }
+
+        /**.
+         * Function That Sends A Verification Email To The User
+         * @param [context] Gets the instance from the caller activity
+         */
+        suspend fun activate(context: Context) {
+            try {
+
+                // Send An Email Verification To The User//
+                val user = firebaseAuth.currentUser ?: throw Error()
+                user.sendEmailVerification().await()
+
+                // Logs That An Email Verification Was Sent//
+                Log.v("Primary_User", "An email verification was sent")
+            }
+            catch (_: Exception) {
+
+                // Shows The Error Dialog//
+                JZActivity.showGeneralDialog(
+                    context,
+                    R.string.title_user_sign_up_error,
                     R.string.error_general
                 )
             }
-            .addOnSuccessListener {
+        }
+    }
 
-                // Gets The Newly Created User Id//
-                id = firebaseAuth.currentUser?.uid ?: return@addOnSuccessListener
+    /**.
+     * Function That Gets The Logged In User
+     * @param [context] Gets the instance from the caller activity
+     * @return The primary user instance
+     */
+    suspend fun get(context: Context): PrimaryUser {
+        try {
 
-                // Saves The User Data To The Database//
-                val primaryUser = fireStore.collection("Users").document(id)
-                primaryUser.set(userToSave)
+            // Gets The User's Id//
+            val userId = firebaseAuth.currentUser?.uid ?: throw Error()
 
-                // Hides The Progress Bar//
-                progressBar.visibility = View.GONE
+            // Gets The User Data From The Database//
+            val collection = fireStore.collection("Users").document(userId)
+            val document   = collection.get().await()
 
-                // The User Was Signed In Successfully//
-                onSuccess.invoke()
-            }
+            // Sets The Basic User Data//
+            this.id          = userId
+            this.firstName   = document.data?.get("firstName") as String
+            this.lastName    = document.data?.get("lastName")  as String
+            this.email       = document.data?.get("email")     as String
+
+            // Sets The Multi-User State//
+            this.multiUser   = valueOf((document.data?.get("multiUser") as String))
+
+            // Sets The Secondary User Ids//
+            val secondaryUserIds = document.data?.get("secondaryUserIds") as ArrayList<*>
+            secondaryUserIds.forEach { id -> this.secondaryUserIds.add(id as Int) }
+
+            // Returns The Logged In User//
+            Log.v("Primary_User", "Returned Primary User [$email]")
+            return this
+        }
+        catch (_: Exception) {
+            showGeneralError(context)
+            return PrimaryUser()
+        }
+    }
+
+    /**.
+     * Function That Sends A Password Reset Request To The Inputted Email Address
+     * @param [context] Gets the instance from the caller activity
+     * @param [email]   The inputted email address of the user that needs their password reset
+     */
+    suspend fun passwordReset(context: Context, email: String) {
+        try {
+
+            // Sets The Email//
+            this.email = email
+
+            // Checks If The Email Is Valid//
+            if (!isValidEmail(context)) return
+
+            // Sends The Password Reset Prompt//
+            firebaseAuth.sendPasswordResetEmail(email).await()
+
+            // Shows The Confirmation Dialog//
+            JZActivity.showGeneralDialog(
+                context,
+                R.string.title_request,
+                R.string.general_reset_password
+            )
+
+            // Logs That A Password Reset Request Was Sent//
+            Log.v("Primary_User", "A password reset request was sent for $email")
+        }
+        catch (_: Exception) {
+            showGeneralError(context)
+        }
+    }
+
+    /**.
+     * Function That Authenticates A Primary User
+     * @param [context]     Gets the instance from the caller activity
+     * @param [progressBar] Circular progress bar to alert the user when the sign-up is in progress
+     * @param [password]    The password of the user
+     */
+    suspend fun signIn(context: Context, progressBar: ProgressBar, password: String) {
+        try {
+
+            // Checks If The Email Is Valid//
+            if (!isValidEmail(context)) return
+
+            // Shows The Progress Bar//
+            progressBar.visibility = View.VISIBLE
+
+            // Authenticate The User//
+            firebaseAuth.signInWithEmailAndPassword(email, password).await()
+            if (!isSignedIn()) return
+
+            // Hides The Progress Bar//
+            progressBar.visibility = View.GONE
+
+            // Gets The User Data//
+            get(context)
+
+            // Saves Primary User's Multi-User Preference//
+            JZPrefs.savePref(context, PREF_MULTI_USER, multiUser.ordinal)
+
+            // Logs That The Primary User Was Signed In//
+            Log.v("Primary_User", "Primary User [$email] was signed in")
+        }
+        catch (_: Exception) {
+            progressBar.visibility = View.GONE
+            showGeneralError(context)
+        }
+    }
+
+    /**.
+     * Function That Signs Up And Authenticates A Primary User To The Database
+     * @param [context]         Gets the instance from the caller activity
+     * @param [progressBar]     Circular progress bar to alert the user when the sign-up is in progress
+     * @param [password]        The password of the user
+     * @param [confirmPassword] The password to confirm that the first password was entered in correctly
+     */
+    suspend fun signUp(context: Context, progressBar: ProgressBar, password: String, confirmPassword: String) {
+        try {
+
+            // Checks If The User Input Is Valid//
+            if (!super.signUp(context)) return
+            if (!isValidEmail(context)) return
+            if(!isValidPassword(context, password, confirmPassword)) return
+
+            // Takes The User Data And Prepares It For The Database//
+            userToSave["multiUser"]        = multiUser
+            userToSave["email"]            = email
+            userToSave["secondaryUserIds"] = secondaryUserIds
+
+            // Shows The Progress Bar//
+            progressBar.visibility = View.VISIBLE
+
+            // Signs Up The User//
+            firebaseAuth.createUserWithEmailAndPassword(email, password.trim()).await()
+
+            // Gets The User Id//
+            val userId = firebaseAuth.currentUser?.uid ?: throw Error()
+
+            // Sends The User Data To The Database//
+            val collection = fireStore.collection("Users").document(userId)
+            collection.set(userToSave).await()
+
+            // Hides The Progress Bar//
+            progressBar.visibility = View.GONE
+
+            // Saves Primary User's Multi-User Preference//
+            JZPrefs.savePref(context, PREF_MULTI_USER, multiUser.ordinal)
+
+            // Logs That The Primary User Was Signed In//
+            Log.v("Primary_User", "Primary User [$email] has signed up")
+        }
+        catch (_: Exception) {
+            progressBar.visibility = View.GONE
+            showGeneralError(context)
+        }
     }
 
     /**.
@@ -92,9 +299,9 @@ data class PrimaryUser(
 
             // When The Email Is Blank//
             email.isBlank() -> {
-                JZActivity.showErrorDialog(
+                JZActivity.showGeneralDialog(
                     context,
-                    R.string.user_sign_up_error_title,
+                    R.string.title_user_sign_up_error,
                     R.string.error_email_blank
                 )
                 false
@@ -102,9 +309,9 @@ data class PrimaryUser(
 
             // When The Email Does Not Have Valid Syntax//
             !emailValidator.matcher(email).matches() -> {
-                JZActivity.showErrorDialog(
+                JZActivity.showGeneralDialog(
                     context,
-                    R.string.user_sign_up_error_title,
+                    R.string.title_user_sign_up_error,
                     R.string.error_email_match
                 )
                 false
@@ -126,20 +333,16 @@ data class PrimaryUser(
      * @param [confirmPassword] Used for making sure the password was inputted properly
      * @return whether the password is valid
      */
-    private fun isValidPassword(
-        context         : Context,
-        password        : String,
-        confirmPassword : String
-    ): Boolean {
+    private fun isValidPassword(context: Context, password: String, confirmPassword: String): Boolean {
 
         // Checks The Password For Validity//
         return when {
 
             // When The Password Is Blank//
             password.isBlank() -> {
-                JZActivity.showErrorDialog(
+                JZActivity.showGeneralDialog(
                     context,
-                    R.string.user_sign_up_error_title,
+                    R.string.title_user_sign_up_error,
                     R.string.error_password_blank
                 )
                 false
@@ -147,9 +350,9 @@ data class PrimaryUser(
 
             // When The Password Is Less Than Twelve Characters//
             password.length < 12 -> {
-                JZActivity.showErrorDialog(
+                JZActivity.showGeneralDialog(
                     context,
-                    R.string.user_sign_up_error_title,
+                    R.string.title_user_sign_up_error,
                     R.string.error_password_short
                 )
                 false
@@ -157,9 +360,9 @@ data class PrimaryUser(
 
             // When The Two Passwords Do Not Match//
             password != confirmPassword -> {
-                JZActivity.showErrorDialog(
+                JZActivity.showGeneralDialog(
                     context,
-                    R.string.user_sign_up_error_title,
+                    R.string.title_user_sign_up_error,
                     R.string.error_password_match
                 )
                 false
