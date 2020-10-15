@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- ConstraintLayout UI For Class EventAdd -->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android         ="http://schemas.android.com/apk/res/android"
+    xmlns:node            ="http://schemas.android.com/apk/res-auto"
+    xmlns:tools           ="http://schemas.android.com/tools"
+    android:id            ="@+id/uiEventAdd"
+    android:padding       ="16dip"
+    android:layout_height ="match_parent"
+    android:layout_width  ="match_parent"
+    tools:context         =".event.EventView">
+
+  <!-- TextView eventAdd -->
+  <TextView
+      android:id                            ="@+id/eventAdd"
+      android:gravity                       ="center"
+      android:text                          ="@string/event_add"
+      android:textColor                     ="?colorPrimary"
+      android:textSize                      ="30sp"
+      android:textStyle                     ="bold"
+      android:layout_height                 ="wrap_content"
+      android:layout_width                  ="match_parent"
+      node:layout_constraintTop_toTopOf     ="parent"
+      />
+
+  <!-- EditText eventNameBox -->
+  <com.google.android.material.textfield.TextInputLayout
+      android:id                                  ="@+id/eventNameBox"
+      style                                       ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+      android:paddingEnd                          ="5dip"
+      android:layout_marginTop                    ="16dip"
+      android:layout_height                       ="wrap_content"
+      android:layout_width                        ="0dip"
+      node:boxStrokeColor                         ="?colorPrimary"
+      node:hintTextColor                          ="?colorPrimary"
+      node:layout_constraintHorizontal_chainStyle ="spread"
+      node:layout_constraintHorizontal_weight     ="67"
+      node:layout_constraintTop_toBottomOf        ="@id/eventAdd"
+      node:layout_constraintStart_toStartOf       ="parent"
+      node:layout_constraintEnd_toStartOf         ="@id/eventDate"
+      tools:ignore                                ="RtlSymmetry">
+
+    <!-- EditText eventName -->
+    <com.google.android.material.textfield.TextInputEditText
+        android:id            ="@+id/eventName"
+        android:hint          ="@string/event_name"
+        android:layout_height ="wrap_content"
+        android:layout_width  ="match_parent"
+        />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!-- TextView eventDate -->
+  <TextView
+      android:id                                  ="@+id/eventDate"
+      android:clickable                           ="true"
+      android:focusable                           ="true"
+      android:gravity                             ="center"
+      android:text                                ="@string/event_date"
+      android:textColor                           ="?colorPrimary"
+      android:textSize                            ="16sp"
+      android:textStyle                           ="bold"
+      android:layout_marginTop                    ="16dip"
+      android:layout_height                       ="wrap_content"
+      android:layout_width                        ="0dip"
+      node:layout_constraintHorizontal_chainStyle ="spread"
+      node:layout_constraintHorizontal_weight     ="33"
+      node:layout_constraintTop_toBottomOf        ="@id/eventAdd"
+      node:layout_constraintStart_toEndOf         ="@id/eventNameBox"
+      node:layout_constraintEnd_toEndOf           ="parent"
+      />
+
+  <!-- TextView eventDatePicker -->
+  <TextView
+      android:id                                  ="@+id/eventDatePicker"
+      android:clickable                           ="true"
+      android:focusable                           ="true"
+      android:gravity                             ="center"
+      android:text                                ="@string/event_date_picker"
+      android:textColor                           ="?colorPrimary"
+      android:textSize                            ="16sp"
+      android:layout_marginTop                    ="8dip"
+      android:layout_height                       ="wrap_content"
+      android:layout_width                        ="0dip"
+      node:layout_constraintHorizontal_chainStyle ="spread"
+      node:layout_constraintHorizontal_weight     ="33"
+      node:layout_constraintTop_toBottomOf        ="@id/eventDate"
+      node:layout_constraintStart_toEndOf         ="@id/eventNameBox"
+      node:layout_constraintEnd_toEndOf           ="parent"
+      />
+
+  <!-- EditText locationBox -->
+  <com.google.android.material.textfield.TextInputLayout
+      style                                ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+      android:id                           ="@+id/locationBox"
+      android:layout_marginTop             ="16dip"
+      android:layout_height                ="wrap_content"
+      android:layout_width                 ="match_parent"
+      node:boxStrokeColor                  ="?colorPrimary"
+      node:hintTextColor                   ="?colorPrimary"
+      node:layout_constraintTop_toBottomOf ="@id/eventNameBox">
+
+    <!-- EditText location -->
+    <com.google.android.material.textfield.TextInputEditText
+        android:id            ="@+id/location"
+        android:hint          ="@string/location"
+        android:layout_height ="wrap_content"
+        android:layout_width  ="match_parent"
+        />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!-- EditText peopleInChargeBox -->
+  <com.google.android.material.textfield.TextInputLayout
+      style                                ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+      android:id                           ="@+id/peopleInChargeBox"
+      android:layout_marginTop             ="16dip"
+      android:layout_height                ="wrap_content"
+      android:layout_width                 ="match_parent"
+      node:boxStrokeColor                  ="?colorPrimary"
+      node:hintTextColor                   ="?colorPrimary"
+      node:layout_constraintTop_toBottomOf ="@id/locationBox">
+
+    <!-- EditText peopleInCharge -->
+    <com.google.android.material.textfield.TextInputEditText
+        android:id            ="@+id/peopleInCharge"
+        android:hint          ="@string/people_in_charge"
+        android:layout_height ="wrap_content"
+        android:layout_width  ="match_parent"
+        />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!-- EditText phoneNumberBox -->
+  <com.google.android.material.textfield.TextInputLayout
+      android:id                                  ="@+id/phoneNumberBox"
+      style                                       ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+      android:paddingEnd                          ="5dip"
+      android:layout_marginTop                    ="16dip"
+      android:layout_height                       ="wrap_content"
+      android:layout_width                        ="0dip"
+      node:boxStrokeColor                         ="?colorPrimary"
+      node:hintTextColor                          ="?colorPrimary"
+      node:layout_constraintHorizontal_chainStyle ="spread"
+      node:layout_constraintHorizontal_weight     ="33"
+      node:layout_constraintTop_toBottomOf        ="@id/peopleInChargeBox"
+      node:layout_constraintStart_toStartOf       ="parent"
+      node:layout_constraintEnd_toStartOf         ="@id/notesBox"
+      tools:ignore                                ="RtlSymmetry">
+
+    <!-- EditText phoneNumber -->
+    <com.google.android.material.textfield.TextInputEditText
+        android:id            ="@+id/phoneNumber"
+        android:hint          ="@string/phone_number"
+        android:layout_height ="wrap_content"
+        android:layout_width  ="match_parent"
+        />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!-- EditText notesBox -->
+  <com.google.android.material.textfield.TextInputLayout
+      android:id                                  ="@+id/notesBox"
+      style                                       ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+      android:paddingStart                        ="5dip"
+      android:layout_marginTop                    ="16dip"
+      android:layout_height                       ="wrap_content"
+      android:layout_width                        ="0dip"
+      node:boxStrokeColor                         ="?colorPrimary"
+      node:hintTextColor                          ="?colorPrimary"
+      node:layout_constraintHorizontal_chainStyle ="spread"
+      node:layout_constraintHorizontal_weight     ="67"
+      node:layout_constraintTop_toBottomOf        ="@id/peopleInChargeBox"
+      node:layout_constraintStart_toEndOf         ="@id/phoneNumberBox"
+      node:layout_constraintEnd_toEndOf           ="parent"
+      tools:ignore                                ="RtlSymmetry">
+
+    <!-- EditText notes -->
+    <com.google.android.material.textfield.TextInputEditText
+        android:id            ="@+id/notes"
+        android:hint          ="@string/event_notes"
+        android:layout_height ="wrap_content"
+        android:layout_width  ="match_parent"
+        />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!-- TextView startTime -->
+  <TextView
+      android:id                                  ="@+id/startTime"
+      android:clickable                           ="true"
+      android:focusable                           ="true"
+      android:gravity                             ="center"
+      android:text                                ="@string/start_time"
+      android:textColor                           ="?colorPrimary"
+      android:textSize                            ="16sp"
+      android:textStyle                           ="bold"
+      android:layout_marginTop                    ="16dip"
+      android:layout_height                       ="wrap_content"
+      android:layout_width                        ="0dip"
+      node:layout_constraintHorizontal_chainStyle ="spread"
+      node:layout_constraintTop_toBottomOf        ="@id/phoneNumberBox"
+      node:layout_constraintStart_toStartOf       ="parent"
+      node:layout_constraintEnd_toStartOf         ="@id/endTime"
+      />
+
+  <!-- TextView startTimeValue -->
+  <TextView
+      android:id                                  ="@+id/startTimeValue"
+      android:clickable                           ="true"
+      android:focusable                           ="true"
+      android:gravity                             ="center"
+      android:text                                ="@string/time_default"
+      android:textColor                           ="?colorPrimary"
+      android:textSize                            ="16sp"
+      android:layout_marginTop                    ="8dip"
+      android:layout_height                       ="wrap_content"
+      android:layout_width                        ="0dip"
+      node:layout_constraintHorizontal_chainStyle ="spread"
+      node:layout_constraintTop_toBottomOf        ="@id/startTime"
+      node:layout_constraintStart_toStartOf       ="parent"
+      node:layout_constraintEnd_toStartOf         ="@id/endTimeValue"
+      />
+
+  <!-- TextView endTime -->
+  <TextView
+      android:id                                  ="@+id/endTime"
+      android:clickable                           ="true"
+      android:focusable                           ="true"
+      android:gravity                             ="center"
+      android:text                                ="@string/end_time"
+      android:textColor                           ="?colorPrimary"
+      android:textSize                            ="16sp"
+      android:textStyle                           ="bold"
+      android:layout_marginTop                    ="16dip"
+      android:layout_height                       ="wrap_content"
+      android:layout_width                        ="0dip"
+      node:layout_constraintHorizontal_chainStyle ="spread"
+      node:layout_constraintTop_toBottomOf        ="@id/phoneNumberBox"
+      node:layout_constraintStart_toEndOf         ="@id/startTime"
+      node:layout_constraintEnd_toStartOf         ="@id/totalTime"
+      />
+
+  <!-- TextView endTimeValue -->
+  <TextView
+      android:id                                  ="@+id/endTimeValue"
+      android:clickable                           ="true"
+      android:focusable                           ="true"
+      android:gravity                             ="center"
+      android:text                                ="@string/time_default"
+      android:textColor                           ="?colorPrimary"
+      android:textSize                            ="16sp"
+      android:layout_marginTop                    ="8dip"
+      android:layout_height                       ="wrap_content"
+      android:layout_width                        ="0dip"
+      node:layout_constraintHorizontal_chainStyle ="spread"
+      node:layout_constraintTop_toBottomOf        ="@id/endTime"
+      node:layout_constraintStart_toEndOf         ="@id/startTimeValue"
+      node:layout_constraintEnd_toStartOf         ="@id/totalTimeValue"
+      />
+
+  <!-- TextView totalTime -->
+  <TextView
+      android:id                                  ="@+id/totalTime"
+      android:clickable                           ="true"
+      android:focusable                           ="true"
+      android:gravity                             ="center"
+      android:text                                ="@string/total_time"
+      android:textColor                           ="?colorPrimary"
+      android:textSize                            ="16sp"
+      android:textStyle                           ="bold"
+      android:layout_marginTop                    ="16dip"
+      android:layout_height                       ="wrap_content"
+      android:layout_width                        ="0dip"
+      node:layout_constraintHorizontal_chainStyle ="spread"
+      node:layout_constraintTop_toBottomOf        ="@id/phoneNumberBox"
+      node:layout_constraintStart_toEndOf         ="@id/endTime"
+      node:layout_constraintEnd_toEndOf           ="parent"
+      />
+
+  <!-- TextView totalTimeValue -->
+  <TextView
+      android:id                                  ="@+id/totalTimeValue"
+      android:clickable                           ="true"
+      android:focusable                           ="true"
+      android:gravity                             ="center"
+      android:text                                ="@string/time_default"
+      android:textColor                           ="?colorPrimary"
+      android:textSize                            ="16sp"
+      android:layout_marginTop                    ="8dip"
+      android:layout_height                       ="wrap_content"
+      android:layout_width                        ="0dip"
+      node:layout_constraintHorizontal_chainStyle ="spread"
+      node:layout_constraintTop_toBottomOf        ="@id/endTime"
+      node:layout_constraintStart_toEndOf         ="@id/endTimeValue"
+      node:layout_constraintEnd_toEndOf           ="parent"
+      />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

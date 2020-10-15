@@ -5,6 +5,7 @@
 
     <!-- Activity Name Strings -->
     <string name="app_name"            > CS Tracker          </string>
+    <string name="event_add"           > Add An Event        </string>
     <string name="event_view"          > Events              </string>
     <string name="user_add"            > Add A User          </string>
     <string name="user_password_reset" > Reset Your Password </string>
@@ -14,10 +15,15 @@
 
     <!-- EditText Strings -->
     <string name="email"            > Email            </string>
+    <string name="event_name"       > Name             </string>
+    <string name="event_notes"      > Notes            </string>
     <string name="first_name"       > First Name       </string>
     <string name="last_name"        > Last Name        </string>
+    <string name="location"         > Location         </string>
     <string name="password"         > Password         </string>
     <string name="password_confirm" > Confirm Password </string>
+    <string name="people_in_charge" > People In Charge </string>
+    <string name="phone_number"     > Phone Number     </string>
 
     <!-- FAB Strings -->
     <string name="check_activation" > Check Activation </string>
@@ -49,8 +55,14 @@
 
     <!-- TextViews -->
     <string name="back_to_sign_in_text" > Go back to sign in            </string>
+    <string name="end_time"             > End Time                      </string>
+    <string name="event_date"           > Date                          </string>
+    <string name="event_date_picker"    > MM-DD-YYYY                    </string>
     <string name="forgot_password_text" > Forgot password?              </string>
     <string name="resend_email"         > No email? Resend verification </string>
     <string name="signup_text"          > Need an account? Sign Up      </string>
+    <string name="start_time"           > Start Time                    </string>
+    <string name="time_default"         > 0:00                          </string>
+    <string name="total_time"           > Total Time                    </string>
 
 </resources>

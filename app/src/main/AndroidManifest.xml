@@ -17,6 +17,12 @@
         android:supportsRtl         ="true"
         android:theme               ="@style/GreenTheme">
 
+        <!-- Activity EventAdd -->
+        <activity
+            android:name=".event.EventAdd"
+            android:screenOrientation="portrait"
+        />
+
         <!-- Activity EventView -->
         <activity
             android:name=".event.EventView"
