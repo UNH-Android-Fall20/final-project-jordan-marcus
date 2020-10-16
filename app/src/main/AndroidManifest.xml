@@ -23,6 +23,16 @@
             android:screenOrientation="portrait"
         />
 
+        <!-- Activity MainActivity -->
+        <activity
+            android:name=".common.MainActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action   android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <!-- Activity SecondaryUserAdd -->
         <activity
             android:name=".user.SecondaryUserAdd"
@@ -31,29 +41,25 @@
 
         <!-- Activity UserActivation -->
         <activity
-            android:name=".user.UserActivation"
+            android:name=".user.authentication.UserActivation"
             android:screenOrientation="portrait">
         </activity>
 
         <!-- Activity UserPasswordReset -->
         <activity
-            android:name=".user.UserPasswordReset"
+            android:name=".user.authentication.UserPasswordReset"
             android:screenOrientation="portrait">
         </activity>
 
         <!-- Activity UserSignIn -->
         <activity
-            android:name=".user.UserSignIn"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action   android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".user.authentication.UserSignIn"
+            android:screenOrientation="portrait"
+        />
 
         <!-- Activity UserSignUp -->
         <activity
-            android:name=".user.UserSignUp"
+            android:name=".user.authentication.UserSignUp"
             android:screenOrientation="portrait"
         />
 

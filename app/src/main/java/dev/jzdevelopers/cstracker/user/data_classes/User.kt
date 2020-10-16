@@ -1,4 +1,4 @@
-package dev.jzdevelopers.cstracker.user
+package dev.jzdevelopers.cstracker.user.oject
 
 import android.content.Context
 import com.google.firebase.auth.FirebaseAuth

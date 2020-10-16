@@ -1,17 +1,31 @@
 package dev.jzdevelopers.cstracker.user
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import dev.jzdevelopers.cstracker.R
-import kotlinx.android.synthetic.main.ui_secondary_user_add.*
+import dev.jzdevelopers.cstracker.libs.JZActivity
 
-class SecondaryUserAdd : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.ui_secondary_user_add)
+/** Android Activity SecondaryUserAdd
+ *  Activity That Adds A Secondary User Profile To The Signed-In Primary User
+ *  @author Jordan Zimmitti, Marcus Novoa
+ */
+class SecondaryUserAdd: JZActivity() {
 
-        textView.setOnClickListener {
-            PrimaryUser.signOut(this)
+    /**.
+     * What Happens When The Activity Is Created
+     */
+    override fun createActivity() {
+
+        // Creates The UI//
+        createUI(R.layout.ui_secondary_user_add) {
+
+            // Sets The Theme For The Activity//
+            theme(R.style.GreenTheme, false)
         }
+    }
+
+    /**.
+     * Function That Handles All Listeners For The Activity
+     */
+    override fun createListeners() {
+
     }
 }

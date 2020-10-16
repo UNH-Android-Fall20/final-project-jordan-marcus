@@ -6,18 +6,25 @@
     <!-- Activity Name Strings -->
     <string name="app_name"            > CS Tracker          </string>
     <string name="event_view"          > Events              </string>
+    <string name="secondary_user_add"  > Add A Profile       </string>
     <string name="user_add"            > Add A User          </string>
     <string name="user_password_reset" > Reset Your Password </string>
 
     <!-- CheckBox Strings -->
-    <string name="signUpCheckBox">Are you keeping track of someone else\'s hours?</string>
+    <string name="signUpCheckBox" > Are you keeping track of someone else\'s hours?</string>
 
     <!-- EditText Strings -->
     <string name="email"            > Email            </string>
     <string name="first_name"       > First Name       </string>
+    <string name="goal"             > Goal (hr)        </string>
+    <string name="grade"            > Grade            </string>
     <string name="last_name"        > Last Name        </string>
+    <string name="organization"     > Organization     </string>
     <string name="password"         > Password         </string>
     <string name="password_confirm" > Confirm Password </string>
+
+    <!-- FAB Content Description -->
+    <string name="fab_save" > Saves a user profile </string>
 
     <!-- FAB Strings -->
     <string name="check_activation" > Check Activation </string>
@@ -50,7 +57,9 @@
     <!-- TextViews -->
     <string name="back_to_sign_in_text" > Go back to sign in            </string>
     <string name="forgot_password_text" > Forgot password?              </string>
-    <string name="resend_email"         > No email? Resend verification </string>
+    <string name="name_letter_text"     > A                             </string>
+    <string name="resend_email_text"    > No email? Resend verification </string>
     <string name="signup_text"          > Need an account? Sign Up      </string>
+    <string name="user_theme_text"      > User Theme (Default)          </string>
 
 </resources>

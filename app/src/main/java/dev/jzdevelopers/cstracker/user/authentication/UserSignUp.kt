@@ -1,11 +1,12 @@
-package dev.jzdevelopers.cstracker.user
+package dev.jzdevelopers.cstracker.user.authentication
 
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.user.MultiUser.NO
 import dev.jzdevelopers.cstracker.user.MultiUser.YES
-import dev.jzdevelopers.cstracker.user.PrimaryUser.Companion.activate
-import dev.jzdevelopers.cstracker.user.PrimaryUser.Companion.isSignedIn
+import dev.jzdevelopers.cstracker.user.oject.PrimaryUser
+import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.activate
+import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.isSignedIn
 import kotlinx.android.synthetic.main.ui_user_sign_up.*
 
 /** Android Activity UserSignUp
@@ -24,6 +25,7 @@ class UserSignUp: JZActivity() {
 
             // Sets The Theme For The Activity//
             theme(R.style.GreenTheme, false)
+            navigationColor(R.color.white, false)
         }
     }
 

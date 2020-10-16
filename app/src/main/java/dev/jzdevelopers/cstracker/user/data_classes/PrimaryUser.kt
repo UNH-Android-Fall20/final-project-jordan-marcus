@@ -1,4 +1,4 @@
-package dev.jzdevelopers.cstracker.user
+package dev.jzdevelopers.cstracker.user.oject
 
 import android.content.Context
 import android.util.Log
@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.libs.JZPrefs.savePref
+import dev.jzdevelopers.cstracker.user.MultiUser
 import dev.jzdevelopers.cstracker.user.MultiUser.SIGNED_OUT
 import dev.jzdevelopers.cstracker.user.MultiUser.valueOf
 import kotlinx.coroutines.tasks.await
@@ -20,7 +21,7 @@ import kotlin.collections.ArrayList
  *  @author Jordan Zimmitti, Marcus Novoa
  */
 data class PrimaryUser(
-    var multiUser        : MultiUser      = SIGNED_OUT,
+    var multiUser        : MultiUser = SIGNED_OUT,
     var email            : String         = "",
     val secondaryUserIds : ArrayList<Int> = ArrayList(),
 ) : User() {

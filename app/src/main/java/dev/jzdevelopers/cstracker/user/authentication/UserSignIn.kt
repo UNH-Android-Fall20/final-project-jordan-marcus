@@ -1,14 +1,16 @@
-package dev.jzdevelopers.cstracker.user
+package dev.jzdevelopers.cstracker.user.authentication
 
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.event.EventView
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.libs.JZPrefs
+import dev.jzdevelopers.cstracker.libs.JZPrefs.getPref
 import dev.jzdevelopers.cstracker.user.MultiUser.*
-import dev.jzdevelopers.cstracker.user.PrimaryUser.Companion.PREF_MULTI_USER
-import dev.jzdevelopers.cstracker.user.PrimaryUser.Companion.activate
-import dev.jzdevelopers.cstracker.user.PrimaryUser.Companion.isActivated
-import dev.jzdevelopers.cstracker.user.PrimaryUser.Companion.isSignedIn
+import dev.jzdevelopers.cstracker.user.SecondaryUserAdd
+import dev.jzdevelopers.cstracker.user.oject.PrimaryUser
+import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.PREF_MULTI_USER
+import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.activate
+import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.isActivated
+import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.isSignedIn
 import kotlinx.android.synthetic.main.ui_user_sign_in.*
 
 /** Android Activity UserSignIn
@@ -27,6 +29,7 @@ class UserSignIn: JZActivity() {
 
             // Sets The Theme For The Activity//
             theme(R.style.GreenTheme, false)
+            navigationColor(R.color.white, false)
         }
     }
 
@@ -96,7 +99,7 @@ class UserSignIn: JZActivity() {
         }
 
         // Gets The Primary User's Multi-User Preference//
-        val multiUser = JZPrefs.getPref(this, PREF_MULTI_USER, SIGNED_OUT.ordinal)
+        val multiUser = getPref(this, PREF_MULTI_USER, SIGNED_OUT.ordinal)
 
         // Starts The Activity Based On The User Mode//
         when(multiUser) {

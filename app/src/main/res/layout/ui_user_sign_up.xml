@@ -9,10 +9,10 @@
     android:padding       ="16dip"
     android:layout_height ="match_parent"
     android:layout_width  ="match_parent"
-    tools:context         =".user.UserSignUp">
+    tools:context         =".user.authentication.UserSignUp">
 
     <!-- TextView appName -->
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id                            ="@+id/appName"
         android:gravity                       ="center"
         android:text                          ="@string/app_name"

@@ -9,22 +9,20 @@
     android:padding       ="16dip"
     android:layout_height ="match_parent"
     android:layout_width  ="match_parent"
-    tools:context         =".user.UserSignIn">
+    tools:context         =".user.authentication.UserSignIn">
 
     <!-- TextView appName -->
-    <TextView
-        android:id                            ="@+id/appName"
-        android:gravity                       ="center"
-        android:text                          ="@string/app_name"
-        android:textColor                     ="?colorPrimary"
-        android:textSize                      ="30sp"
-        android:textStyle                     ="bold"
-        android:layout_height                 ="wrap_content"
-        android:layout_width                  ="match_parent"
-        node:layout_constraintTop_toTopOf     ="parent"
-        node:layout_constraintStart_toStartOf ="parent"
-        node:layout_constraintEnd_toEndOf     ="parent"
-        />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id                        ="@+id/appName"
+        android:gravity                   ="center"
+        android:text                      ="@string/app_name"
+        android:textColor                 ="?colorPrimary"
+        android:textSize                  ="30sp"
+        android:textStyle                 ="bold"
+        android:layout_height             ="wrap_content"
+        android:layout_width              ="match_parent"
+        node:layout_constraintTop_toTopOf ="parent"
+    />
 
     <!-- ImageView logo -->
     <androidx.appcompat.widget.AppCompatImageView
@@ -100,7 +98,7 @@
     />
 
     <!-- TextView forgotPassword -->
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id                            ="@+id/forgotPassword"
         android:clickable                     ="true"
         android:focusable                     ="true"
@@ -118,7 +116,7 @@
         />
 
     <!-- TextView signupText -->
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id                              ="@+id/signupText"
         android:clickable                       ="true"
         android:focusable                       ="true"

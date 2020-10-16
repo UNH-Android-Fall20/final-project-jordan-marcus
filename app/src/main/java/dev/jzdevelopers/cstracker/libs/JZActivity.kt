@@ -3,21 +3,26 @@ package dev.jzdevelopers.cstracker.libs
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
+import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.*
+import android.view.WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.widget.TextView
 import androidx.annotation.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.bottomappbar.BottomAppBar
 import dev.jzdevelopers.cstracker.R
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
+import android.os.Build.VERSION_CODES.M as ANDROID_M
+import android.os.Build.VERSION_CODES.Q as ANDROID_Q
+import android.os.Build.VERSION_CODES.R as ANDROID_R
 
 // Type Aliases For Lambda Functions//
 private typealias Click         = suspend ()                          -> Unit
@@ -266,7 +271,7 @@ abstract class JZActivity: AppCompatActivity() {
      * @return The color
      */
     protected fun getColorCompat(@ColorRes color: Int): Int {
-        return ContextCompat.getColor(this, color)
+        return getColor(this, color)
     }
 
     /**.
@@ -292,7 +297,10 @@ abstract class JZActivity: AppCompatActivity() {
         val newActivity = Intent(this, activity.java)
 
         // Starts The Activity With The Default Animation//
-        if (isAnimation) {startActivity(newActivity); return}
+        if (isAnimation) {
+            startActivity(newActivity);
+            return
+        }
 
         // Removes The Activity Animation And Starts The Activity//
         newActivity.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
@@ -336,6 +344,35 @@ abstract class JZActivity: AppCompatActivity() {
         }
 
         /**.
+         * Function That Sets The Custom Navigation Bar Color For The Activity
+         * @param [color] The color resource
+         */
+        fun navigationColor(@ColorRes color: Int, isDarkNavBar: Boolean = true) {
+
+            // Sets The Custom Navigation Bar Color//
+            window.navigationBarColor = getColorCompat(color)
+
+            // When The Nav Bar Is A Dark Color
+            if (isDarkNavBar) return
+
+            @Suppress("DEPRECATION")
+            @SuppressLint("InlinedApi")
+            if (SDK_INT in Build.VERSION_CODES.O..ANDROID_Q) {
+
+                // Enables Dark Nav Bar Icons//
+                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            }
+            else if (SDK_INT >= ANDROID_R) {
+
+                // Enables Dark Nav Bar Icons//
+                window.insetsController?.setSystemBarsAppearance(
+                    APPEARANCE_LIGHT_NAVIGATION_BARS,
+                    APPEARANCE_LIGHT_NAVIGATION_BARS
+                )
+            }
+        }
+
+        /**.
          * Function That Creates A Custom Title For The Activity
          * @param [textView] The TextView being used for the activity title
          * @param [title]    The title resource id for the activity
@@ -363,19 +400,18 @@ abstract class JZActivity: AppCompatActivity() {
                 // When The Status Bar Icons Should Be Black//
                 !isDarkStatusBar -> {
 
-                    @SuppressLint("ObsoleteSdkInt")
                     @Suppress("DEPRECATION")
-                    if (VERSION.SDK_INT == VERSION_CODES.M && VERSION.SDK_INT <= VERSION_CODES.Q) {
+                    if (SDK_INT in ANDROID_M..ANDROID_Q) {
 
-                        // Enables Dark Status Bar//
+                        // Enables Dark Status Bar Icons//
                         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                     }
-                    else if (VERSION.SDK_INT >= VERSION_CODES.R) {
+                    else if (SDK_INT >= ANDROID_R) {
 
-                        // Enables Dark Status Bar//
+                        // Enables Dark Status Bar Icons//
                         window.insetsController?.setSystemBarsAppearance(
-                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
-                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                            APPEARANCE_LIGHT_STATUS_BARS,
+                            APPEARANCE_LIGHT_STATUS_BARS
                         )
                     }
                 }

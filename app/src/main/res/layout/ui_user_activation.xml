@@ -9,22 +9,20 @@
     android:padding       ="16dip"
     android:layout_height ="match_parent"
     android:layout_width  ="match_parent"
-    tools:context         =".user.UserSignIn">
+    tools:context         =".user.authentication.UserSignIn">
 
     <!-- TextView appName -->
-    <TextView
-        android:id                            ="@+id/appName"
-        android:gravity                       ="center"
-        android:text                          ="@string/app_name"
-        android:textColor                     ="?colorPrimary"
-        android:textSize                      ="30sp"
-        android:textStyle                     ="bold"
-        android:layout_height                 ="wrap_content"
-        android:layout_width                  ="match_parent"
-        node:layout_constraintTop_toTopOf     ="parent"
-        node:layout_constraintStart_toStartOf ="parent"
-        node:layout_constraintEnd_toEndOf     ="parent"
-        />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id                        ="@+id/appName"
+        android:gravity                   ="center"
+        android:text                      ="@string/app_name"
+        android:textColor                 ="?colorPrimary"
+        android:textSize                  ="30sp"
+        android:textStyle                 ="bold"
+        android:layout_height             ="wrap_content"
+        android:layout_width              ="match_parent"
+        node:layout_constraintTop_toTopOf ="parent"
+    />
 
     <!-- ImageView logo -->
     <androidx.appcompat.widget.AppCompatImageView
@@ -57,12 +55,12 @@
     />
 
     <!-- TextView resendEmail -->
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id                            ="@+id/resendEmail"
         android:clickable                     ="true"
         android:focusable                     ="true"
         android:gravity                       ="center"
-        android:text                          ="@string/resend_email"
+        android:text                          ="@string/resend_email_text"
         android:textColor                     ="?colorPrimary"
         android:textSize                      ="14sp"
         android:textStyle                     ="bold"
@@ -72,7 +70,7 @@
         node:layout_constraintTop_toBottomOf  ="@id/checkActivation"
         node:layout_constraintStart_toStartOf ="parent"
         node:layout_constraintEnd_toEndOf     ="parent"
-        />
+    />
 
     <!-- ContentLoadingProgressBar progressBar -->
     <androidx.core.widget.ContentLoadingProgressBar
@@ -87,6 +85,6 @@
         node:layout_constraintBottom_toBottomOf ="parent"
         node:layout_constraintStart_toStartOf   ="parent"
         node:layout_constraintEnd_toEndOf       ="parent"
-        />
+    />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
