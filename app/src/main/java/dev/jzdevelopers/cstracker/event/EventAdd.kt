@@ -33,5 +33,10 @@ class EventAdd : JZActivity() {
             phoneNumber.clearFocus()
             notes.clearFocus()
         }
+
+        // When The System Back Button Is Clicked//
+        clickBack {
+            exitActivity(R.anim.faze_in, R.anim.faze_out)
+        }
     }
 }
