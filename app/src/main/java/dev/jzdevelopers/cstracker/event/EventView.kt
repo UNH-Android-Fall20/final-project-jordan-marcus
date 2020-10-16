@@ -1,7 +1,6 @@
 package dev.jzdevelopers.cstracker.event
 
 import dev.jzdevelopers.cstracker.R
-import dev.jzdevelopers.cstracker.event.EventAdd
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import kotlinx.android.synthetic.main.ui_event_view.*
 
@@ -25,11 +24,18 @@ class EventView : JZActivity() {
      */
     override fun createListeners() {
 
-        // When eventTextView Is Clicked//
-        click(eventTextView) {
+        // When addEventTextView Is Clicked//
+        click(addEventTextView) {
 
             // Starts The Activity EventAdd//
             startActivity(EventAdd::class, R.anim.faze_in, R.anim.faze_out)
+        }
+
+        // When seniorTextView Is Clicked//
+        click(seniorTextView) {
+
+            // Starts The Activity SeniorTechHelp//
+            startActivity(SeniorTechHelp::class, R.anim.faze_in, R.anim.faze_out)
         }
     }
 }

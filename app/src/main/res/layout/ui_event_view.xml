@@ -24,13 +24,25 @@
       node:layout_constraintTop_toTopOf ="parent"
       />
 
-  <!-- TextView eventTextView -->
+  <!-- TextView addEventTextView -->
   <TextView
-      android:id                              ="@+id/eventTextView"
+      android:id                              ="@+id/addEventTextView"
       android:layout_width                    ="wrap_content"
       android:layout_height                   ="wrap_content"
       android:text                            ="Add An Event"
-      node:layout_constraintTop_toTopOf       ="parent"
+      node:layout_constraintTop_toBottomOf    ="@id/events"
+      node:layout_constraintBottom_toTopOf    ="@id/seniorTextView"
+      node:layout_constraintStart_toStartOf   ="parent"
+      node:layout_constraintEnd_toEndOf       ="parent"
+      />
+
+  <!-- TextView seniorTextView -->
+  <TextView
+      android:id                              ="@+id/seniorTextView"
+      android:layout_width                    ="wrap_content"
+      android:layout_height                   ="wrap_content"
+      android:text                            ="Senior Tech Help"
+      node:layout_constraintTop_toBottomOf    ="@id/addEventTextView"
       node:layout_constraintBottom_toBottomOf ="parent"
       node:layout_constraintStart_toStartOf   ="parent"
       node:layout_constraintEnd_toEndOf       ="parent"

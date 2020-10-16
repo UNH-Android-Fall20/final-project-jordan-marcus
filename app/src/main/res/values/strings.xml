@@ -7,6 +7,7 @@
     <string name="app_name"            > CS Tracker          </string>
     <string name="event_add"           > Add An Event        </string>
     <string name="event_view"          > Events              </string>
+    <string name="senior_tech_help"    > Senior Tech Help    </string>
     <string name="user_add"            > Add A User          </string>
     <string name="user_password_reset" > Reset Your Password </string>
 
