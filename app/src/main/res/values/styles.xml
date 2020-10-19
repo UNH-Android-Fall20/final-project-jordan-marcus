@@ -7,12 +7,12 @@
     <style name="GreenTheme" parent="Theme.MaterialComponents.Light.NoActionBar" >
 
         <!-- Default Android Specific Theme Options -->
-        <item name="android:navigationBarColor" >@color/green     </item>
-        <item name="android:statusBarColor"     >@color/white     </item>
+        <item name="android:navigationBarColor" >@color/white      </item>
+        <item name="android:statusBarColor"     >@color/white      </item>
         <item name="android:textColorHighlight" >@color/greenLight </item>
-        <item name="colorAccent"                >@color/white     </item>
-        <item name="colorPrimary"               >@color/green     </item>
-        <item name="colorPrimaryDark"           >@color/greenDark </item>
+        <item name="colorAccent"                >@color/white      </item>
+        <item name="colorPrimary"               >@color/green      </item>
+        <item name="colorPrimaryDark"           >@color/greenDark  </item>
 
         <!-- Custom Theme Options -->
         <item name="rippleColor" >@color/white </item>

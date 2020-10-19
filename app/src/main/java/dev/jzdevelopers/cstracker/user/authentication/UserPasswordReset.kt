@@ -2,7 +2,7 @@ package dev.jzdevelopers.cstracker.user.authentication
 
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.user.oject.PrimaryUser
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser
 import kotlinx.android.synthetic.main.ui_user_password_reset.*
 
 /** Android Activity UserPasswordReset
@@ -21,7 +21,6 @@ class UserPasswordReset: JZActivity() {
 
             // Sets The Theme For The Activity//
             theme(R.style.GreenTheme, false)
-            navigationColor(R.color.white, false)
         }
     }
 

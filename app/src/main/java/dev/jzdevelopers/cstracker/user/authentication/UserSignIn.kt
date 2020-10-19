@@ -6,11 +6,11 @@ import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.libs.JZPrefs.getPref
 import dev.jzdevelopers.cstracker.user.MultiUser.*
 import dev.jzdevelopers.cstracker.user.SecondaryUserAdd
-import dev.jzdevelopers.cstracker.user.oject.PrimaryUser
-import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.PREF_MULTI_USER
-import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.activate
-import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.isActivated
-import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.isSignedIn
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.PREF_MULTI_USER
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.activate
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.isActivated
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.isSignedIn
 import kotlinx.android.synthetic.main.ui_user_sign_in.*
 
 /** Android Activity UserSignIn
@@ -29,7 +29,6 @@ class UserSignIn: JZActivity() {
 
             // Sets The Theme For The Activity//
             theme(R.style.GreenTheme, false)
-            navigationColor(R.color.white, false)
         }
     }
 
@@ -75,15 +74,6 @@ class UserSignIn: JZActivity() {
             email.clearFocus()
             password.clearFocus()
         }
-    }
-
-    /**.
-     * Function That Handles All API Calls For The Activity
-     */
-    override suspend fun apiCalls() {
-
-        // Checks To See If The User Is Already Signed In//
-        checkLoginStatus()
     }
 
     /**.

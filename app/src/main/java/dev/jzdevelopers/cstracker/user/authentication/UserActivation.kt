@@ -6,9 +6,9 @@ import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.libs.JZPrefs.getPref
 import dev.jzdevelopers.cstracker.user.MultiUser.*
 import dev.jzdevelopers.cstracker.user.SecondaryUserAdd
-import dev.jzdevelopers.cstracker.user.oject.PrimaryUser
-import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.PREF_MULTI_USER
-import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.isActivated
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.PREF_MULTI_USER
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.isActivated
 import kotlinx.android.synthetic.main.ui_user_activation.*
 
 /** Android Activity UserActivation
@@ -27,24 +27,16 @@ class UserActivation: JZActivity() {
 
             // Sets The Theme For The Activity//
             theme(R.style.GreenTheme, false)
-            navigationColor(R.color.white, false)
         }
 
         // Shows The Info Dialog//
-        showGeneralDialog(
-            this,
-            R.string.title_verification_sent,
-            R.string.general_email_verification
-        )
+        showVerificationDialog()
     }
 
     /**.
      * Function That Handles All Listeners For The Activity
      */
     override fun createListeners() {
-
-        // When Back Is Clicked//
-        clickBack {}
 
         // When checkActivation Is Clicked//
         click(checkActivation) {
@@ -69,6 +61,20 @@ class UserActivation: JZActivity() {
 
             // Resends The Activation Email//
             PrimaryUser.activate(this)
+
+            // Shows The Info Dialog//
+            showVerificationDialog()
         }
+    }
+
+    /**.
+     * Function That Shows The User That The Verification Email Has Been Sent
+     */
+    private fun showVerificationDialog() {
+        showGeneralDialog(
+            this,
+            R.string.title_verification_sent,
+            R.string.general_email_verification
+        )
     }
 }

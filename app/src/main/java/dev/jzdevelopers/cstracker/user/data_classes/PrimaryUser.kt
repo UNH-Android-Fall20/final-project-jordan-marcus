@@ -1,4 +1,4 @@
-package dev.jzdevelopers.cstracker.user.oject
+package dev.jzdevelopers.cstracker.user.data_classes
 
 import android.content.Context
 import android.util.Log
@@ -11,7 +11,7 @@ import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.libs.JZPrefs.savePref
 import dev.jzdevelopers.cstracker.user.MultiUser
 import dev.jzdevelopers.cstracker.user.MultiUser.SIGNED_OUT
-import dev.jzdevelopers.cstracker.user.MultiUser.valueOf
+import dev.jzdevelopers.cstracker.user.UserTheme
 import kotlinx.coroutines.tasks.await
 import java.util.*
 import kotlin.collections.ArrayList
@@ -21,9 +21,9 @@ import kotlin.collections.ArrayList
  *  @author Jordan Zimmitti, Marcus Novoa
  */
 data class PrimaryUser(
-    var multiUser        : MultiUser = SIGNED_OUT,
-    var email            : String         = "",
-    val secondaryUserIds : ArrayList<Int> = ArrayList(),
+    var multiUser        : MultiUser         = SIGNED_OUT,
+    var email            : String            = "",
+    val secondaryUserIds : ArrayList<String> = ArrayList()
 ) : User() {
 
     /**.
@@ -86,7 +86,7 @@ data class PrimaryUser(
                     // Shows The Error Dialog//
                     JZActivity.showGeneralDialog(
                         context,
-                        R.string.title_user_sign_up_error,
+                        R.string.title_error,
                         R.string.error_email_verification
                     )
                     false
@@ -97,7 +97,7 @@ data class PrimaryUser(
                 // Shows The Error Dialog//
                 JZActivity.showGeneralDialog(
                     context,
-                    R.string.title_user_sign_up_error,
+                    R.string.title_error,
                     R.string.error_general
                 )
                 false
@@ -123,7 +123,7 @@ data class PrimaryUser(
                 // Shows The Error Dialog//
                 JZActivity.showGeneralDialog(
                     context,
-                    R.string.title_user_sign_up_error,
+                    R.string.title_error,
                     R.string.error_general
                 )
             }
@@ -142,7 +142,7 @@ data class PrimaryUser(
             val userId = firebaseAuth.currentUser?.uid ?: throw Error()
 
             // Gets The User Data From The Database//
-            val collection = fireStore.collection("Users").document(userId)
+            val collection = fireStore.collection("PrimaryUsers").document(userId)
             val document   = collection.get().await()
 
             // Sets The Basic User Data//
@@ -151,15 +151,16 @@ data class PrimaryUser(
             this.lastName    = document.data?.get("lastName")  as String
             this.email       = document.data?.get("email")     as String
 
-            // Sets The Multi-User State//
-            this.multiUser   = valueOf((document.data?.get("multiUser") as String))
+            // Sets The Enum Data//
+            this.multiUser   = MultiUser.valueOf((document.data?.get("multiUser") as String))
+            this.theme       = UserTheme.valueOf((document.data?.get("theme") as String))
 
             // Sets The Secondary User Ids//
             val secondaryUserIds = document.data?.get("secondaryUserIds") as ArrayList<*>
-            secondaryUserIds.forEach { id -> this.secondaryUserIds.add(id as Int) }
+            secondaryUserIds.forEach { id -> this.secondaryUserIds.add(id as String) }
 
             // Returns The Logged In User//
-            Log.v("Primary_User", "Returned Primary User [$email]")
+            Log.v("Primary_User", "Returned primary user [$email]")
             return this
         }
         catch (_: Exception) {
@@ -229,7 +230,7 @@ data class PrimaryUser(
             savePref(context, PREF_MULTI_USER, multiUser.ordinal)
 
             // Logs That The Primary User Was Signed In//
-            Log.v("Primary_User", "Primary User [$email] was signed in")
+            Log.v("Primary_User", "Primary user [$email] was signed in")
         }
         catch (_: Exception) {
             progressBar.visibility = View.GONE
@@ -267,7 +268,7 @@ data class PrimaryUser(
             val userId = firebaseAuth.currentUser?.uid ?: throw Error()
 
             // Sends The User Data To The Database//
-            val collection = fireStore.collection("Users").document(userId)
+            val collection = fireStore.collection("PrimaryUsers").document(userId)
             collection.set(userToSave).await()
 
             // Hides The Progress Bar//
@@ -277,7 +278,44 @@ data class PrimaryUser(
             savePref(context, PREF_MULTI_USER, multiUser.ordinal)
 
             // Logs That The Primary User Was Signed In//
-            Log.v("Primary_User", "Primary User [$email] has signed up")
+            Log.v("Primary_User", "Primary user [$email] has signed up")
+        }
+        catch (_: Exception) {
+            progressBar.visibility = View.GONE
+            showGeneralError(context)
+        }
+    }
+
+    /**.
+     * Function That Updates The Primary User
+     * @param [context]     Gets the instance from the caller activity
+     * @param [progressBar] Circular progress bar to alert the user when the sign-up is in progress
+     */
+    suspend fun updateData(context: Context, progressBar: ProgressBar) {
+        try {
+
+            // Checks If The User Input Is Valid//
+            if (!super.update(context)) return
+
+            // Takes The User Data And Prepares It For The Database//
+            userToUpdate["multiUser"]        = multiUser
+            userToUpdate["secondaryUserIds"] = secondaryUserIds
+
+            // Shows The Progress Bar//
+            progressBar.visibility = View.VISIBLE
+
+            // Updates The User Data//
+            val collection = fireStore.collection("PrimaryUsers").document(id)
+            collection.update(userToUpdate).await()
+
+            // Hides The Progress Bar//
+            progressBar.visibility = View.GONE
+
+            // Saves Primary User's Multi-User Preference//
+            savePref(context, PREF_MULTI_USER, multiUser.ordinal)
+
+            // Logs That The Primary User Was Signed In//
+            Log.v("Primary_User", "Primary user [$email] has been updated")
         }
         catch (_: Exception) {
             progressBar.visibility = View.GONE
@@ -302,7 +340,7 @@ data class PrimaryUser(
             email.isBlank() -> {
                 JZActivity.showGeneralDialog(
                     context,
-                    R.string.title_user_sign_up_error,
+                    R.string.title_error,
                     R.string.error_email_blank
                 )
                 false
@@ -312,7 +350,7 @@ data class PrimaryUser(
             !emailValidator.matcher(email).matches() -> {
                 JZActivity.showGeneralDialog(
                     context,
-                    R.string.title_user_sign_up_error,
+                    R.string.title_error,
                     R.string.error_email_match
                 )
                 false
@@ -343,7 +381,7 @@ data class PrimaryUser(
             password.isBlank() -> {
                 JZActivity.showGeneralDialog(
                     context,
-                    R.string.title_user_sign_up_error,
+                    R.string.title_error,
                     R.string.error_password_blank
                 )
                 false
@@ -353,7 +391,7 @@ data class PrimaryUser(
             password.length < 12 -> {
                 JZActivity.showGeneralDialog(
                     context,
-                    R.string.title_user_sign_up_error,
+                    R.string.title_error,
                     R.string.error_password_short
                 )
                 false
@@ -363,7 +401,7 @@ data class PrimaryUser(
             password != confirmPassword -> {
                 JZActivity.showGeneralDialog(
                     context,
-                    R.string.title_user_sign_up_error,
+                    R.string.title_error,
                     R.string.error_password_match
                 )
                 false

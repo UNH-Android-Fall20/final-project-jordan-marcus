@@ -5,12 +5,12 @@ import dev.jzdevelopers.cstracker.event.EventView
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.libs.JZPrefs.getPref
 import dev.jzdevelopers.cstracker.user.MultiUser.*
-import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.PREF_MULTI_USER
-import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.activate
-import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.isActivated
-import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.isSignedIn
 import dev.jzdevelopers.cstracker.user.SecondaryUserAdd
 import dev.jzdevelopers.cstracker.user.authentication.UserActivation
+import dev.jzdevelopers.cstracker.user.authentication.UserSignIn
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.PREF_MULTI_USER
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.isActivated
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.isSignedIn
 
 /** Android Activity MainActivity
  *  Activity That Starts When The Application Is Open
@@ -21,7 +21,15 @@ class MainActivity: JZActivity() {
     /**.
      * What Happens When The Activity Is Created
      */
-    override fun createActivity() {}
+    override fun createActivity() {
+
+        // Creates The UI//
+        createUI(R.layout.ui_blank) {
+
+            // Sets The Theme For The Activity//
+            theme(R.style.GreenTheme)
+        }
+    }
 
     /**.
      * Function That Handles All Listeners For The Activity
@@ -43,9 +51,11 @@ class MainActivity: JZActivity() {
     private suspend fun checkLoginStatus() {
 
         // When The Primary User Is Not Signed In//
-        if (!isSignedIn(this)) return
+        if (!isSignedIn(this)) {
+            startActivity(UserSignIn::class, R.anim.faze_in, R.anim.faze_out)
+            return
+        }
         if (!isActivated(this)) {
-            activate(this)
             startActivity(UserActivation::class, R.anim.faze_in, R.anim.faze_out)
         }
 

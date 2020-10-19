@@ -6,10 +6,14 @@ import android.content.Intent
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.*
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+import android.widget.EditText
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.annotation.*
 import androidx.appcompat.app.AppCompatActivity
@@ -25,10 +29,15 @@ import android.os.Build.VERSION_CODES.Q as ANDROID_Q
 import android.os.Build.VERSION_CODES.R as ANDROID_R
 
 // Type Aliases For Lambda Functions//
-private typealias Click         = suspend ()                          -> Unit
-private typealias ClickBack     = suspend ()                          -> Unit
-private typealias ClickRecycler = suspend (position: Int, view: View) -> Unit
-private typealias LongClick     = suspend ()                          -> Unit
+private typealias ActivityResult = (requestCode: Int, resultCode: Int, data: Intent?) -> Unit
+
+// Suspend Type Aliases For Lambda Functions//
+private typealias Click          = suspend ()                                                                 -> Unit
+private typealias ClickBack      = suspend ()                                                                 -> Unit
+private typealias ClickRecycler  = suspend (position: Int, view: View)                                        -> Unit
+private typealias LongClick      = suspend ()                                                                 -> Unit
+private typealias ProgressChange = suspend (seekBar: SeekBar?, progress: Int, isUser: Boolean)                -> Unit
+private typealias TextChange     = suspend (text: String, totalCount: Int, lastCount: Int, currentCount: Int) -> Unit
 
 /** Kotlin Abstract Class JZActivity
  *  Abstract Class That Streamlines Various Android Activity Functions
@@ -42,10 +51,13 @@ abstract class JZActivity: AppCompatActivity() {
     // Define Menu Variable For Late Initialization//
     protected lateinit var menu: Menu
 
-    // Define And Initialize ClickBack Variable//
+    // Define And Initializes ClickBack Variable//
     private var clickBack: ClickBack? = null
 
-    // Define And Initialize Function Value//
+    // Define And Initializes ActivityResult Variable//
+    private var activityResult: ActivityResult = {_,_,_ -> }
+
+    // Define And Initializes Lambda Value//
     private val empty: UI.() -> Unit = {}
 
     //</editor-fold>
@@ -73,6 +85,18 @@ abstract class JZActivity: AppCompatActivity() {
         }
     }
 
+    /**.
+     * Called To Send Information From One Activity To Another
+     * @param [requestCode] The request code allowing you to identify who this result came from
+     * @param [resultCode]  The result code returned by the child activity
+     * @param [data]        An Intent, which can return result data to the caller
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // Sets The Activity Result//
+        activityResult.invoke(requestCode, resultCode, data)
+    }
 
     /**.
      * Runs When The Activity Is Created
@@ -212,6 +236,50 @@ abstract class JZActivity: AppCompatActivity() {
         }
     }
 
+    /**.
+     * Function That Handles When A SeekBar's Progress Changes
+     * @param [seekBar]         The seek-bar node
+     * @param [progressChanged] The invoked function for when the seek-bar's progress changes
+     */
+    protected fun progressChange(seekBar: SeekBar, progressChanged: ProgressChange) {
+
+        // Sets The SeekBar Change Listener//
+        seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+
+            // When The SeekBar Progress Changes
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                lifecycleScope.launch { progressChanged.invoke(p0, p1, p2) }
+            }
+
+            // Not Implemented//
+            override fun onStartTrackingTouch(p0: SeekBar?) {}
+            override fun onStopTrackingTouch(p0: SeekBar?) {}
+        })
+    }
+
+    /**.
+     * Function That Handles When A EditText's Text Changes
+     * @param [editText]   The edit-text node
+     * @param [textChange] The invoked function for when the edit-text's text changes
+     */
+    protected fun textChange(editText: EditText, textChange: TextChange) {
+
+        // Sets The EditText Change Listener//
+        editText.addTextChangedListener(object: TextWatcher {
+
+            // What Happens As Text Is Being Changed//
+            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+                lifecycleScope.launch { textChange.invoke(text.toString(), start, before, count) }
+            }
+
+            // Not Implemented//
+            override fun beforeTextChanged(text: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun afterTextChanged(text: Editable?)                                          {
+            }
+        })
+    }
+
 
     /**.
      * Function That Shows The Layout And Theme Configurations
@@ -275,6 +343,27 @@ abstract class JZActivity: AppCompatActivity() {
     }
 
     /**.
+     * Function That Gets The Color Value Of A Theme Style
+     * @param [attrId] The id of the attr style
+     * @return The color
+     */
+    protected fun getColorStyle(@AttrRes attrId: Int): Int {
+
+        // Define And Initialize TypedValue Value//
+        val typedValue = TypedValue()
+
+        // Gets The Primary Attribute Color For The Current Theme//
+        this@JZActivity.theme.resolveAttribute(
+            attrId,
+            typedValue,
+            true
+        )
+
+        // Returns The Color Of Value Of The Given Style
+        return typedValue.data
+    }
+
+    /**.
      * Replaces The BottomBar Menu UI With A New One
      * @param [bottomBar] The bottomBar for the activity
      * @param [menu]      The new menu ui resource id for the activity
@@ -322,6 +411,17 @@ abstract class JZActivity: AppCompatActivity() {
         // Starts The New Activity With The Custom Animation//
         startActivity(newActivity)
         overridePendingTransition(animIn, animOut)
+    }
+
+    /**.
+     * Function That Launches An Activity Where A Result Will Be Given Once It Is Finished
+     * @param [intent]         The intent to start
+     * @param [requestCode]    The request code allowing you to identify who this result came from
+     * @param [activityResult] The invoked function gor getting the activity result
+     */
+    protected fun startActivityResult(intent: Intent, requestCode: Int, activityResult: ActivityResult) {
+        startActivityForResult(intent, requestCode)
+        this.activityResult = activityResult
     }
 
 
@@ -419,21 +519,8 @@ abstract class JZActivity: AppCompatActivity() {
                 // When The Status Bar Icons Should Be White And Color Should Be Primary Dark//
                 isDarkStatusBar -> {
 
-                    // Define And Initialize TypedValue Value//
-                    val typedValue = TypedValue()
-
-                    // Gets The Primary Attribute Color For The Current Theme//
-                    this@JZActivity.theme.resolveAttribute(
-                        R.attr.colorPrimary,
-                        typedValue,
-                        true
-                    )
-
-                    // Define And Initialize Int primaryColor//
-                    val primaryColor = typedValue.data
-
                     // Sets The Theme's Primary Color//
-                    window.statusBarColor = primaryColor
+                    window.statusBarColor = getColorStyle(R.attr.colorPrimary)
                 }
             }
         }

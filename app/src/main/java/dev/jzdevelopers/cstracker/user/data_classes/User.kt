@@ -1,20 +1,23 @@
-package dev.jzdevelopers.cstracker.user.oject
+package dev.jzdevelopers.cstracker.user.data_classes
 
 import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import java.util.*
-import kotlin.collections.HashMap
+import dev.jzdevelopers.cstracker.user.UserTheme
+import dev.jzdevelopers.cstracker.user.UserTheme.GREEN
+import java.util.Locale.getDefault
 
 /** Abstract Class User
  *  Abstract Class That Handles Common User Features
  *  @author Jordan Zimmitti, Marcus Novoa
  */
 abstract class User(
-    var firstName : String = "",
-    var lastName  : String = "",
+    var firstName : String    = "",
+    var lastName  : String    = "",
+    var theme     : UserTheme = GREEN
 ) {
 
     //<editor-fold desc="Class Variables">
@@ -24,8 +27,12 @@ abstract class User(
         protected set
 
     // Gets The Different FireBase Instances//
-    protected val firebaseAuth = FirebaseAuth.getInstance()
-    protected val fireStore    = FirebaseFirestore.getInstance()
+    protected val firebaseAuth  = FirebaseAuth.getInstance()
+    protected val fireStore     = FirebaseFirestore.getInstance()
+    private   val fireStorage    = FirebaseStorage.getInstance()
+
+    // Get Storage Reference From FireBase//
+    protected val storage = fireStorage.getReferenceFromUrl("gs://cs-tracker-5b4d1.appspot.com")
 
     // Define And Instantiates HashMap Values//
     protected val userToSave   = HashMap<String, Any>()
@@ -66,6 +73,25 @@ abstract class User(
         // Takes The User Data And Prepares It For The Database//
         userToSave["firstName"] = firstName
         userToSave["lastName"]  = lastName
+        userToSave["theme"]     = theme
+        return true
+    }
+
+    /**.
+     * Function That Updates A User
+     * @param [context] Gets the instance from the caller activity
+     * @return Whether all the base user properties are valid and ready to be updated
+     */
+    protected open fun update(context: Context): Boolean {
+
+        // Checks If The User Input Is Valid//
+        if (!isValidFirstName(context)) return false
+        if (!isValidLastName(context))  return false
+
+        // Takes The User Data And Prepares It For The Database//
+        userToUpdate["firstName"] = firstName
+        userToUpdate["lastName"]  = lastName
+        userToUpdate["theme"]     = theme
         return true
     }
 
@@ -78,7 +104,7 @@ abstract class User(
         // Shows The Error Dialog//
         JZActivity.showGeneralDialog(
             context,
-            R.string.title_user_sign_up_error,
+            R.string.title_error,
             R.string.error_general
         )
     }
@@ -97,7 +123,7 @@ abstract class User(
             firstName.isBlank() -> {
                 JZActivity.showGeneralDialog(
                     context,
-                    R.string.title_user_sign_up_error,
+                    R.string.title_error,
                     R.string.error_first_name_blank
                 )
                 false
@@ -107,7 +133,7 @@ abstract class User(
             !firstName.matches(Regex("[a-zA-Z]+")) -> {
                 JZActivity.showGeneralDialog(
                     context,
-                    R.string.title_user_sign_up_error,
+                    R.string.title_error,
                     R.string.error_first_name_symbol
                 )
                 false
@@ -117,7 +143,7 @@ abstract class User(
             firstName.length > 20 -> {
                 JZActivity.showGeneralDialog(
                     context,
-                    R.string.title_user_sign_up_error,
+                    R.string.title_error,
                     R.string.error_first_name_long
                 )
                 false
@@ -127,8 +153,8 @@ abstract class User(
             else -> {
                 firstName = firstName
                     .trim()
-                    .toLowerCase(Locale.getDefault())
-                    .capitalize(Locale.getDefault())
+                    .toLowerCase(getDefault())
+                    .capitalize(getDefault())
                 true
             }
         }
@@ -148,7 +174,7 @@ abstract class User(
             lastName.isBlank() -> {
                 JZActivity.showGeneralDialog(
                     context,
-                    R.string.title_user_sign_up_error,
+                    R.string.title_error,
                     R.string.error_last_name_blank
                 )
                 false
@@ -158,17 +184,17 @@ abstract class User(
             !lastName.matches(Regex("[a-zA-Z]+")) -> {
                 JZActivity.showGeneralDialog(
                     context,
-                    R.string.title_user_sign_up_error,
+                    R.string.title_error,
                     R.string.error_last_name_symbol
                 )
                 false
             }
 
             // When The Last-Name Has A Length Greater Than Twenty//
-            lastName.length > 40 -> {
+            lastName.length > 20 -> {
                 JZActivity.showGeneralDialog(
                     context,
-                    R.string.title_user_sign_up_error,
+                    R.string.title_error,
                     R.string.error_last_name_long
                 )
                 false
@@ -178,8 +204,8 @@ abstract class User(
             else -> {
                 lastName = lastName
                     .trim()
-                    .toLowerCase(Locale.getDefault())
-                    .capitalize(Locale.getDefault())
+                    .toLowerCase(getDefault())
+                    .capitalize(getDefault())
                 true
             }
         }

@@ -37,12 +37,16 @@
     <string name="error_email_match"          > The text entered is not an email                                                                           </string>
     <string name="error_email_verification"   > Your account is still not verified please try again                                                        </string>
     <string name="error_first_name_blank"     > The first name must not be blank                                                                           </string>
-    <string name="error_first_name_long"      > The first name must be smaller than 20 characters                                                          </string>
+    <string name="error_first_name_long"      > The first name must be smaller or equal to 20 characters                                                   </string>
     <string name="error_first_name_symbol"    > The first name must not contain a symbol                                                                   </string>
     <string name="error_general"              > There seems to be a problem, please try again                                                              </string>
+    <string name="error_goal_long"            > The goal must be smaller or equal to 100,000                                                               </string>
+    <string name="error_grade_long"           > The grade must be smaller or equal to 12                                                                   </string>
     <string name="error_last_name_blank"      > The last name must not be blank                                                                            </string>
-    <string name="error_last_name_long"       > The last name must be smaller than 40 characters                                                           </string>
+    <string name="error_last_name_long"       > The last name must be smaller or equal to 20 characters                                                    </string>
     <string name="error_last_name_symbol"     > The last name must not contain a symbol                                                                    </string>
+    <string name="error_organization_blank"   > The organization must not be blank                                                                         </string>
+    <string name="error_organization_long"    > The organization must be less than or equal to 30 characters                                               </string>
     <string name="error_password_blank"       > The password must not be blank                                                                             </string>
     <string name="error_password_match"       > The two passwords do not match                                                                             </string>
     <string name="error_password_short"       > The password must be longer than 12 characters                                                             </string>
@@ -51,15 +55,26 @@
     <string name="negative_button"            > Cancel                                                                                                     </string>
     <string name="negative_button_only"       > OK                                                                                                         </string>
     <string name="title_request"              > Request Sent                                                                                               </string>
-    <string name="title_user_sign_up_error"   > Uh Oh                                                                                                      </string>
+    <string name="title_error"                > Uh Oh                                                                                                      </string>
     <string name="title_verification_sent"    > Email Verification Sent                                                                                    </string>
 
     <!-- TextViews -->
-    <string name="back_to_sign_in_text" > Go back to sign in            </string>
-    <string name="forgot_password_text" > Forgot password?              </string>
-    <string name="name_letter_text"     > A                             </string>
-    <string name="resend_email_text"    > No email? Resend verification </string>
-    <string name="signup_text"          > Need an account? Sign Up      </string>
-    <string name="user_theme_text"      > User Theme (Default)          </string>
+    <string name="back_to_sign_in_text"    > Go back to sign in            </string>
+    <string name="forgot_password_text"    > Forgot password?              </string>
+    <string name="name_letter_text"        > A                             </string>
+    <string name="resend_email_text"       > No email? Resend verification </string>
+    <string name="signup_text"             > Need an account? Sign Up      </string>
+    <string name="user_theme_default_text" > User Theme (Default)          </string>
+    <string name="user_theme_red_text"     > User Theme (Red)              </string>
+    <string name="user_theme_orange_text"  > User Theme (Orange)           </string>
+    <string name="user_theme_yellow_text"  > User Theme (Yellow)           </string>
+    <string name="user_theme_green_text"   > User Theme (Green)            </string>
+    <string name="user_theme_blue_text"    > User Theme (Blue)             </string>
+    <string name="user_theme_indigo_text"  > User Theme (Indigo)           </string>
+    <string name="user_theme_violet_text"  > User Theme (Violet)           </string>
+    <string name="user_theme_pink_text"    > User Theme (Pink)             </string>
+    <string name="user_theme_teal_text"    > User Theme (Teal)             </string>
+    <string name="user_theme_brown_text"   > User Theme (Brown)            </string>
+    <string name="user_theme_black_text"   > User Theme (Black)            </string>
 
 </resources>

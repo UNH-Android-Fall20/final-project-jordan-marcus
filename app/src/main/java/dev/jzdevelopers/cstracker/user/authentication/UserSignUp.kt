@@ -4,9 +4,9 @@ import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.user.MultiUser.NO
 import dev.jzdevelopers.cstracker.user.MultiUser.YES
-import dev.jzdevelopers.cstracker.user.oject.PrimaryUser
-import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.activate
-import dev.jzdevelopers.cstracker.user.oject.PrimaryUser.Companion.isSignedIn
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.activate
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.isSignedIn
 import kotlinx.android.synthetic.main.ui_user_sign_up.*
 
 /** Android Activity UserSignUp
@@ -25,7 +25,6 @@ class UserSignUp: JZActivity() {
 
             // Sets The Theme For The Activity//
             theme(R.style.GreenTheme, false)
-            navigationColor(R.color.white, false)
         }
     }
 
@@ -69,7 +68,7 @@ class UserSignUp: JZActivity() {
                 // Shows The Error Dialog//
                 showGeneralDialog(
                     this,
-                    R.string.title_user_sign_up_error,
+                    R.string.title_error,
                     R.string.error_general
                 )
                 return@click
