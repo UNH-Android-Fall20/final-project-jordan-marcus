@@ -39,6 +39,12 @@
             android:screenOrientation="portrait"
         />
 
+        <!-- Activity SecondaryUserView -->
+        <activity
+            android:name=".user.SecondaryUserView"
+            android:screenOrientation="portrait"
+        />
+
         <!-- Activity UserActivation -->
         <activity
             android:name=".user.authentication.UserActivation"
@@ -48,8 +54,8 @@
         <!-- Activity UserPasswordReset -->
         <activity
             android:name=".user.authentication.UserPasswordReset"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"
+        />
 
         <!-- Activity UserSignIn -->
         <activity

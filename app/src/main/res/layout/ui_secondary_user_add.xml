@@ -239,7 +239,7 @@
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
-  <!-- FloatingActionButton fabSaveUser -->
+  <!-- FloatingActionButton fabSaveProfile -->
   <com.google.android.material.floatingactionbutton.FloatingActionButton
       android:id                 ="@+id/fabSaveProfile"
       android:contentDescription ="@string/fab_save"
@@ -260,6 +260,7 @@
       android:layout_height  ="wrap_content"
       android:layout_width   ="match_parent"
       node:backgroundTint    ="?colorPrimary"
-      node:fabAlignmentMode  ="center"/>
+      node:fabAlignmentMode  ="center"
+  />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

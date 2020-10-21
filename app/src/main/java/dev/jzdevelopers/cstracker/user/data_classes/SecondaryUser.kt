@@ -21,26 +21,16 @@ data class SecondaryUser(
     var grade         : Int               = 0,
     var nameLetter    : String            = "",
     var organization  : String            = "",
+    val icon          : Uri?              = null,
     val eventIds      : ArrayList<String> = ArrayList(),
 ): User() {
-
-    //<editor-fold desc="Class Variables">
-
-    // Define And Initialize Uri Variable//
-    var icon: Uri? = null
-        private set
-
-    // Define And Initialize String Variable//
-    private var iconId: String = ""
-
-    //</editor-fold>
 
     /**.
      * Function That Signs Up A Secondary User To The Database
      * @param [context]     Gets the instance from the caller activity
      * @param [progressBar] Circular progress bar to alert the user when the sign-up is in progress
      */
-    suspend fun signUp(context: Context, progressBar: ProgressBar, icon: Uri?) {
+    suspend fun signUp(context: Context, progressBar: ProgressBar) {
         try {
 
             // Checks If The User Input Is Valid//
@@ -53,6 +43,7 @@ data class SecondaryUser(
             progressBar.visibility = View.VISIBLE
 
             // Saves The Icon To FireBase Storage If It Exists//
+            var iconId = ""
             val generatedIconId = randomUUID().toString()
             val iconToSave = storage.child("android/cs-tracker/$generatedIconId")
             if (icon != null) {

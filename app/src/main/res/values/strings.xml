@@ -4,11 +4,12 @@
 <resources>
 
     <!-- Activity Name Strings -->
-    <string name="app_name"            > CS Tracker          </string>
-    <string name="event_view"          > Events              </string>
-    <string name="secondary_user_add"  > Add A Profile       </string>
-    <string name="user_add"            > Add A User          </string>
-    <string name="user_password_reset" > Reset Your Password </string>
+    <string name="app_name"             > CS Tracker          </string>
+    <string name="event_view"           > Events              </string>
+    <string name="secondary_user_add"   > Add A Profile       </string>
+    <string name="secondary_user_view"  > Profiles            </string>
+    <string name="user_add"             > Add A User          </string>
+    <string name="user_password_reset"  > Reset Your Password </string>
 
     <!-- CheckBox Strings -->
     <string name="signUpCheckBox" > Are you keeping track of someone else\'s hours?</string>
@@ -24,6 +25,7 @@
     <string name="password_confirm" > Confirm Password </string>
 
     <!-- FAB Content Description -->
+    <string name="fab_add"  > Adds a user profile  </string>
     <string name="fab_save" > Saves a user profile </string>
 
     <!-- FAB Strings -->

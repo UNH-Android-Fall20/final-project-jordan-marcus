@@ -35,9 +35,8 @@ class SecondaryUserAdd: JZActivity() {
         // Creates The UI//
         createUI(R.layout.ui_secondary_user_add) {
 
-            // Sets The Theme For The Activity//
-            theme(R.style.GreenTheme, false)
-            navigationColor(R.color.green)
+            // Sets The Icon Color of The System Bars//
+            statusBarColor(isDarkIcons = true)
         }
     }
 
@@ -45,6 +44,13 @@ class SecondaryUserAdd: JZActivity() {
      * Function That Handles All Listeners For The Activity
      */
     override fun createListeners() {
+
+        // When Back Is Clicked//
+        clickBack {
+
+            // Goes Back To Activity SecondaryUserView//
+            exitActivity(R.anim.faze_in, R.anim.faze_out)
+        }
 
         // When fabSaveProfile Is Clicked//
         click(fabSaveProfile) {
@@ -67,28 +73,26 @@ class SecondaryUserAdd: JZActivity() {
             val theme        = getPickedTheme()
 
             // Define And Instantiates The New Secondary User//
-            val secondaryUser = SecondaryUser(goal, 0, grade, nameLetter, organization)
+            val secondaryUser = SecondaryUser(goal, 0, grade, nameLetter, organization, userIconUri)
             secondaryUser.firstName = firstName
             secondaryUser.lastName  = lastName
             secondaryUser.theme     = theme
 
             // Signs Up The New Secondary User//
-            secondaryUser.signUp(this, progressBar, userIconUri)
+            secondaryUser.signUp(this, progressBar)
         }
 
         // When userIcon Is Clicked//
         click(userIcon) {
-
-            // Allows The User To Pick A Profile Image//
             val pickIcon = Intent(Intent.ACTION_PICK, INTERNAL_CONTENT_URI)
-            startActivityResult(pickIcon, userIconCode) {requestCode, _, selectedImage ->
+            startActivityResult(pickIcon, userIconCode) {requestCode, _, data ->
 
                 // When A Picture Was Not Picked Successfully//
-                if (requestCode != userIconCode || selectedImage == null)
+                if (requestCode != userIconCode || data == null)
                     return@startActivityResult
 
                 // Sets The Picked Image Uri//
-                userIconUri = selectedImage.data
+                userIconUri = data.data
 
                 // Hides The Name Letter//
                 nameLetter.visibility = View.INVISIBLE
@@ -103,8 +107,8 @@ class SecondaryUserAdd: JZActivity() {
         longClick(userIcon) {
 
             // Clears The Image//
-            userIcon.setImageResource(R.color.white)
-            userIcon.borderColor = getColorStyle(R.attr.colorPrimary)
+            userIcon.setImageResource(R.color.transparent)
+            userIcon.borderColor = getColorAttr(R.attr.colorPrimary)
             userIconUri = null
 
             // Makes nameLetter Visible//

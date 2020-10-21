@@ -3,12 +3,11 @@ package dev.jzdevelopers.cstracker.common
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.event.EventView
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.libs.JZPrefs.getPref
 import dev.jzdevelopers.cstracker.user.MultiUser.*
-import dev.jzdevelopers.cstracker.user.SecondaryUserAdd
+import dev.jzdevelopers.cstracker.user.SecondaryUserView
 import dev.jzdevelopers.cstracker.user.authentication.UserActivation
 import dev.jzdevelopers.cstracker.user.authentication.UserSignIn
-import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.PREF_MULTI_USER
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser
 import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.isActivated
 import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.isSignedIn
 
@@ -26,8 +25,8 @@ class MainActivity: JZActivity() {
         // Creates The UI//
         createUI(R.layout.ui_blank) {
 
-            // Sets The Theme For The Activity//
-            theme(R.style.GreenTheme)
+            // Sets The Icon Color of The System Bars//
+            navigationColor(R.color.white, true)
         }
     }
 
@@ -52,21 +51,21 @@ class MainActivity: JZActivity() {
 
         // When The Primary User Is Not Signed In//
         if (!isSignedIn(this)) {
-            startActivity(UserSignIn::class, R.anim.faze_in, R.anim.faze_out)
+            startActivity(UserSignIn::class, false)
             return
         }
         if (!isActivated(this)) {
-            startActivity(UserActivation::class, R.anim.faze_in, R.anim.faze_out)
+            startActivity(UserActivation::class, false)
         }
 
         // Gets The Primary User's Multi-User Preference//
-        val multiUser = getPref(this, PREF_MULTI_USER, SIGNED_OUT.ordinal)
+        val multiUser = PrimaryUser.getCachedMultiUser(this)
 
         // Starts The Activity Based On The User Mode//
         when(multiUser) {
-            YES.ordinal        -> startActivity(SecondaryUserAdd::class, false)
+            YES.ordinal        -> startActivity(SecondaryUserView::class, false)
             NO.ordinal         -> startActivity(EventView::class, false)
-            SIGNED_OUT.ordinal -> return
+            SIGNED_OUT.ordinal -> startActivity(UserSignIn::class, false)
         }
     }
 }

@@ -8,6 +8,7 @@ import androidx.core.util.PatternsCompat
 import com.google.firebase.auth.FirebaseAuth
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
+import dev.jzdevelopers.cstracker.libs.JZPrefs
 import dev.jzdevelopers.cstracker.libs.JZPrefs.savePref
 import dev.jzdevelopers.cstracker.user.MultiUser
 import dev.jzdevelopers.cstracker.user.MultiUser.SIGNED_OUT
@@ -32,7 +33,7 @@ data class PrimaryUser(
     companion object {
 
         // Define And Initialize Saved Preferences Value//
-        const val PREF_MULTI_USER = "dev.jzdevelopers.cstracker.prefMultiUser"
+        private const val PREF_MULTI_USER = "dev.jzdevelopers.cstracker.prefMultiUser"
 
         // Gets The FireBase Authorization Instances//
         private val firebaseAuth = FirebaseAuth.getInstance()
@@ -50,6 +51,17 @@ data class PrimaryUser(
             // Signs Out The User//
             savePref(context, PREF_MULTI_USER, SIGNED_OUT.ordinal)
             return false
+        }
+
+        /**.
+         * Function That Gets The Cached MultiUser
+         * @param [context] Gets the instance from the caller activity
+         * @return The multi-user value as an ordinal
+         */
+        fun getCachedMultiUser(context: Context): Int {
+
+            // Returns The MultiUser Value As An Ordinal//
+            return JZPrefs.getPref(context, PREF_MULTI_USER, SIGNED_OUT.ordinal)
         }
 
         /**.

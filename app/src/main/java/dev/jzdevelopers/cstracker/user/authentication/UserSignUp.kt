@@ -23,8 +23,9 @@ class UserSignUp: JZActivity() {
         // Creates The UI//
         createUI(R.layout.ui_user_sign_up) {
 
-            // Sets The Theme For The Activity//
-            theme(R.style.GreenTheme, false)
+            // Sets The Icon Color of The System Bars//
+            navigationColor(R.color.white, true)
+            statusBarColor(isDarkIcons  = true)
         }
     }
 

@@ -29,7 +29,7 @@ abstract class User(
     // Gets The Different FireBase Instances//
     protected val firebaseAuth  = FirebaseAuth.getInstance()
     protected val fireStore     = FirebaseFirestore.getInstance()
-    private   val fireStorage    = FirebaseStorage.getInstance()
+    private   val fireStorage   = FirebaseStorage.getInstance()
 
     // Get Storage Reference From FireBase//
     protected val storage = fireStorage.getReferenceFromUrl("gs://cs-tracker-5b4d1.appspot.com")

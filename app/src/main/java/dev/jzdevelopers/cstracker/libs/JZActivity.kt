@@ -3,13 +3,14 @@ package dev.jzdevelopers.cstracker.libs
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.*
+import android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+import android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.widget.EditText
@@ -55,10 +56,10 @@ abstract class JZActivity: AppCompatActivity() {
     private var clickBack: ClickBack? = null
 
     // Define And Initializes ActivityResult Variable//
-    private var activityResult: ActivityResult = {_,_,_ -> }
+    private var activityResult: ActivityResult = { _, _, _ -> }
 
     // Define And Initializes Lambda Value//
-    private val empty: UI.() -> Unit = {}
+    private val empty: suspend UI.() -> Unit = {}
 
     //</editor-fold>
 
@@ -244,7 +245,7 @@ abstract class JZActivity: AppCompatActivity() {
     protected fun progressChange(seekBar: SeekBar, progressChanged: ProgressChange) {
 
         // Sets The SeekBar Change Listener//
-        seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
 
             // When The SeekBar Progress Changes
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
@@ -265,7 +266,7 @@ abstract class JZActivity: AppCompatActivity() {
     protected fun textChange(editText: EditText, textChange: TextChange) {
 
         // Sets The EditText Change Listener//
-        editText.addTextChangedListener(object: TextWatcher {
+        editText.addTextChangedListener(object : TextWatcher {
 
             // What Happens As Text Is Being Changed//
             override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
@@ -273,9 +274,15 @@ abstract class JZActivity: AppCompatActivity() {
             }
 
             // Not Implemented//
-            override fun beforeTextChanged(text: CharSequence?, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(
+                text: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
             }
-            override fun afterTextChanged(text: Editable?)                                          {
+
+            override fun afterTextChanged(text: Editable?) {
             }
         })
     }
@@ -286,13 +293,13 @@ abstract class JZActivity: AppCompatActivity() {
      * @param [layout] The layout resource id for the activity
      * @param [func]   The ui configurations
      */
-    protected fun createUI(@LayoutRes layout: Int, func: UI.() -> Unit = empty) {
+    protected fun createUI(@LayoutRes layout: Int, func: suspend UI.() -> Unit = empty) {
 
         // Shows The Layout And Theme Configs//
         if (func === empty) setContentView(layout)
         else {
             setContentView(layout)
-            UI(layout).func()
+            lifecycleScope.launch { UI(layout).func() }
         }
     }
 
@@ -343,11 +350,11 @@ abstract class JZActivity: AppCompatActivity() {
     }
 
     /**.
-     * Function That Gets The Color Value Of A Theme Style
+     * Function That Gets The Color Value Of A Theme Style Attr
      * @param [attrId] The id of the attr style
      * @return The color
      */
-    protected fun getColorStyle(@AttrRes attrId: Int): Int {
+    protected fun getColorAttr(@AttrRes attrId: Int): Int {
 
         // Define And Initialize TypedValue Value//
         val typedValue = TypedValue()
@@ -431,6 +438,10 @@ abstract class JZActivity: AppCompatActivity() {
      */
     protected inner class UI(@LayoutRes private val layout: Int) {
 
+        // Define And Initializes Boolean Variables//
+        private var isDarkIconsStatus     = false
+        private var isDarkIconsNavigation = false
+
         /**.
          * Function That Creates The Menu For The Activity
          * @param [bottomBar]    The bottomBar for the activity
@@ -444,32 +455,33 @@ abstract class JZActivity: AppCompatActivity() {
         }
 
         /**.
-         * Function That Sets The Custom Navigation Bar Color For The Activity
-         * @param [color] The color resource
+         * Function That Sets A Custom Navigation Bar Color And Icon Tint
+         * @param [color]       The color resource
+         * @param [isDarkIcons] Whether the navigation bar icon tint should be dark
          */
-        fun navigationColor(@ColorRes color: Int, isDarkNavBar: Boolean = true) {
+        fun navigationColor(@ColorRes color: Int? = null, isDarkIcons: Boolean) {
 
-            // Sets The Custom Navigation Bar Color//
-            window.navigationBarColor = getColorCompat(color)
+            // When A Custom Navigation Bar Color Is Set//
+            if (color != null) window.navigationBarColor = getColorCompat(color)
 
-            // When The Nav Bar Is A Dark Color
-            if (isDarkNavBar) return
+            // Sets The Icon Color of The System Bars//
+            isDarkIconsNavigation = isDarkIcons
+            setDarkSystemBarIcons()
+        }
 
-            @Suppress("DEPRECATION")
-            @SuppressLint("InlinedApi")
-            if (SDK_INT in Build.VERSION_CODES.O..ANDROID_Q) {
+        /**.
+         * Function That Sets A Custom Status Bar Color And Icon Tint
+         * @param [color]       The color resource
+         * @param [isDarkIcons] Whether the status bar icon tint should be dark
+         */
+        fun statusBarColor(@ColorRes color: Int? = null, isDarkIcons: Boolean) {
 
-                // Enables Dark Nav Bar Icons//
-                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-            }
-            else if (SDK_INT >= ANDROID_R) {
+            // When A Custom Status Bar Color Is Set//
+            if (color != null) window.statusBarColor = getColorCompat(color)
 
-                // Enables Dark Nav Bar Icons//
-                window.insetsController?.setSystemBarsAppearance(
-                    APPEARANCE_LIGHT_NAVIGATION_BARS,
-                    APPEARANCE_LIGHT_NAVIGATION_BARS
-                )
-            }
+            // Sets The Icon Color of The System Bars//
+            isDarkIconsStatus = isDarkIcons
+            setDarkSystemBarIcons()
         }
 
         /**.
@@ -478,33 +490,61 @@ abstract class JZActivity: AppCompatActivity() {
          * @param [title]    The title resource id for the activity
          */
         fun title(textView: TextView, @StringRes title: Int) {textView.text = getString(title)}
+        fun title(textView: TextView, title: String) {textView.text = title}
         fun title(@StringRes title: Int) {setTitle(title)}
+        fun title(title: String) {setTitle(title)}
 
         /**.
-         * Function That Sets A Custom Theme For The Activity.
+         * Function That Sets A Custom Theme For The Activity
          * It must go before every other function in createUI
-         * @param [theme]           The style resource id for the activity
-         * @param [isDarkStatusBar] Checks whether the status bar color is a dark color
+         * @param [theme] The style resource id for the activity
          */
-        fun theme(@StyleRes theme: Int, isDarkStatusBar: Boolean? = null) {
+        fun theme(@StyleRes theme: Int) {
 
             // Sets The Theme And Layout//
             setTheme(theme)
             setContentView(layout)
+        }
 
+        /**.
+         * Function That Sets The Icon Color of The System Bars
+         */
+        @Suppress("DEPRECATION")
+        @SuppressLint("InlinedApi")
+        private fun setDarkSystemBarIcons() {
             when {
 
-                // Their Is No Preference Set//
-                isDarkStatusBar == null -> {}
+                // When Both Status And Navigation Icons Are Dark//
+                isDarkIconsStatus && isDarkIconsNavigation -> {
 
-                // When The Status Bar Icons Should Be Black//
-                !isDarkStatusBar -> {
+                    if (SDK_INT in ANDROID_M..ANDROID_Q) {
 
+                        // Enables Dark Status Bar Icons//
+                        window.decorView.systemUiVisibility =
+                            SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR or SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    }
+                    else if (SDK_INT >= ANDROID_R) {
+
+                        // Enables Dark Status Bar Icons//
+                        window.insetsController?.setSystemBarsAppearance(
+                            APPEARANCE_LIGHT_STATUS_BARS,
+                            APPEARANCE_LIGHT_STATUS_BARS
+
+                        )
+                        window.insetsController?.setSystemBarsAppearance(
+                            APPEARANCE_LIGHT_NAVIGATION_BARS,
+                            APPEARANCE_LIGHT_NAVIGATION_BARS
+                        )
+                    }
+                }
+
+                // When Only Status Bar Icons Are Dark//
+                isDarkIconsStatus && !isDarkIconsNavigation -> {
                     @Suppress("DEPRECATION")
                     if (SDK_INT in ANDROID_M..ANDROID_Q) {
 
                         // Enables Dark Status Bar Icons//
-                        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                        window.decorView.systemUiVisibility = SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                     }
                     else if (SDK_INT >= ANDROID_R) {
 
@@ -516,11 +556,22 @@ abstract class JZActivity: AppCompatActivity() {
                     }
                 }
 
-                // When The Status Bar Icons Should Be White And Color Should Be Primary Dark//
-                isDarkStatusBar -> {
+                // When Only Navigation Icons Are Dark//
+                !isDarkIconsStatus && isDarkIconsNavigation -> {
+                    @Suppress("DEPRECATION")
+                    if (SDK_INT in ANDROID_M..ANDROID_Q) {
 
-                    // Sets The Theme's Primary Color//
-                    window.statusBarColor = getColorStyle(R.attr.colorPrimary)
+                        // Enables Dark Status Bar Icons//
+                        window.decorView.systemUiVisibility = SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                    }
+                    else if (SDK_INT >= ANDROID_R) {
+
+                        // Enables Dark Status Bar Icons//
+                        window.insetsController?.setSystemBarsAppearance(
+                            APPEARANCE_LIGHT_NAVIGATION_BARS,
+                            APPEARANCE_LIGHT_NAVIGATION_BARS
+                        )
+                    }
                 }
             }
         }

@@ -3,11 +3,9 @@ package dev.jzdevelopers.cstracker.user.authentication
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.event.EventView
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.libs.JZPrefs.getPref
 import dev.jzdevelopers.cstracker.user.MultiUser.*
 import dev.jzdevelopers.cstracker.user.SecondaryUserAdd
 import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser
-import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.PREF_MULTI_USER
 import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.activate
 import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.isActivated
 import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.isSignedIn
@@ -27,8 +25,9 @@ class UserSignIn: JZActivity() {
         // Creates The UI//
         createUI(R.layout.ui_user_sign_in) {
 
-            // Sets The Theme For The Activity//
-            theme(R.style.GreenTheme, false)
+            // Sets The Icon Color of The System Bars//
+            navigationColor(R.color.white, true)
+            statusBarColor(isDarkIcons  = true)
         }
     }
 
@@ -89,7 +88,7 @@ class UserSignIn: JZActivity() {
         }
 
         // Gets The Primary User's Multi-User Preference//
-        val multiUser = getPref(this, PREF_MULTI_USER, SIGNED_OUT.ordinal)
+        val multiUser = PrimaryUser.getCachedMultiUser(this)
 
         // Starts The Activity Based On The User Mode//
         when(multiUser) {
