@@ -16,7 +16,6 @@ import dev.jzdevelopers.cstracker.user.UserTheme
 import dev.jzdevelopers.cstracker.user.UserTheme.GREEN
 import kotlinx.coroutines.tasks.await
 import java.util.*
-import kotlin.collections.ArrayList
 
 /** Kotlin Class PrimaryUser,
  *  Class That Handles The Primary-User Objects
@@ -36,19 +35,6 @@ class PrimaryUser(
     var isMultiUser : Boolean   = false,
     var email       : String    = "",
 ): User(context, firstName, lastName, theme) {
-
-    //<editor-fold desc="Class Variables">
-
-    /**
-     * A List Of Secondary-User Profiles Under The Primary-User
-     */
-    var secondaryUsers: List<SecondaryUser> = ArrayList()
-        private set
-
-    // Define And Instantiate ArrayList Value//
-    private val secondaryUserIds = ArrayList<String>()
-
-    //</editor-fold>
 
     /**.
      * Configures Static Functions And Variables
@@ -71,6 +57,23 @@ class PrimaryUser(
 
             // Returns The Multi-User Preference//
             return JZPrefs.getPref(context, PREF_MULTI_USER, false)
+        }
+
+        /**.
+         * Function That Gets The Primary User's Id
+         * @param [context] Gets the instance from the caller activity
+         * @return The primary user's id
+         */
+        fun getId(context: Context): String {
+            return try {
+
+                // Gets The User's Id//
+                firebaseAuth.currentUser?.uid ?: throw Error()
+            }
+            catch (_: Exception) {
+                showGeneralError(context)
+                ""
+            }
         }
 
         /**.
@@ -137,7 +140,6 @@ class PrimaryUser(
                 val document   = collection.get().await()
 
                 // Gets The Basic Primary-User Data//
-                val secondaryUserIds = document.data?.get("secondaryUserIds") as ArrayList<*>
                 val isMultiUser      = document.data?.get("isMultiUser")      as Boolean
                 val email            = document.data?.get("email")            as String
                 val firstName        = document.data?.get("firstName")        as String
@@ -147,21 +149,9 @@ class PrimaryUser(
                 // Gets The Theme Enum From The Saved Theme String//
                 val themeEnum = UserTheme.valueOf(theme)
 
-                // Define And Initialize ArrayList Value For All The Found Secondary-Users//
-                val foundSecondaryUsers = ArrayList<SecondaryUser>()
-
                 // Re-Creates The Primary-User Instance//
                 val primaryUser = PrimaryUser(context, firstName, lastName, themeEnum, isMultiUser, email)
                 primaryUser.id = userId
-                secondaryUserIds.forEach { id ->
-
-                    // Adds The Secondary-User Id To The Current Instance//
-                    primaryUser.secondaryUserIds.add(id as String)
-
-                    // Adds The Found Secondary-User Instance To Be Saved//
-                    foundSecondaryUsers.add(SecondaryUser.get(context, id))
-                }
-                primaryUser.secondaryUsers = foundSecondaryUsers
 
                 // Returns The Signed-In User//
                 Log.v("Primary_User", "Returned primary user [$email]")
@@ -293,9 +283,8 @@ class PrimaryUser(
             if (!isValidPassword(password, confirmPassword)) return false
 
             // Takes The Primary-User Data And Prepares It For The Database//
-            userToSave["isMultiUser"]      = isMultiUser
-            userToSave["email"]            = email
-            userToSave["secondaryUserIds"] = secondaryUserIds
+            userToSave["isMultiUser"] = isMultiUser
+            userToSave["email"]       = email
 
             // Shows The Progress Bar//
             progressBar.visibility = VISIBLE
@@ -332,22 +321,15 @@ class PrimaryUser(
      * @param [progressBar] Circular progress bar to alert the user when the update is in progress
      * @return Whether the update was successful
      */
-    suspend fun updateData(progressBar: ProgressBar, secondaryUserId: String = ""): Boolean {
+    suspend fun updateData(progressBar: ProgressBar): Boolean {
         try {
 
             // Checks If The User Input Is Valid//
             if (!super.update()) return false
 
-            // When There Is A New Secondary-User Id//
-            if (secondaryUserId != "") {
-
-                // Adds The New Secondary-User Id//
-                secondaryUserIds.add(secondaryUserId)
-            }
-
             // Takes The User Data And Prepares It For The Database//
-            userToUpdate["isMultiUser"]      = isMultiUser
-            userToUpdate["secondaryUserIds"] = secondaryUserIds
+            userToUpdate["isMultiUser"] = isMultiUser
+            userToUpdate["email"]       = email
 
             // Shows The Progress Bar//
             progressBar.visibility = VISIBLE
@@ -417,6 +399,7 @@ class PrimaryUser(
 
     /**.
      * Function That Checks And Formats The Password For Validity
+     * @param [password]        The password of the user
      * @param [confirmPassword] The password to confirm that the first password was entered in correctly
      * @return Whether the password is valid
      */

@@ -1,7 +1,7 @@
 package dev.jzdevelopers.cstracker.user
 
-/** Kotlin Enum UserTheme
- *  Enum for getting the theme for a specific user profile or primary user
+/** Kotlin Enum UserTheme,
+ *  Enum for getting the theme for a specific secondary-user or primary-user
  */
 enum class UserTheme {
     DEFAULT,
@@ -16,4 +16,15 @@ enum class UserTheme {
     TEAL,
     BROWN,
     BLACK
+}
+
+/** Kotlin Enum UserTheme,
+ *  Enum for getting the ordering of the secondary-users
+ */
+enum class UserOrder {
+    FIRST_NAME,
+    GRADE,
+    LAST_NAME,
+    ORGANIZATION,
+    TOTAL_TIME
 }

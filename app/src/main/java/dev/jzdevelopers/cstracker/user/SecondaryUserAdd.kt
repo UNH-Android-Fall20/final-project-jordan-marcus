@@ -8,6 +8,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.user.UserTheme.*
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser
 import dev.jzdevelopers.cstracker.user.data_classes.SecondaryUser
 import kotlinx.android.synthetic.main.ui_secondary_user_add.*
 import java.util.Locale.getDefault
@@ -78,14 +79,15 @@ class SecondaryUserAdd: JZActivity() {
             if (!gradeEditText.isBlank()) grade = gradeEditText.toInt()
 
             // Gets The Inputted String Data//
-            val firstName    = firstName.text.toString()
-            val lastName     = lastName.text.toString()
-            val nameLetter   = nameLetter.text.toString()
-            val organization = organization.text.toString()
-            val theme        = getPickedTheme()
+            val firstName     = firstName.text.toString()
+            val lastName      = lastName.text.toString()
+            val nameLetter    = nameLetter.text.toString()
+            val organization  = organization.text.toString()
+            val primaryUserId = PrimaryUser.getId(this)
+            val theme         = getPickedTheme()
 
             // Signs Up The New Secondary User//
-            val secondaryUser = SecondaryUser(this, firstName, lastName, theme, goal, 0, grade, nameLetter, organization, "0:00", userIconUri)
+            val secondaryUser = SecondaryUser(this, firstName, lastName, theme, goal, 0, grade, nameLetter, organization, primaryUserId, "0:00", userIconUri)
             val isSuccessful  = secondaryUser.signUp(progressBar)
             if (!isSuccessful) return@click
 

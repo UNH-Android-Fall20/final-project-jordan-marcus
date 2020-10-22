@@ -7,9 +7,12 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.ProgressBar
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
+import dev.jzdevelopers.cstracker.user.UserOrder
+import dev.jzdevelopers.cstracker.user.UserOrder.*
 import dev.jzdevelopers.cstracker.user.UserTheme
 import dev.jzdevelopers.cstracker.user.UserTheme.GREEN
 import kotlinx.coroutines.tasks.await
@@ -19,17 +22,18 @@ import java.util.UUID.randomUUID
 /** Kotlin Class SecondaryUser,
  *  Class That Handles The Secondary-User Objects
  *  @author Jordan Zimmitti, Marcus Novoa
- *  @param [context]      The instance from the caller activity
- *  @param [firstName]    The first-name of the secondary-user
- *  @param [lastName]     The last-name of the secondary-user
- *  @param [theme]        The custom theme for the secondary-user
- *  @param [goal]         The amount of hours the secondary-user wants to achieve
- *  @param [goalProgress] The progress the secondary-user is at towards their goal
- *  @param [grade]        The grade of the secondary-user
- *  @param [nameLetter]   The first letter of the secondary-user's first-name
- *  @param [organization] The organization the secondary-user is completing hours for
- *  @param [totalTime]    The total amount of hours the secondary-user has completed so far
- *  @param [icon]         The secondary-user's profile icon
+ *  @param [context]       The instance from the caller activity
+ *  @param [firstName]     The first-name of the secondary-user
+ *  @param [lastName]      The last-name of the secondary-user
+ *  @param [theme]         The custom theme for the secondary-user
+ *  @param [goal]          The amount of hours the secondary-user wants to achieve
+ *  @param [goalProgress]  The progress the secondary-user is at towards their goal
+ *  @param [grade]         The grade of the secondary-user
+ *  @param [nameLetter]    The first letter of the secondary-user's first-name
+ *  @param [organization]  The organization the secondary-user is completing hours for
+ *  @param [primaryUserId] The id of the primary-user that the secondary-user belongs to
+ *  @param [totalTime]     The total amount of hours the secondary-user has completed so far
+ *  @param [icon]          The secondary-user's profile icon
  */
 class SecondaryUser(
     context           : Context,
@@ -41,19 +45,10 @@ class SecondaryUser(
     var grade         : Int       = 0,
     var nameLetter    : String    = "",
     var organization  : String    = "",
+    val primaryUserId : String    = "",
     var totalTime     : String    = "0:00",
     var icon          : Uri?      = null,
 ): User(context, firstName, lastName, theme) {
-
-    //<editor-fold desc="Class Variables">
-
-    /**
-     * A List Of Event Ids Under The Secondary-User
-     */
-    var eventIds: List<String> = ArrayList()
-        private set
-
-    //</editor-fold>
 
     /**.
      * Configures Static Functions And Variables
@@ -64,6 +59,30 @@ class SecondaryUser(
         private val fireStore   = FirebaseFirestore.getInstance()
         private val fireStorage = FirebaseStorage.getInstance()
         private val storage = fireStorage.getReferenceFromUrl("gs://cs-tracker-5b4d1.appspot.com")
+
+        /**.
+         * Function That Creates The Query For Getting All Of The Secondary-Users Under A Primary-User
+         * @param [primaryUserId] The id of the primary-user
+         * @param [order]         The order in which the secondary-users will be displayed
+         * @return The query for getting all of the secondary-users under a primary-user
+         */
+        fun getAll(primaryUserId: String, order: UserOrder): Query {
+
+            // Gets How To Order The Secondary-Users//
+            val orderField = when(order) {
+                FIRST_NAME   -> "firstName"
+                GRADE        -> "grade"
+                LAST_NAME    -> "lastName"
+                ORGANIZATION -> "organization"
+                TOTAL_TIME   -> "totalTime"
+            }
+
+            // Returns The Query//
+            return fireStore
+                .collection("SecondaryUsers")
+                .whereIn("primaryUserId", mutableListOf(primaryUserId))
+                .orderBy(orderField)
+        }
 
         /**.
          * Function That Gets The Secondary-User
@@ -79,16 +98,16 @@ class SecondaryUser(
                 val document   = collection.get().await()
 
                 // Gets The Basic Secondary-User Data//
-                val eventIds     = document.data?.get("eventIds")     as ArrayList<*>
-                val goal         = document.data?.get("goal")         as Long
-                val goalProgress = document.data?.get("goalProgress") as Long
-                val grade        = document.data?.get("grade")        as Long
-                val firstName    = document.data?.get("firstName")    as String
-                val lastName     = document.data?.get("lastName")     as String
-                val nameLetter   = document.data?.get("nameLetter")   as String
-                val organization = document.data?.get("organization") as String
-                val theme        = document.data?.get("theme")        as String
-                val totalTime    = document.data?.get("totalTime")    as String
+                val goal          = document.data?.get("goal")          as Long
+                val goalProgress  = document.data?.get("goalProgress")  as Long
+                val grade         = document.data?.get("grade")         as Long
+                val firstName     = document.data?.get("firstName")     as String
+                val lastName      = document.data?.get("lastName")      as String
+                val nameLetter    = document.data?.get("nameLetter")    as String
+                val organization  = document.data?.get("organization")  as String
+                val primaryUserId = document.data?.get("primaryUserId") as String
+                val theme         = document.data?.get("theme")         as String
+                val totalTime     = document.data?.get("totalTime")     as String
 
                 // Gets The Icon Data//
                 var icon: Uri? = null
@@ -101,10 +120,6 @@ class SecondaryUser(
                 // Gets The Theme Enum From The Saved Theme String//
                 val themeEnum = UserTheme.valueOf(theme)
 
-                // Gets All Of The Saved Event Ids//
-                val foundEventIds = ArrayList<String>()
-                eventIds.forEach { eventId -> foundEventIds.add(eventId as String) }
-
                 // Re-Creates The Primary-User Instance//
                 val secondaryUser = SecondaryUser(context, firstName, lastName, themeEnum,
                     goal.toInt(),
@@ -112,11 +127,11 @@ class SecondaryUser(
                     grade.toInt(),
                     nameLetter,
                     organization,
+                    primaryUserId,
                     totalTime,
                     icon
                 )
-                secondaryUser.id       = id
-                secondaryUser.eventIds = foundEventIds
+                secondaryUser.id = id
 
                 // Returns The Secondary User//
                 Log.v("Primary_User", "Returned secondary user [$firstName $lastName]")
@@ -177,26 +192,17 @@ class SecondaryUser(
             userToSave["iconId"]        = iconId
             userToSave["nameLetter"]    = nameLetter
             userToSave["organization"]  = organization
+            userToSave["primaryUserId"] = primaryUserId
             userToSave["totalTime"]     = totalTime
-            userToSave["eventIds"]      = eventIds
 
             // Sends The Secondary-User Data To The Database//
-            val collection = fireStore.collection("SecondaryUsers").add(userToSave).await()
-            val document = collection.get().await()
-
-            // Gets The Newly Created Secondary-User Id//
-            val id = document?.id ?: throw Error()
-
-            // Updates The Primary-User With The Secondary-User Id//
-            val primaryUser  = PrimaryUser.get(context)
-            val isSuccessful = primaryUser.updateData(progressBar, id)
-            if (!isSuccessful) return false
+            fireStore.collection("SecondaryUsers").add(userToSave).await()
 
             // Hides The Progress Bar//
             progressBar.visibility = GONE
 
             // Logs That A Secondary-User Was Added//
-            Log.v("Secondary_User", "Secondary user [$firstName $lastName] has been added to ${primaryUser.email}")
+            Log.v("Secondary_User", "Secondary user [$firstName $lastName] has been added to primary user id: $primaryUserId")
             return true
         }
         catch (_: Exception) {
