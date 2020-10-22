@@ -4,7 +4,7 @@ import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import kotlinx.android.synthetic.main.ui_secondary_user_view.*
 
-/** Android Activity SecondaryUserView
+/** Android Activity SecondaryUserView,
  *  Activity That Shows All Of The Secondary Users Under The Signed In Primary User
  *  @author Jordan Zimmitti, Marcus Novoa
  */
@@ -38,5 +38,11 @@ class SecondaryUserView: JZActivity() {
             // Starts The SecondaryUserAdd Activity//
             startActivity(SecondaryUserAdd::class, R.anim.faze_in, R.anim.faze_out)
         }
+    }
+
+    /**.
+     * Function That Handles All API Calls For The Activity
+     */
+    override suspend fun apiCalls() {
     }
 }

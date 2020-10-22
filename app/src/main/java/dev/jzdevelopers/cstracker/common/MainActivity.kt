@@ -3,13 +3,12 @@ package dev.jzdevelopers.cstracker.common
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.event.EventView
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.user.MultiUser.*
 import dev.jzdevelopers.cstracker.user.SecondaryUserView
 import dev.jzdevelopers.cstracker.user.authentication.UserActivation
 import dev.jzdevelopers.cstracker.user.authentication.UserSignIn
-import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.getCachedMultiUser
 import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.isActivated
-import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.isSignedIn
+import dev.jzdevelopers.cstracker.user.data_classes.User.Companion.isSignedIn
 
 /** Android Activity MainActivity
  *  Activity That Starts When The Application Is Open
@@ -41,31 +40,31 @@ class MainActivity: JZActivity() {
     override suspend fun apiCalls() {
 
         // Checks To See If The User Is Already Signed In//
-        checkLoginStatus()
+        checkSignInStatus()
     }
 
     /**.
      * Function That Checks To See If The User Is Already Signed In To Bypass The Login Screen
      */
-    private suspend fun checkLoginStatus() {
+    private suspend fun checkSignInStatus() {
 
-        // When The Primary User Is Not Signed In//
-        if (!isSignedIn(this)) {
+        // When The Primary-User Is Not Signed In//
+        if (!isSignedIn()) {
             startActivity(UserSignIn::class, false)
             return
         }
         if (!isActivated(this)) {
             startActivity(UserActivation::class, false)
+            return
         }
 
-        // Gets The Primary User's Multi-User Preference//
-        val multiUser = PrimaryUser.getCachedMultiUser(this)
+        // Gets The Primary-User's Multi-User Preference//
+        val isMultiUser = getCachedMultiUser(this)
 
         // Starts The Activity Based On The User Mode//
-        when(multiUser) {
-            YES.ordinal        -> startActivity(SecondaryUserView::class, false)
-            NO.ordinal         -> startActivity(EventView::class, false)
-            SIGNED_OUT.ordinal -> startActivity(UserSignIn::class, false)
+        when(isMultiUser) {
+            true  -> startActivity(SecondaryUserView::class, false)
+            false -> startActivity(EventView::class, false)
         }
     }
 }

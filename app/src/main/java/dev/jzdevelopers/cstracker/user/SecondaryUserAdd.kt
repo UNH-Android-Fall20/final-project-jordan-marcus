@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI
 import android.view.View
+import com.afollestad.materialdialogs.MaterialDialog
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.user.UserTheme.*
@@ -11,7 +12,7 @@ import dev.jzdevelopers.cstracker.user.data_classes.SecondaryUser
 import kotlinx.android.synthetic.main.ui_secondary_user_add.*
 import java.util.Locale.getDefault
 
-/** Android Activity SecondaryUserAdd
+/** Android Activity SecondaryUserAdd,
  *  Activity That Adds A Secondary User Profile To The Signed-In Primary User
  *  @author Jordan Zimmitti, Marcus Novoa
  */
@@ -48,8 +49,19 @@ class SecondaryUserAdd: JZActivity() {
         // When Back Is Clicked//
         clickBack {
 
-            // Goes Back To Activity SecondaryUserView//
-            exitActivity(R.anim.faze_in, R.anim.faze_out)
+            // Shows The Error Dialog//
+            MaterialDialog(this).show {
+                title(R.string.title_no_save)
+                message(R.string.positive_no_save)
+                cancelOnTouchOutside(false)
+                cornerRadius(16.0f)
+                negativeButton(R.string.button_negative)
+                positiveButton(R.string.button_positive) {
+
+                    // Goes Back To Activity SecondaryUserView//
+                    exitActivity(R.anim.faze_in, R.anim.faze_out)
+                }
+            }
         }
 
         // When fabSaveProfile Is Clicked//
@@ -72,14 +84,13 @@ class SecondaryUserAdd: JZActivity() {
             val organization = organization.text.toString()
             val theme        = getPickedTheme()
 
-            // Define And Instantiates The New Secondary User//
-            val secondaryUser = SecondaryUser(goal, 0, grade, nameLetter, organization, userIconUri)
-            secondaryUser.firstName = firstName
-            secondaryUser.lastName  = lastName
-            secondaryUser.theme     = theme
-
             // Signs Up The New Secondary User//
-            secondaryUser.signUp(this, progressBar)
+            val secondaryUser = SecondaryUser(this, firstName, lastName, theme, goal, 0, grade, nameLetter, organization, "0:00", userIconUri)
+            val isSuccessful  = secondaryUser.signUp(progressBar)
+            if (!isSuccessful) return@click
+
+            // Starts The SecondaryUserView Activity//
+            startActivity(SecondaryUserView::class, R.anim.faze_in, R.anim.faze_out)
         }
 
         // When userIcon Is Clicked//

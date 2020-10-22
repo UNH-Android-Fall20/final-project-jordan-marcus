@@ -2,14 +2,13 @@ package dev.jzdevelopers.cstracker.user.authentication
 
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.user.MultiUser.NO
-import dev.jzdevelopers.cstracker.user.MultiUser.YES
+import dev.jzdevelopers.cstracker.user.UserTheme.GREEN
 import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser
 import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.activate
-import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.isSignedIn
+import dev.jzdevelopers.cstracker.user.data_classes.User.Companion.isSignedIn
 import kotlinx.android.synthetic.main.ui_user_sign_up.*
 
-/** Android Activity UserSignUp
+/** Android Activity UserSignUp,
  *  Activity That Signs Up A New User
  *  @author Jordan Zimmitti, Marcus Novoa
  */
@@ -52,19 +51,11 @@ class UserSignUp: JZActivity() {
             val confirmPassword = confirmPassword.text.toString()
             val isMultiUser     = signUpCheckBox.isChecked
 
-            // Gets The Multi-User Enum State//
-            val multiUser = if (isMultiUser) YES else NO
-
-            // Define And Instantiates The New Primary User//
-            val primaryUser = PrimaryUser(multiUser, email)
-            primaryUser.firstName = firstName
-            primaryUser.lastName  = lastName
-
-            // Signs Up The New Primary User//
-            primaryUser.signUp(this, progressBar, password, confirmPassword)
-
-            // When The Primary User Is Not Signed In//
-            if (!isSignedIn(this)) {
+            // Signs The New Primary-User Up//
+            val primaryUser  = PrimaryUser(this, firstName, lastName, GREEN, isMultiUser, email)
+            val isSuccessful = primaryUser.signUp(progressBar, password, confirmPassword)
+            if (!isSuccessful) return@click
+            if (!isSignedIn()) {
 
                 // Shows The Error Dialog//
                 showGeneralDialog(

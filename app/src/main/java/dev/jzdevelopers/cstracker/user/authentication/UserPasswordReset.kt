@@ -5,7 +5,7 @@ import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser
 import kotlinx.android.synthetic.main.ui_user_password_reset.*
 
-/** Android Activity UserPasswordReset
+/** Android Activity UserPasswordReset,
  *  Activity That Resets A User's Password
  *  @author Jordan Zimmitti, Marcus Novoa
  */
@@ -44,7 +44,7 @@ class UserPasswordReset: JZActivity() {
             val email = email.text.toString()
 
             // Sends A Reset Password Request To The Inputted Email Address//
-            PrimaryUser().passwordReset(this, email)
+            PrimaryUser.passwordReset(this, email)
         }
 
         // When uiUserPasswordReset Is Clicked//

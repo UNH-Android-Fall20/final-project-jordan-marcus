@@ -7,22 +7,28 @@ import com.google.firebase.storage.FirebaseStorage
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.user.UserTheme
-import dev.jzdevelopers.cstracker.user.UserTheme.GREEN
 import java.util.Locale.getDefault
 
-/** Abstract Class User
- *  Abstract Class That Handles Common User Features
- *  @author Jordan Zimmitti, Marcus Novoa
+/** Kotlin Abstract Class User,
+ *   Class That Handles Common User Properties
+ *   @author Jordan Zimmitti, Marcus Novoa
+ *   @param [context]   The instance from the caller activity
+ *   @param [firstName] The first-name of the user
+ *   @param [lastName]  The last-name of the user
+ *   @param [theme]     The theme for the user
  */
 abstract class User(
-    var firstName : String    = "",
-    var lastName  : String    = "",
-    var theme     : UserTheme = GREEN
+    val context   : Context,
+    var firstName : String,
+    var lastName  : String,
+    var theme     : UserTheme
 ) {
 
     //<editor-fold desc="Class Variables">
 
-    // Defines The User Id Variable//
+    /**
+     * The Id Of The User
+     */
     var id : String = ""
         protected set
 
@@ -41,7 +47,7 @@ abstract class User(
     //</editor-fold>
 
     /**.
-     * Configures Static Variables And Functions
+     * Configures Static Functions And Variables
      */
     companion object {
 
@@ -49,57 +55,19 @@ abstract class User(
         private val firebaseAuth = FirebaseAuth.getInstance()
 
         /**.
-         * Function That Checks If The User Is Logged In
+         * Function That Checks Whether The User Is Signed-In
+         * @return Whether the user is signed-in
          */
         fun isSignedIn(): Boolean {
-
-            // Gets The State Of The Signed In User//
             val user = firebaseAuth.currentUser
             return user != null
         }
     }
 
     /**.
-     * Base Function That Saves A New User To The Database
-     * @param [context] Gets the instance from the caller activity
-     * @return Whether all the base user properties are valid and ready to be saved
-     */
-    protected open fun signUp(context: Context): Boolean {
-
-        // Checks If The User Input Is Valid//
-        if (!isValidFirstName(context)) return false
-        if (!isValidLastName(context))  return false
-
-        // Takes The User Data And Prepares It For The Database//
-        userToSave["firstName"] = firstName
-        userToSave["lastName"]  = lastName
-        userToSave["theme"]     = theme
-        return true
-    }
-
-    /**.
-     * Function That Updates A User
-     * @param [context] Gets the instance from the caller activity
-     * @return Whether all the base user properties are valid and ready to be updated
-     */
-    protected open fun update(context: Context): Boolean {
-
-        // Checks If The User Input Is Valid//
-        if (!isValidFirstName(context)) return false
-        if (!isValidLastName(context))  return false
-
-        // Takes The User Data And Prepares It For The Database//
-        userToUpdate["firstName"] = firstName
-        userToUpdate["lastName"]  = lastName
-        userToUpdate["theme"]     = theme
-        return true
-    }
-
-    /**.
      * Function That Shows A General Error Dialog
-     * @param [context] Gets the instance from the caller activity
      */
-    protected fun showGeneralError(context: Context) {
+    protected fun showGeneralError() {
 
         // Shows The Error Dialog//
         JZActivity.showGeneralDialog(
@@ -110,11 +78,44 @@ abstract class User(
     }
 
     /**.
-     * Function That Checks And Formats The First-Name For Validity
-     * @param [context] Gets the instance from the caller activity
-     * @return whether the first-name is valid
+     * Base Function That Saves A New User To The Database
+     * @return Whether all the base user properties are valid and ready to be saved
      */
-    private fun isValidFirstName(context: Context): Boolean {
+    protected open fun signUp(): Boolean {
+
+        // Checks If The User Input Is Valid//
+        if (!isValidFirstName()) return false
+        if (!isValidLastName())  return false
+
+        // Takes The User Data And Prepares It For The Database//
+        userToSave["firstName"] = firstName
+        userToSave["lastName"]  = lastName
+        userToSave["theme"]     = theme
+        return true
+    }
+
+    /**.
+     * Base Function That Updates A User Saved In The Database
+     * @return Whether all the base user properties are valid and ready to be updated
+     */
+    protected open fun update(): Boolean {
+
+        // Checks If The User Input Is Valid//
+        if (!isValidFirstName()) return false
+        if (!isValidLastName())  return false
+
+        // Takes The User Data And Prepares It For The Database//
+        userToUpdate["firstName"] = firstName
+        userToUpdate["lastName"]  = lastName
+        userToUpdate["theme"]     = theme
+        return true
+    }
+
+    /**.
+     * Function That Checks And Formats The First-Name For Validity
+     * @return Whether the first-name is valid
+     */
+    private fun isValidFirstName(): Boolean {
 
         // Checks The First-Name For Validity//
         return when {
@@ -129,7 +130,7 @@ abstract class User(
                 false
             }
 
-            // When First-Name Contains A Symbol//
+            // When The First-Name Contains A Symbol//
             !firstName.matches(Regex("[a-zA-Z]+")) -> {
                 JZActivity.showGeneralDialog(
                     context,
@@ -139,7 +140,7 @@ abstract class User(
                 false
             }
 
-            // When First-Name Has A Length Greater Than Twenty//
+            // When The First-Name Has A Length Greater Than Twenty//
             firstName.length > 20 -> {
                 JZActivity.showGeneralDialog(
                     context,
@@ -162,10 +163,9 @@ abstract class User(
 
     /**.
      * Function That Checks And Formats The Last-Name For Validity
-     * @param [context] Gets the instance from the caller activity
-     * @return whether the last-name is valid
+     * @return Whether the last-name is valid
      */
-    private fun isValidLastName(context: Context): Boolean {
+    private fun isValidLastName(): Boolean {
 
         // Checks The Last-Name For Validity//
         return when {

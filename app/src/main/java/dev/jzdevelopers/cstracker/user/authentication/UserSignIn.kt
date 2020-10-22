@@ -3,15 +3,13 @@ package dev.jzdevelopers.cstracker.user.authentication
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.event.EventView
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.user.MultiUser.*
-import dev.jzdevelopers.cstracker.user.SecondaryUserAdd
+import dev.jzdevelopers.cstracker.user.SecondaryUserView
 import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser
-import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.activate
-import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.isActivated
-import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.isSignedIn
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.getCachedMultiUser
+import dev.jzdevelopers.cstracker.user.data_classes.User.Companion.isSignedIn
 import kotlinx.android.synthetic.main.ui_user_sign_in.*
 
-/** Android Activity UserSignIn
+/** Android Activity UserSignIn,
  *  Activity That Signs In A User
  *  @author Jordan Zimmitti, Marcus Novoa
  */
@@ -53,12 +51,10 @@ class UserSignIn: JZActivity() {
             val email    = email.text.toString()
             val password = password.text.toString()
 
-            // Define And Instantiates The Primary User//
-            val primaryUser = PrimaryUser(email = email)
-
-            // Signs In The Primary User//
-            primaryUser.signIn(this, progressBar, password)
-            checkLoginStatus()
+            // Signs In The Primary-User//
+            val isSuccessful = PrimaryUser.signIn(this, progressBar, email, password)
+            if (!isSuccessful) return@click
+            signInUser()
         }
 
         // When signupText Is Clicked//
@@ -76,25 +72,20 @@ class UserSignIn: JZActivity() {
     }
 
     /**.
-     * Function That Checks To See If The User Is Already Signed In To Bypass The Login Screen
+     * Function That Signs The User In
      */
-    private suspend fun checkLoginStatus() {
+    private fun signInUser() {
 
-        // When The Primary User Is Not Signed In//
-        if (!isSignedIn(this)) return
-        if (!isActivated(this)) {
-            activate(this)
-            startActivity(UserActivation::class, R.anim.faze_in, R.anim.faze_out)
-        }
+        // When The Primary-User Is Not Signed In//
+        if (!isSignedIn()) return
 
-        // Gets The Primary User's Multi-User Preference//
-        val multiUser = PrimaryUser.getCachedMultiUser(this)
+        // Gets The Primary-User's Multi-User Preference//
+        val isMultiUser = getCachedMultiUser(this)
 
         // Starts The Activity Based On The User Mode//
-        when(multiUser) {
-            YES.ordinal        -> startActivity(SecondaryUserAdd::class, R.anim.faze_in, R.anim.faze_out)
-            NO.ordinal         -> startActivity(EventView::class, R.anim.faze_in, R.anim.faze_out)
-            SIGNED_OUT.ordinal -> return
+        when(isMultiUser) {
+            true  -> startActivity(SecondaryUserView::class, R.anim.faze_in, R.anim.faze_out)
+            false -> startActivity(EventView::class, R.anim.faze_in, R.anim.faze_out)
         }
     }
 }

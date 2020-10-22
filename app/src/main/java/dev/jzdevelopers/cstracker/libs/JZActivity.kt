@@ -81,7 +81,7 @@ abstract class JZActivity: AppCompatActivity() {
             MaterialDialog(context).show {
                 title(title)
                 message(error)
-                negativeButton(R.string.negative_button_only)
+                negativeButton(R.string.button_negative_only)
             }
         }
     }

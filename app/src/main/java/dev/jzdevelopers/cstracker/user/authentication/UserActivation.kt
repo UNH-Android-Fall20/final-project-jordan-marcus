@@ -3,13 +3,13 @@ package dev.jzdevelopers.cstracker.user.authentication
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.event.EventView
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.user.MultiUser.*
 import dev.jzdevelopers.cstracker.user.SecondaryUserAdd
 import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser
+import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.getCachedMultiUser
 import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.isActivated
 import kotlinx.android.synthetic.main.ui_user_activation.*
 
-/** Android Activity UserActivation
+/** Android Activity UserActivation,
  *  Activity That Verifies A User
  *  @author Jordan Zimmitti, Marcus Novoa
  */
@@ -40,18 +40,17 @@ class UserActivation: JZActivity() {
         // When checkActivation Is Clicked//
         click(checkActivation) {
 
-            // Checks The The Primary User Is Activated//
+            // Checks Whether The Primary-User Is Activated//
             val isActivated = isActivated(this)
             if (!isActivated) return@click
 
-            // Gets The Primary User's Multi-User Preference//
-            val multiUser = PrimaryUser.getCachedMultiUser(this)
+            // Gets The Primary-User's Multi-User Preference//
+            val isMultiUser = getCachedMultiUser(this)
 
             // Starts The Activity Based On The User Mode//
-            when(multiUser) {
-                YES.ordinal        -> startActivity(SecondaryUserAdd::class, R.anim.faze_in, R.anim.faze_out)
-                NO.ordinal         -> startActivity(EventView::class, R.anim.faze_in, R.anim.faze_out)
-                SIGNED_OUT.ordinal -> return@click
+            when(isMultiUser) {
+                true  -> startActivity(SecondaryUserAdd::class, R.anim.faze_in, R.anim.faze_out)
+                false -> startActivity(EventView::class, R.anim.faze_in, R.anim.faze_out)
             }
         }
 
