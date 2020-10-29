@@ -1,58 +1,33 @@
-package dev.jzdevelopers.cstracker.user.data_classes
+package dev.jzdevelopers.cstracker.user.models
 
 import android.content.Context
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
+import android.view.View
+import android.widget.ProgressBar
 import dev.jzdevelopers.cstracker.R
+import dev.jzdevelopers.cstracker.common.FireBaseModel
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.user.UserTheme
-import java.util.Locale.getDefault
+import dev.jzdevelopers.cstracker.user.common.UserTheme
+import java.util.*
 
 /** Kotlin Abstract Class User,
- *   Class That Handles Common User Properties
+ *   Class That Handles Common User Functions/Properties
  *   @author Jordan Zimmitti, Marcus Novoa
- *   @param [context]   The instance from the caller activity
+ *   @param [context]   Gets the instance from the caller activity
  *   @param [firstName] The first-name of the user
  *   @param [lastName]  The last-name of the user
  *   @param [theme]     The theme for the user
  */
 abstract class User(
-    val context   : Context,
+    protected val context: Context? = null,
     var firstName : String,
     var lastName  : String,
-    var theme     : UserTheme
-) {
-
-    //<editor-fold desc="Class Variables">
-
-    /**
-     * The Id Of The User
-     */
-    var id : String = ""
-        protected set
-
-    // Gets The Different FireBase Instances//
-    protected val firebaseAuth  = FirebaseAuth.getInstance()
-    protected val fireStore     = FirebaseFirestore.getInstance()
-    private   val fireStorage   = FirebaseStorage.getInstance()
-
-    // Get Storage Reference From FireBase//
-    protected val storage = fireStorage.getReferenceFromUrl("gs://cs-tracker-5b4d1.appspot.com")
-
-    // Define And Instantiates HashMap Values//
-    protected val userToSave   = HashMap<String, Any>()
-    protected val userToUpdate = HashMap<String, Any>()
-
-    //</editor-fold>
+    var theme     : UserTheme,
+): FireBaseModel() {
 
     /**.
      * Configures Static Functions And Variables
      */
     companion object {
-
-        // Gets The FireBase Authorization Instances//
-        private val firebaseAuth = FirebaseAuth.getInstance()
 
         /**.
          * Function That Checks Whether The User Is Signed-In
@@ -65,9 +40,59 @@ abstract class User(
     }
 
     /**.
-     * Function That Shows A General Error Dialog
+     * Base Function For Adding A User To The Database
+     * @param [loadingBar] Circular progress bar to alert the user when the addition is in progress
+     * @return Whether the user was added successfully
+     */
+    override suspend fun add(loadingBar: ProgressBar): Boolean {
+
+        // Shows The Loading Bar//
+        loadingBar.visibility = View.VISIBLE
+
+        // Checks If The User Input Is Valid//
+        if (!isValidFirstName()) return false
+        if (!isValidLastName())  return false
+        return true
+    }
+
+    /**.
+     * Base Function For Editing A User In The Database
+     * @param [id]         The id of the user
+     * @param [loadingBar] Circular progress bar to alert the user when the edit is in progress
+     * @return Whether the user was edited successfully
+     */
+    override suspend fun edit(id: String, loadingBar: ProgressBar): Boolean {
+
+        // Shows The Loading Bar//
+        loadingBar.visibility = View.VISIBLE
+
+        // Checks If The User Input Is Valid//
+        if (!isValidFirstName()) return false
+        if (!isValidLastName())  return false
+        return true
+    }
+
+    /**.
+     * Abstract Function For Deleting A User In The Database
+     * @param [id]         The id of the user
+     * @param [loadingBar] Circular progress bar to alert the user when the deletion is in progress
+     * @return Whether the user was deleted successfully
+     */
+    override suspend fun delete(id: String, loadingBar: ProgressBar): Boolean {
+        return false
+    }
+
+    /**.
+     * Function That Shows A General Database Error Dialog
      */
     protected fun showGeneralError() {
+
+        // When Context Is Null//
+        if (context == null) {
+
+            // Throws A Runtime Error//
+            throw NullPointerException("Context must not be null")
+        }
 
         // Shows The Error Dialog//
         JZActivity.showGeneralDialog(
@@ -78,44 +103,17 @@ abstract class User(
     }
 
     /**.
-     * Base Function That Saves A New User To The Database
-     * @return Whether all the base user properties are valid and ready to be saved
-     */
-    protected open fun signUp(): Boolean {
-
-        // Checks If The User Input Is Valid//
-        if (!isValidFirstName()) return false
-        if (!isValidLastName())  return false
-
-        // Takes The User Data And Prepares It For The Database//
-        userToSave["firstName"] = firstName
-        userToSave["lastName"]  = lastName
-        userToSave["theme"]     = theme
-        return true
-    }
-
-    /**.
-     * Base Function That Updates A User Saved In The Database
-     * @return Whether all the base user properties are valid and ready to be updated
-     */
-    protected open fun update(): Boolean {
-
-        // Checks If The User Input Is Valid//
-        if (!isValidFirstName()) return false
-        if (!isValidLastName())  return false
-
-        // Takes The User Data And Prepares It For The Database//
-        userToUpdate["firstName"] = firstName
-        userToUpdate["lastName"]  = lastName
-        userToUpdate["theme"]     = theme
-        return true
-    }
-
-    /**.
      * Function That Checks And Formats The First-Name For Validity
      * @return Whether the first-name is valid
      */
     private fun isValidFirstName(): Boolean {
+
+        // When Context Is Null//
+        if (context == null) {
+
+            // Throws A Runtime Error//
+            throw NullPointerException("Context must not be null")
+        }
 
         // Checks The First-Name For Validity//
         return when {
@@ -154,8 +152,8 @@ abstract class User(
             else -> {
                 firstName = firstName
                     .trim()
-                    .toLowerCase(getDefault())
-                    .capitalize(getDefault())
+                    .toLowerCase(Locale.getDefault())
+                    .capitalize(Locale.getDefault())
                 true
             }
         }
@@ -166,6 +164,13 @@ abstract class User(
      * @return Whether the last-name is valid
      */
     private fun isValidLastName(): Boolean {
+
+        // When Context Is Null//
+        if (context == null) {
+
+            // Throws A Runtime Error//
+            throw NullPointerException("Context must not be null")
+        }
 
         // Checks The Last-Name For Validity//
         return when {
@@ -204,8 +209,8 @@ abstract class User(
             else -> {
                 lastName = lastName
                     .trim()
-                    .toLowerCase(getDefault())
-                    .capitalize(getDefault())
+                    .toLowerCase(Locale.getDefault())
+                    .capitalize(Locale.getDefault())
                 true
             }
         }

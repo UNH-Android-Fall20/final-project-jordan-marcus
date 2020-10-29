@@ -9,7 +9,7 @@
     android:padding       ="16dip"
     android:layout_height ="match_parent"
     android:layout_width  ="match_parent"
-    tools:context         =".user.authentication.UserSignUp">
+    tools:context         =".user.controller.authentication.UserSignUp">
 
     <!-- TextView appName -->
     <androidx.appcompat.widget.AppCompatTextView

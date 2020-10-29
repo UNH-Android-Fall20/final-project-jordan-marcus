@@ -14,7 +14,7 @@
       android:padding       ="16dip"
       android:layout_height ="match_parent"
       android:layout_width  ="match_parent"
-      tools:context         =".user.authentication.UserSignIn">
+      tools:context         =".user.controller.authentication.UserSignIn">
 
     <!-- TextView secondaryUserAdd -->
     <androidx.appcompat.widget.AppCompatTextView

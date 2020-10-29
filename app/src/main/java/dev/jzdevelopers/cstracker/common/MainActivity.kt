@@ -3,12 +3,12 @@ package dev.jzdevelopers.cstracker.common
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.event.EventView
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.user.SecondaryUserView
-import dev.jzdevelopers.cstracker.user.authentication.UserActivation
-import dev.jzdevelopers.cstracker.user.authentication.UserSignIn
-import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.getCachedMultiUser
-import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.isActivated
-import dev.jzdevelopers.cstracker.user.data_classes.User.Companion.isSignedIn
+import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView
+import dev.jzdevelopers.cstracker.user.controller.authentication.UserActivation
+import dev.jzdevelopers.cstracker.user.controller.authentication.UserSignIn
+import dev.jzdevelopers.cstracker.user.models.PrimaryUser.Companion.getCachedMultiUser
+import dev.jzdevelopers.cstracker.user.models.PrimaryUser.Companion.isActivated
+import dev.jzdevelopers.cstracker.user.models.User.Companion.isSignedIn
 
 /** Android Activity MainActivity
  *  Activity That Starts When The Application Is Open

@@ -1,8 +1,8 @@
-package dev.jzdevelopers.cstracker.user.authentication
+package dev.jzdevelopers.cstracker.user.controller.authentication
 
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser
+import dev.jzdevelopers.cstracker.user.models.PrimaryUser
 import kotlinx.android.synthetic.main.ui_user_password_reset.*
 
 /** Android Activity UserPasswordReset,

@@ -57,7 +57,8 @@
     <color name="white"       >#FFFFFF</color>
     <color name="whiteDark"   >#eeeeee</color>
     <color name="whiteHint"   >#80FFFFFF</color>
-    <color name="transparent" >#00000000</color>
+    <color name="transparent" >#00FFFFFF</color>
+    <color name="translucent" >#80FFFFFF</color>
 
     <!-- Black -->
     <color name="blackOled"   >#000000</color>

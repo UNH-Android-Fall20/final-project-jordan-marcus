@@ -1,4 +1,4 @@
-package dev.jzdevelopers.cstracker.user
+package dev.jzdevelopers.cstracker.user.controller.crud
 
 import android.content.Intent
 import android.net.Uri
@@ -7,14 +7,15 @@ import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.user.UserTheme.*
-import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser
-import dev.jzdevelopers.cstracker.user.data_classes.SecondaryUser
+import dev.jzdevelopers.cstracker.user.common.UserTheme
+import dev.jzdevelopers.cstracker.user.common.UserTheme.*
+import dev.jzdevelopers.cstracker.user.models.PrimaryUser
+import dev.jzdevelopers.cstracker.user.models.SecondaryUser
 import kotlinx.android.synthetic.main.ui_secondary_user_add.*
 import java.util.Locale.getDefault
 
 /** Android Activity SecondaryUserAdd,
- *  Activity That Adds A Secondary User Profile To The Signed-In Primary User
+ *  Activity That Adds A Secondary-User Profile To The Signed-In Primary User
  *  @author Jordan Zimmitti, Marcus Novoa
  */
 class SecondaryUserAdd: JZActivity() {
@@ -87,8 +88,8 @@ class SecondaryUserAdd: JZActivity() {
             val theme         = getPickedTheme()
 
             // Signs Up The New Secondary User//
-            val secondaryUser = SecondaryUser(this, firstName, lastName, theme, goal, 0, grade, nameLetter, organization, primaryUserId, "0:00", userIconUri)
-            val isSuccessful  = secondaryUser.signUp(progressBar)
+            val secondaryUser = SecondaryUser(this, firstName, lastName, theme, goal, 0, grade, nameLetter, organization, primaryUserId, "0:00")
+            val isSuccessful  = secondaryUser.add(progressBar, userIconUri)
             if (!isSuccessful) return@click
 
             // Starts The SecondaryUserView Activity//

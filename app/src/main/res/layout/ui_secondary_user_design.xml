@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- CardView UI For Class SecondaryUserView -->
+<androidx.cardview.widget.CardView
+    xmlns:android             ="http://schemas.android.com/apk/res/android"
+    xmlns:node                ="http://schemas.android.com/apk/res-auto"
+    android:id                ="@+id/uiSecondaryUserDesign"
+    android:clickable         ="true"
+    android:fitsSystemWindows ="true"
+    android:focusable         ="true"
+    android:foreground        ="@drawable/ripple"
+    android:layout_width      ="match_parent"
+    android:layout_height     ="wrap_content"
+    node:cardBackgroundColor  ="?attr/colorPrimary"
+    node:cardCornerRadius     ="16dip">
+
+  <!-- ConstraintLayout UI For Class SecondaryUserView -->
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:id            ="@+id/uiSecondaryUserView"
+      android:padding       ="16dip"
+      android:layout_height ="match_parent"
+      android:layout_width  ="match_parent">
+
+    <!-- CircleImageView userIcon -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id                            ="@+id/userIcon"
+        android:src                           ="@color/white"
+        android:layout_height                 ="70dip"
+        android:layout_width                  ="70dip"
+        node:civ_border_color                 ="@color/white"
+        node:civ_border_width                 ="2dip"
+        node:layout_constraintTop_toTopOf     ="parent"
+        node:layout_constraintStart_toStartOf ="parent"
+    />
+
+    <!-- TextView nameLetter -->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id                              ="@+id/nameLetter"
+        android:gravity                         ="center"
+        android:text                            ="@string/name_letter_text"
+        android:textColor                       ="?colorPrimary"
+        android:textSize                        ="30sp"
+        android:textStyle                       ="bold"
+        android:visibility                      ="invisible"
+        android:layout_height                   ="wrap_content"
+        android:layout_width                    ="wrap_content"
+        node:layout_constraintTop_toTopOf       ="@id/userIcon"
+        node:layout_constraintBottom_toBottomOf ="@id/userIcon"
+        node:layout_constraintStart_toStartOf   ="@id/userIcon"
+        node:layout_constraintEnd_toEndOf       ="@id/userIcon"
+    />
+
+    <!-- TextView nameText -->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id                              ="@+id/nameText"
+        android:text                            ="@string/name_text"
+        android:textColor                       ="@color/white"
+        android:textSize                        ="20sp"
+        android:textStyle                       ="bold"
+        android:layout_marginStart              ="16dip"
+        android:layout_height                   ="wrap_content"
+        android:layout_width                    ="wrap_content"
+        node:layout_constraintTop_toTopOf       ="parent"
+        node:layout_constraintBottom_toBottomOf ="@id/userIcon"
+        node:layout_constraintStart_toEndOf     ="@id/userIcon"
+    />
+
+    <!-- TextView totalTimeText -->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id                              ="@+id/totalTimeText"
+        android:text                            ="@string/time_default_text"
+        android:textColor                       ="@color/white"
+        android:textSize                        ="14sp"
+        android:layout_marginStart              ="16dip"
+        android:layout_height                   ="wrap_content"
+        android:layout_width                    ="wrap_content"
+        node:layout_constraintTop_toTopOf       ="parent"
+        node:layout_constraintEnd_toEndOf       ="parent"
+    />
+
+    <!-- TextView titleGradeText -->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id                            ="@+id/titleGradeText"
+        android:text                          ="@string/title_grade_text"
+        android:textColor                     ="@color/white"
+        android:textSize                      ="16sp"
+        android:textStyle                     ="bold"
+        android:layout_marginTop              ="16dip"
+        android:layout_height                 ="wrap_content"
+        android:layout_width                  ="wrap_content"
+        node:layout_constraintTop_toBottomOf  ="@id/userIcon"
+        node:layout_constraintStart_toStartOf ="parent"
+    />
+
+    <!-- TextView gradeText -->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id                          ="@+id/gradeText"
+        android:text                        ="@string/grade"
+        android:textColor                   ="@color/white"
+        android:textSize                    ="16sp"
+        android:layout_marginStart          ="5dip"
+        android:layout_height               ="wrap_content"
+        android:layout_width                ="wrap_content"
+        node:layout_constraintTop_toTopOf   ="@id/titleGradeText"
+        node:layout_constraintStart_toEndOf ="@id/titleGradeText"
+    />
+
+    <!-- TextView titleGoalText -->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id                          ="@+id/titleGoalText"
+        android:text                        ="@string/title_goal_text"
+        android:textColor                   ="@color/white"
+        android:textSize                    ="16sp"
+        android:textStyle                   ="bold"
+        android:layout_marginStart          ="16dip"
+        android:layout_height               ="wrap_content"
+        android:layout_width                ="wrap_content"
+        node:layout_constraintTop_toTopOf   ="@id/titleGradeText"
+        node:layout_constraintStart_toEndOf ="@id/gradeText"
+    />
+
+    <!-- TextView goalText -->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id                          ="@+id/goalText"
+        android:text                        ="@string/goal"
+        android:textColor                   ="@color/white"
+        android:textSize                    ="16sp"
+        android:layout_marginStart          ="5dip"
+        android:layout_height               ="wrap_content"
+        android:layout_width                ="wrap_content"
+        node:layout_constraintTop_toTopOf   ="@id/titleGradeText"
+        node:layout_constraintStart_toEndOf ="@id/titleGoalText"
+    />
+
+    <!-- TextView organizationText -->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id                            ="@+id/organizationText"
+        android:text                          ="@string/organization"
+        android:textColor                     ="@color/white"
+        android:textSize                      ="16sp"
+        android:layout_marginTop              ="16dip"
+        android:layout_height                 ="wrap_content"
+        android:layout_width                  ="wrap_content"
+        node:layout_constraintTop_toBottomOf  ="@id/titleGradeText"
+        node:layout_constraintStart_toStartOf ="parent"
+    />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

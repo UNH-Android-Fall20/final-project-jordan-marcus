@@ -3,6 +3,7 @@ package dev.jzdevelopers.cstracker.libs
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.text.Editable
@@ -16,10 +17,12 @@ import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.widget.EditText
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getColor
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.bottomappbar.BottomAppBar
 import dev.jzdevelopers.cstracker.R
@@ -35,7 +38,7 @@ private typealias ActivityResult = (requestCode: Int, resultCode: Int, data: Int
 // Suspend Type Aliases For Lambda Functions//
 private typealias Click          = suspend ()                                                                 -> Unit
 private typealias ClickBack      = suspend ()                                                                 -> Unit
-private typealias ClickRecycler  = suspend (position: Int, view: View)                                        -> Unit
+private typealias ClickRecycler  = suspend (position: Int)                                                    -> Unit
 private typealias LongClick      = suspend ()                                                                 -> Unit
 private typealias ProgressChange = suspend (seekBar: SeekBar?, progress: Int, isUser: Boolean)                -> Unit
 private typealias TextChange     = suspend (text: String, totalCount: Int, lastCount: Int, currentCount: Int) -> Unit
@@ -151,16 +154,14 @@ abstract class JZActivity: AppCompatActivity() {
 
 
     /**.
-     * Function That Handles When A Recycler Adapter Is Clicked
-     * @param [adapters]        Any type of recycler adapter
-     * @param [clickedRecycler] The invoked function when the recycler adapter is clicked (lambda)
+     * Function That Handles When A Recycler-Adapter Is Clicked
+     * @param [adapter]         Any type of recycler adapter
+     * @param [clickedRecycler] The invoked function when the recycler-adapter is clicked (lambda)
      */
-    protected fun click(vararg adapters: JZRecyclerAdapter<*>, clickedRecycler: ClickRecycler) {
+    protected fun click(adapter: JZRecyclerAdapterFB<*>, clickedRecycler: ClickRecycler) {
 
         // Sets The Click Listener//
-        for (adapter in adapters) adapter.onItemClick { position, view ->
-            lifecycleScope.launch { clickedRecycler.invoke(position, view) }
-        }
+        adapter.itemClick { position -> clickedRecycler.invoke(position) }
     }
 
     /**.
@@ -205,18 +206,29 @@ abstract class JZActivity: AppCompatActivity() {
 
     /**.
      * Function That Handles When The System Back Button Is Clicked
-     * @param [clickBack] The invoked function for when the back button is clicked
+     * @param [clickBack] The invoked function for when the back button is clicked (lambda)
      */
     protected fun clickBack(clickBack: ClickBack) {this.clickBack = clickBack}
 
     /**.
+     * Function That Handles When A Recycler-Adapter Is Long Clicked
+     * @param [adapter]     Any type of recycler adapter
+     * @param [longClicked] The invoked function for when the recycler-adapter is Long clicked (lambda)
+     */
+    protected fun longClick(adapter: JZRecyclerAdapterFB<*>, longClicked: LongClick) {
+
+        // Sets The Long-Click Listener//
+        adapter.itemLongClick { longClicked.invoke() }
+    }
+
+    /**.
      * Function That Handles When A Layout Is Long Clicked
      * @param [layouts]     Any type of layout
-     * @param [longClicked] The invoked function for when the layout is Long clicked
+     * @param [longClicked] The invoked function for when the layout is Long clicked (lambda)
      */
     protected fun longClick(vararg layouts: ViewGroup, longClicked: LongClick) {
 
-        // Sets The Long Click Listener//
+        // Sets The Long-Click Listener//
         for (layout in layouts) layout.setOnLongClickListener {
             lifecycleScope.launch { longClicked.invoke() }
             true
@@ -226,11 +238,11 @@ abstract class JZActivity: AppCompatActivity() {
     /**.
      * Function That Handles When A View Is Long Clicked
      * @param [views]       Any type of view
-     * @param [longClicked] The invoked function for when the view is long clicked
+     * @param [longClicked] The invoked function for when the view is long clicked (lambda)
      */
     protected fun longClick(vararg views: View, longClicked: LongClick) {
 
-        // Sets The Long Click Listener//
+        // Sets The Long-Click Listener//
         for (view in views) view.setOnLongClickListener {
             lifecycleScope.launch { longClicked.invoke() }
             true
@@ -240,7 +252,7 @@ abstract class JZActivity: AppCompatActivity() {
     /**.
      * Function That Handles When A SeekBar's Progress Changes
      * @param [seekBar]         The seek-bar node
-     * @param [progressChanged] The invoked function for when the seek-bar's progress changes
+     * @param [progressChanged] The invoked function for when the seek-bar's progress changes (lambda)
      */
     protected fun progressChange(seekBar: SeekBar, progressChanged: ProgressChange) {
 
@@ -261,7 +273,7 @@ abstract class JZActivity: AppCompatActivity() {
     /**.
      * Function That Handles When A EditText's Text Changes
      * @param [editText]   The edit-text node
-     * @param [textChange] The invoked function for when the edit-text's text changes
+     * @param [textChange] The invoked function for when the edit-text's text changes (lambda)
      */
     protected fun textChange(editText: EditText, textChange: TextChange) {
 
@@ -431,6 +443,42 @@ abstract class JZActivity: AppCompatActivity() {
         this.activityResult = activityResult
     }
 
+    /**.
+     * Function That Shows A Long Toast Message
+     * @param [message] The message to show
+     */
+    protected fun toastLong(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    /**.
+     * Function That Shows A Short Toast Message
+     * @param [message] The message to show
+     */
+    protected fun toastShort(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    /**.
+     * Class That Specifies The Amount Of White Space Between Each Item
+     * @param [height] The amount of white space between each item
+     */
+    class Spacing(private val height: Int): RecyclerView.ItemDecoration() {
+
+        /**.
+         * Function that controls The Amount Of Spacing Between Items
+         * @param spacing The amount of white space between each item
+         */
+        override fun getItemOffsets(spacing: Rect, view: View, parent: RecyclerView, c: RecyclerView.State) {
+
+            // Sets The Spacing//
+            spacing.bottom = height
+
+            // Sets The Spacing For The Last Item//
+            if (parent.getChildAdapterPosition(view) == parent.adapter?.itemCount?.minus(1) ?: 0)
+                spacing.bottom = 280
+        }
+    }
 
     /** Kotlin Inner Class UI
      *  Inner Class For Easily Configuring UI Options

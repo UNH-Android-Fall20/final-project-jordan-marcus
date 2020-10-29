@@ -66,9 +66,14 @@
     <!-- TextViews -->
     <string name="back_to_sign_in_text"    > Go back to sign in            </string>
     <string name="forgot_password_text"    > Forgot password?              </string>
+    <string name="name_text"               > name                          </string>
     <string name="name_letter_text"        > A                             </string>
     <string name="resend_email_text"       > No email? Resend verification </string>
     <string name="signup_text"             > Need an account? Sign Up      </string>
+    <string name="time_default_text"       > 0:00                          </string>
+    <string name="title_grade_text"        > Grade:                        </string>
+    <string name="title_goal_text"         > Goal:                         </string>
+    <string name="title_organization_text" > Organization:                 </string>
     <string name="user_theme_default_text" > User Theme (Default)          </string>
     <string name="user_theme_red_text"     > User Theme (Red)              </string>
     <string name="user_theme_orange_text"  > User Theme (Orange)           </string>

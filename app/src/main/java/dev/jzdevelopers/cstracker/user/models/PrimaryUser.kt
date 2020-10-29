@@ -1,26 +1,22 @@
-package dev.jzdevelopers.cstracker.user.data_classes
+package dev.jzdevelopers.cstracker.user.models
 
 import android.content.Context
 import android.util.Log
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View
 import android.widget.ProgressBar
 import androidx.core.util.PatternsCompat
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.libs.JZPrefs
-import dev.jzdevelopers.cstracker.libs.JZPrefs.savePref
-import dev.jzdevelopers.cstracker.user.UserTheme
-import dev.jzdevelopers.cstracker.user.UserTheme.GREEN
+import dev.jzdevelopers.cstracker.user.common.UserTheme
+import dev.jzdevelopers.cstracker.user.common.UserTheme.GREEN
 import kotlinx.coroutines.tasks.await
 import java.util.*
 
 /** Kotlin Class PrimaryUser,
  *  Class That Handles The Primary-User Objects
  *  @author Jordan Zimmitti, Marcus Novoa
- *  @param [context]     The instance from the caller activity
+ *  @param [context]     Gets the instance from the caller activity
  *  @param [firstName]   The first-name of the primary-user
  *  @param [lastName]    The last-name of the primary-user
  *  @param [theme]       The theme for the primary-user and default theme for all secondary-users
@@ -28,7 +24,7 @@ import java.util.*
  *  @param [email]       The email-address of the primary-user
  */
 class PrimaryUser(
-    context         : Context,
+    context         : Context?  = null,
     firstName       : String    = "",
     lastName        : String    = "",
     theme           : UserTheme = GREEN,
@@ -43,10 +39,6 @@ class PrimaryUser(
 
         // Define And Initialize Saved Preference Value//
         private const val PREF_MULTI_USER = "dev.jzdevelopers.cstracker.prefMultiUser"
-
-        // Gets The Different FireBase Instances//
-        private val firebaseAuth = FirebaseAuth.getInstance()
-        private val fireStore    = FirebaseFirestore.getInstance()
 
         /**.
          * Function That Gets The Cached Multi-User Preference
@@ -125,45 +117,6 @@ class PrimaryUser(
         }
 
         /**.
-         * Function That Gets The Signed-In User
-         * @param [context] Gets the instance from the caller activity
-         * @return The primary-user instance
-         */
-        suspend fun get(context: Context): PrimaryUser {
-            try {
-
-                // Gets The User's Id//
-                val userId = firebaseAuth.currentUser?.uid ?: throw Error()
-
-                // Gets The Primary User Data From The Database//
-                val collection = fireStore.collection("PrimaryUsers").document(userId)
-                val document   = collection.get().await()
-
-                // Gets The Basic Primary-User Data//
-                val isMultiUser      = document.data?.get("isMultiUser")      as Boolean
-                val email            = document.data?.get("email")            as String
-                val firstName        = document.data?.get("firstName")        as String
-                val lastName         = document.data?.get("lastName")         as String
-                val theme            = document.data?.get("theme")            as String
-
-                // Gets The Theme Enum From The Saved Theme String//
-                val themeEnum = UserTheme.valueOf(theme)
-
-                // Re-Creates The Primary-User Instance//
-                val primaryUser = PrimaryUser(context, firstName, lastName, themeEnum, isMultiUser, email)
-                primaryUser.id = userId
-
-                // Returns The Signed-In User//
-                Log.v("Primary_User", "Returned primary user [$email]")
-                return primaryUser
-            }
-            catch (_: Exception) {
-                showGeneralError(context)
-                return PrimaryUser(context)
-            }
-        }
-
-        /**.
          * Function That Sends A Verification Email To The User
          * @param [context] Gets the instance from the caller activity
          */
@@ -210,15 +163,15 @@ class PrimaryUser(
 
         /**.
          * Function That Authenticates A Primary-User
-         * @param [progressBar] Circular progress bar to alert the user when the sign-in is in progress
-         * @param [password]    The password of the user
+         * @param [loadingBar] Circular progress bar to alert the user when the sign-in is in progress
+         * @param [password]   The password of the user
          * @return Whether the sign-in was successful
          */
-        suspend fun signIn(context: Context, progressBar: ProgressBar, email: String, password: String): Boolean {
+        suspend fun signIn(context: Context, loadingBar: ProgressBar, email: String, password: String): Boolean {
             try {
 
                 // Shows The Progress Bar//
-                progressBar.visibility = VISIBLE
+                loadingBar.visibility = View.VISIBLE
 
                 // Authenticates The User//
                 firebaseAuth.signInWithEmailAndPassword(email, password).await()
@@ -234,18 +187,18 @@ class PrimaryUser(
                 // Gets Whether The Primary-User Is Keeping Track Of Secondary-Users//
                 val isMultiUser = document.data?.get("isMultiUser") as Boolean
 
-                // Hides The Progress Bar//
-                progressBar.visibility = GONE
+                // Hides The Loading Bar//
+                loadingBar.visibility = View.GONE
 
                 // Saves Primary-User's Multi-User Preference//
-                savePref(context, PREF_MULTI_USER, isMultiUser)
+                JZPrefs.savePref(context, PREF_MULTI_USER, isMultiUser)
 
                 // Logs That The Primary-User Was Signed In//
                 Log.v("Primary_User", "Primary user [$email] was signed in")
                 return true
             }
             catch (_: Exception) {
-                progressBar.visibility = GONE
+                loadingBar.visibility = View.GONE
                 showGeneralError(context)
                 signOut()
                 return false
@@ -268,26 +221,26 @@ class PrimaryUser(
     }
 
     /**.
-     * Function That Authenticates And Signs-Up A Primary-User To The Database
-     * @param [progressBar]     Circular progress bar to alert the user when the sign-up is in progress
+     * Function That Authenticates And Adds A Primary-User To The Database
+     * @param [loadingBar]      Circular progress bar to alert the user when the sign-up is in progress
      * @param [password]        The password of the user
      * @param [confirmPassword] The password to confirm that the first password was entered in correctly
-     * @return Whether the sign-up was successful
+     * @return Whether the primary-user was added successfully
      */
-    suspend fun signUp(progressBar: ProgressBar, password: String, confirmPassword: String): Boolean {
+    suspend fun add(loadingBar: ProgressBar, password: String, confirmPassword: String): Boolean {
         try {
 
+            // When Context Is Null//
+            if (context == null) {
+
+                // Throws A Runtime Error//
+                throw NullPointerException("Context must not be null")
+            }
+
             // Checks If The User Input Is Valid//
-            if (!super.signUp()) return false
+            if (!super.add(loadingBar)) return false
             if (!isValidEmail()) return false
             if (!isValidPassword(password, confirmPassword)) return false
-
-            // Takes The Primary-User Data And Prepares It For The Database//
-            userToSave["isMultiUser"] = isMultiUser
-            userToSave["email"]       = email
-
-            // Shows The Progress Bar//
-            progressBar.visibility = VISIBLE
 
             // Signs-Up The User//
             firebaseAuth.createUserWithEmailAndPassword(email, password.trim()).await()
@@ -296,61 +249,107 @@ class PrimaryUser(
             val userId = firebaseAuth.currentUser?.uid ?: throw Error()
 
             // Sends The Primary-User Data To The Database//
-            val collection = fireStore.collection("PrimaryUsers").document(userId)
-            collection.set(userToSave).await()
+            val document = fireStore.collection("PrimaryUsers").document(userId)
+            document.set(this).await()
 
-            // Hides The Progress Bar//
-            progressBar.visibility = GONE
+            // Hides The Loading Bar//
+            loadingBar.visibility = View.GONE
 
             // Saves Primary-User's Multi-User Preference//
-            savePref(context, PREF_MULTI_USER, isMultiUser)
+            JZPrefs.savePref(context, PREF_MULTI_USER, isMultiUser)
 
-            // Logs That The Primary-User Has Signed-Up//
-            Log.v("Primary_User", "Primary user [$email] has signed up")
+            // Logs That The Primary-User Was Added Successfully//
+            Log.v("Primary_User", "Primary user [$email] was added successfully")
             return true
         }
         catch (_: Exception) {
-            progressBar.visibility = GONE
+            loadingBar.visibility = View.GONE
             showGeneralError()
             return false
         }
     }
 
     /**.
-     * Function That Updates The Primary-User Data
-     * @param [progressBar] Circular progress bar to alert the user when the update is in progress
-     * @return Whether the update was successful
+     * Function That Deletes A Primary-User In The Database
+     * @param [loadingBar] Circular progress bar to alert the user when the deletion is in progress
+     * @return Whether the primary-user was deleted successfully
      */
-    suspend fun updateData(progressBar: ProgressBar): Boolean {
+    suspend fun delete(loadingBar: ProgressBar): Boolean {
         try {
 
-            // Checks If The User Input Is Valid//
-            if (!super.update()) return false
+            // When Context Is Null//
+            if (context == null) {
 
-            // Takes The User Data And Prepares It For The Database//
-            userToUpdate["isMultiUser"] = isMultiUser
-            userToUpdate["email"]       = email
+                // Throws A Runtime Error//
+                throw NullPointerException("Context must not be null")
+            }
 
-            // Shows The Progress Bar//
-            progressBar.visibility = VISIBLE
+            // Shows The Loading Bar//
+            loadingBar.visibility = View.VISIBLE
 
-            // Sends The Updated User Data To The Database//
-            val document = fireStore.collection("PrimaryUsers").document(id)
-            document.update(userToUpdate).await()
+            // Gets The Signed-In User//
+            val user = firebaseAuth.currentUser ?: throw Error()
 
-            // Hides The Progress Bar//
-            progressBar.visibility = GONE
+            // Deletes The Primary-User And Its Data From The Database//
+            val document = fireStore.collection("PrimaryUsers").document(user.uid)
+            document.delete().await()
+            user.delete()
+
+            // Hides The Loading Bar//
+            loadingBar.visibility = View.GONE
 
             // Saves Primary-User's Multi-User Preference//
-            savePref(context, PREF_MULTI_USER, isMultiUser)
+            JZPrefs.savePref(context, PREF_MULTI_USER, isMultiUser)
 
-            // Logs That The Primary User Was Signed In//
-            Log.v("Primary_User", "Primary user [$email] has been updated")
+            // Logs That The Primary-User Was Deleted Successfully//
+            Log.v("Primary_User", "Primary user [$email] has been deleted")
             return true
         }
         catch (_: Exception) {
-            progressBar.visibility = GONE
-            showGeneralError(context)
+            loadingBar.visibility = View.GONE
+            showGeneralError()
+            return false
+        }
+    }
+
+    /**.
+     * Function That Edits A Primary-User In The Database
+     * @param [loadingBar] Circular progress bar to alert the user when the edit is in progress
+     * @return Whether the primary-user was edited successfully
+     */
+    suspend fun edit(loadingBar: ProgressBar): Boolean {
+        try {
+
+            // When Context Is Null//
+            if (context == null) {
+
+                // Throws A Runtime Error//
+                throw NullPointerException("Context must not be null")
+            }
+
+            // Checks If The User Input Is Valid//
+            if (!super.edit("", loadingBar)) return false
+
+            // Gets The Primary-Users Id//
+            val id = getId(context)
+
+            // Sends The Edited User Data To The Database//
+            val document = fireStore.collection("PrimaryUsers").document(id)
+            document.set(this)
+
+            // Hides The Loading Bar//
+            loadingBar.visibility = View.GONE
+
+            // Saves Primary-User's Multi-User Preference//
+            JZPrefs.savePref(context, PREF_MULTI_USER, isMultiUser)
+
+            // Logs That The Primary-User Was Edited Successfully//
+            Log.v("Primary_User", "Primary user [$email] has been edited")
+            return true
+        }
+        catch (_: Exception) {
+            loadingBar.visibility = View.GONE
+            showGeneralError()
             return false
         }
     }
@@ -360,6 +359,13 @@ class PrimaryUser(
      * @return Whether the email is valid
      */
     private fun isValidEmail(): Boolean {
+
+        // When Context Is Null//
+        if (context == null) {
+
+            // Throws A Runtime Error//
+            throw NullPointerException("Context must not be null")
+        }
 
         // Uses The Android Email Pattern For Checking Email Syntax//
         val emailValidator = PatternsCompat.EMAIL_ADDRESS
@@ -404,6 +410,13 @@ class PrimaryUser(
      * @return Whether the password is valid
      */
     private fun isValidPassword(password: String, confirmPassword: String): Boolean {
+
+        // When Context Is Null//
+        if (context == null) {
+
+            // Throws A Runtime Error//
+            throw NullPointerException("Context must not be null")
+        }
 
         // Checks The Password For Validity//
         return when {

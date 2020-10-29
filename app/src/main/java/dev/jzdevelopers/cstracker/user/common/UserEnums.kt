@@ -1,4 +1,4 @@
-package dev.jzdevelopers.cstracker.user
+package dev.jzdevelopers.cstracker.user.common
 
 /** Kotlin Enum UserTheme,
  *  Enum for getting the theme for a specific secondary-user or primary-user

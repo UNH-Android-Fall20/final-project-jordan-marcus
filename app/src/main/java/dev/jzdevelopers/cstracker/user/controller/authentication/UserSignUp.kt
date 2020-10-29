@@ -1,11 +1,11 @@
-package dev.jzdevelopers.cstracker.user.authentication
+package dev.jzdevelopers.cstracker.user.controller.authentication
 
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.user.UserTheme.GREEN
-import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser
-import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.activate
-import dev.jzdevelopers.cstracker.user.data_classes.User.Companion.isSignedIn
+import dev.jzdevelopers.cstracker.user.common.UserTheme.GREEN
+import dev.jzdevelopers.cstracker.user.models.PrimaryUser
+import dev.jzdevelopers.cstracker.user.models.PrimaryUser.Companion.activate
+import dev.jzdevelopers.cstracker.user.models.User.Companion.isSignedIn
 import kotlinx.android.synthetic.main.ui_user_sign_up.*
 
 /** Android Activity UserSignUp,
@@ -53,7 +53,7 @@ class UserSignUp: JZActivity() {
 
             // Signs The New Primary-User Up//
             val primaryUser  = PrimaryUser(this, firstName, lastName, GREEN, isMultiUser, email)
-            val isSuccessful = primaryUser.signUp(progressBar, password, confirmPassword)
+            val isSuccessful = primaryUser.add(progressBar, password, confirmPassword)
             if (!isSuccessful) return@click
             if (!isSignedIn()) {
 

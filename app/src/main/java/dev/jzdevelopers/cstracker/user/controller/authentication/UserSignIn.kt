@@ -1,12 +1,12 @@
-package dev.jzdevelopers.cstracker.user.authentication
+package dev.jzdevelopers.cstracker.user.controller.authentication
 
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.event.EventView
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.user.SecondaryUserView
-import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser
-import dev.jzdevelopers.cstracker.user.data_classes.PrimaryUser.Companion.getCachedMultiUser
-import dev.jzdevelopers.cstracker.user.data_classes.User.Companion.isSignedIn
+import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView
+import dev.jzdevelopers.cstracker.user.models.PrimaryUser
+import dev.jzdevelopers.cstracker.user.models.PrimaryUser.Companion.getCachedMultiUser
+import dev.jzdevelopers.cstracker.user.models.User.Companion.isSignedIn
 import kotlinx.android.synthetic.main.ui_user_sign_in.*
 
 /** Android Activity UserSignIn,
