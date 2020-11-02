@@ -21,7 +21,7 @@ enum class UserTheme {
 /** Kotlin Enum UserTheme,
  *  Enum for getting the ordering of the secondary-users
  */
-enum class UserOrder {
+enum class UserSort {
     FIRST_NAME,
     GRADE,
     LAST_NAME,

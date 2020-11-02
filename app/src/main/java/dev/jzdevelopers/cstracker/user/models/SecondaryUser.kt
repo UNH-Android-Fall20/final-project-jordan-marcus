@@ -1,7 +1,9 @@
 package dev.jzdevelopers.cstracker.user.models
 
 import android.content.Context
-import android.net.Uri
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
@@ -9,11 +11,12 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.storage.StorageReference
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.user.common.UserOrder
-import dev.jzdevelopers.cstracker.user.common.UserOrder.*
+import dev.jzdevelopers.cstracker.user.common.UserSort
+import dev.jzdevelopers.cstracker.user.common.UserSort.*
 import dev.jzdevelopers.cstracker.user.common.UserTheme
 import dev.jzdevelopers.cstracker.user.common.UserTheme.GREEN
 import kotlinx.coroutines.tasks.await
+import java.io.ByteArrayOutputStream
 import java.util.*
 import java.util.UUID.randomUUID
 
@@ -49,7 +52,7 @@ class SecondaryUser(
     /**
      * The Id Of The Icon
      */
-    var iconId = ""
+    var profileImageId = ""
         private set
 
     /**.
@@ -60,13 +63,13 @@ class SecondaryUser(
         /**.
          * Function That Creates The Query For Getting All Of The Secondary-Users Under A Primary-User
          * @param [primaryUserId] The id of the primary-user
-         * @param [order]         The order in which the secondary-users will be displayed
+         * @param [sort]          How the secondary-users will be sorted
          * @return The query for getting all of the secondary-users under a primary-user
          */
-        fun getAll(primaryUserId: String, order: UserOrder): Query {
+        fun getAll(primaryUserId: String, sort: UserSort): Query {
 
             // Gets How To Order The Secondary-Users//
-            val orderField = when(order) {
+            val orderField = when (sort) {
                 FIRST_NAME   -> "firstName"
                 GRADE        -> "grade"
                 LAST_NAME    -> "lastName"
@@ -83,45 +86,42 @@ class SecondaryUser(
     }
 
     /**.
-     * Function That Gets The Icon Reference
-     * @return The icon reference
+     * Function That Gets The Profile-Image Reference
+     * @return The profile-image reference
      */
-    fun iconReference(): StorageReference? {
+    fun profileImageReference(): StorageReference? {
 
         // When The Icon Id Is Empty//
-        if (iconId == "") return null
+        if (profileImageId == "") return null
 
         // Returns The Icon Reference//
-        return appStorage.child("android/cs-tracker/$iconId")
+        return appStorage.child("android/cs-tracker/$profileImageId")
     }
 
     /**.
      * Function That Deletes A Secondary-User In The Database
-     * @param [id]         The id of the secondary-user
-     * @param [loadingBar] Circular progress bar to alert the user when the deletion is in progress
+     * @param [id]     The id of the secondary-user
      * @return Whether the secondary-user was deleted successfully
      */
-    public override suspend fun delete(id: String, loadingBar: ProgressBar): Boolean {
-        try {
+    public override suspend fun delete(id: String): Boolean {
+        return try {
 
-            // Shows The Loading Bar//
-            loadingBar.visibility = View.VISIBLE
+            // Deletes The Profile-Image From FireBase Storage If It Exists//
+            if (profileImageId != "") {
+                appStorage.child("android/cs-tracker/$profileImageId").delete()
+            }
 
             // Deletes The Primary-User And Its Data From The Database//
             val document = fireStore.collection("SecondaryUsers").document(id)
             document.delete().await()
 
-            // Hides The Loading Bar//
-            loadingBar.visibility = View.GONE
-
             // Logs That The Primary-User Was Deleted Successfully//
             Log.v("Secondary_User", "Secondary user [$firstName $lastName] has been deleted")
-            return true
+            true
         }
         catch (_: Exception) {
-            loadingBar.visibility = View.GONE
             showGeneralError()
-            return false
+            false
         }
     }
 
@@ -131,7 +131,7 @@ class SecondaryUser(
      * @param [icon]       The secondary-user's profile icon
      * @return Whether the secondary-user was added successfully
      */
-    suspend fun add(loadingBar: ProgressBar, icon : Uri?): Boolean {
+    suspend fun add(loadingBar: ProgressBar, profileImage: Drawable?): Boolean {
         try {
 
             // When Context Is Null//
@@ -143,20 +143,26 @@ class SecondaryUser(
 
             // Checks If The User Input Is Valid//
             if (!super.add(loadingBar)) return false
-            if (!isValidGoal())         return false
-            if (!isValidGrade())        return false
+            if (!isValidGoal()) return false
+            if (!isValidGrade()) return false
             if (!isValidOrganization()) return false
 
-            // When An Icon Needs To Be Saved//
-            if (icon != null) {
+            // Shows The Loading Bar//
+            loadingBar.visibility = View.VISIBLE
 
-                // Prepares The Icon To Be Saved//
-                val generatedIconId = randomUUID().toString()
-                val iconToSave = appStorage.child("android/cs-tracker/$generatedIconId")
+            // When A Profile-Image Needs To Be Saved//
+            if (profileImage != null) {
 
-                // Saves The Icon//
-                iconToSave.putFile(icon).await()
-                iconId  = generatedIconId
+                // Prepares The Image To Be Saved//
+                val generatedImageId = randomUUID().toString()
+                val imageToSave = appStorage.child("android/cs-tracker/$generatedImageId")
+
+                // Compresses The Image To A Smaller Size//
+                val compressedImage = compressImage(profileImage)
+
+                // Saves The Image//
+                imageToSave.putBytes(compressedImage).await()
+                profileImageId = generatedImageId
             }
 
             // Adds The Secondary-User Data To The Database//
@@ -183,28 +189,34 @@ class SecondaryUser(
      * @param [loadingBar] Circular progress bar to alert the user when the edit is in progress
      * @return Whether the secondary-user was edited successfully
      */
-    suspend fun edit(id: String, loadingBar: ProgressBar, icon : Uri?): Boolean {
+    suspend fun edit(id: String, loadingBar: ProgressBar, profileImage: Drawable?): Boolean {
         try {
 
             // Checks If The User Input Is Valid//
             if (!super.edit(id, loadingBar)) return false
 
-            // Deletes The Icon From FireBase Storage If It Exists//
-            if (iconId != "") {
-                appStorage.child("android/cs-tracker/$iconId").delete()
-                iconId  = ""
+            // Shows The Loading Bar//
+            loadingBar.visibility = View.VISIBLE
+
+            // Deletes The Profile-Image From FireBase Storage If It Exists//
+            if (profileImageId != "") {
+                appStorage.child("android/cs-tracker/$profileImageId").delete()
+                profileImageId = ""
             }
 
-            // When An Icon Needs To Be Saved//
-            if (icon != null) {
+            // When A Profile-Image Needs To Be Saved//
+            if (profileImage != null) {
 
-                // Prepares The Icon To Be Saved//
-                val generatedIconId = randomUUID().toString()
-                val iconToSave = appStorage.child("android/cs-tracker/$generatedIconId")
+                // Prepares The Image To Be Saved//
+                val generatedImageId = randomUUID().toString()
+                val imageToSave = appStorage.child("android/cs-tracker/$generatedImageId")
 
-                // Saves The Icon//
-                iconToSave.putFile(icon).await()
-                iconId  = generatedIconId
+                // Compresses The Image To A Smaller Size//
+                val compressedImage = compressImage(profileImage)
+
+                // Saves The Image//
+                imageToSave.putBytes(compressedImage).await()
+                profileImageId = generatedImageId
             }
 
             // Sends The Edited User Data To The Database//
@@ -223,6 +235,30 @@ class SecondaryUser(
             showGeneralError()
             return false
         }
+    }
+
+    /**.
+     * Function That Takes An Image And Compresses It For Storage
+     * @param [image] The image to compress
+     * @return The compressed image in bytes
+     */
+    private fun compressImage(image: Drawable): ByteArray {
+
+        // Converts The Drawable To A Bitmap//
+        val bitmap = (image as BitmapDrawable).bitmap
+
+        // Gets The New, Smaller Dimensions For The Bitmap//
+        val bitmapDimensions = (bitmap.height * (500.0 / bitmap.width)).toInt()
+
+        // Scales The Bitmap Down To Save Space And Allow For Smoother Scrolling//
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, 500, bitmapDimensions, true)
+
+        // Compresses The Bitmap//
+        val stream = ByteArrayOutputStream()
+        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 10, stream)
+
+        // Returns The Compressed Image In Bytes//
+        return stream.toByteArray()
     }
 
     /**.

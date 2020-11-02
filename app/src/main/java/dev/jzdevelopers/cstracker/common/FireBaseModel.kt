@@ -57,7 +57,7 @@ abstract class FireBaseModel: Serializable {
      * @param [loadingBar] Circular progress bar to alert the user when the deletion is in progress
      * @return Whether the model was deleted successfully
      */
-    protected abstract suspend fun delete(id: String, loadingBar: ProgressBar): Boolean
+    protected abstract suspend fun delete(id: String): Boolean
 
     /**.
      * Abstract Function For Editing A Model In The Database

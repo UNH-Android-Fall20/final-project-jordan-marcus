@@ -29,9 +29,9 @@
         node:layout_constraintTop_toTopOf ="parent"
     />
 
-    <!-- CircleImageView userIcon -->
+    <!-- CircleImageView profileImage -->
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id                            ="@+id/userIcon"
+        android:id                            ="@+id/profileImage"
         android:src                           ="@color/transparent"
         android:layout_marginTop              ="32dip"
         android:layout_height                 ="70dip"
@@ -52,10 +52,10 @@
         android:textStyle                       ="bold"
         android:layout_height                   ="wrap_content"
         android:layout_width                    ="wrap_content"
-        node:layout_constraintTop_toTopOf       ="@id/userIcon"
-        node:layout_constraintBottom_toBottomOf ="@id/userIcon"
-        node:layout_constraintStart_toStartOf   ="@id/userIcon"
-        node:layout_constraintEnd_toEndOf       ="@id/userIcon"
+        node:layout_constraintTop_toTopOf       ="@id/profileImage"
+        node:layout_constraintBottom_toBottomOf ="@id/profileImage"
+        node:layout_constraintStart_toStartOf   ="@id/profileImage"
+        node:layout_constraintEnd_toEndOf       ="@id/profileImage"
     />
 
     <!-- EditText firstNameBox -->
@@ -70,8 +70,8 @@
         node:boxStrokeColor                         ="?colorPrimary"
         node:hintTextColor                          ="?colorPrimary"
         node:layout_constraintHorizontal_chainStyle ="spread"
-        node:layout_constraintTop_toTopOf           ="@id/userIcon"
-        node:layout_constraintStart_toEndOf         ="@id/userIcon"
+        node:layout_constraintTop_toTopOf           ="@id/profileImage"
+        node:layout_constraintStart_toEndOf         ="@id/profileImage"
         node:layout_constraintEnd_toStartOf         ="@id/lastNameBox"
         tools:ignore                                ="RtlSymmetry">
 
@@ -98,7 +98,7 @@
         node:boxStrokeColor                         ="?colorPrimary"
         node:hintTextColor                          ="?colorPrimary"
         node:layout_constraintHorizontal_chainStyle ="spread"
-        node:layout_constraintTop_toTopOf           ="@id/userIcon"
+        node:layout_constraintTop_toTopOf           ="@id/profileImage"
         node:layout_constraintStart_toEndOf         ="@id/firstNameBox"
         node:layout_constraintEnd_toEndOf           ="parent"
         tools:ignore                                ="RtlSymmetry">
@@ -124,7 +124,7 @@
         android:layout_width                        ="80dip"
         node:boxStrokeColor                         ="?colorPrimary"
         node:hintTextColor                          ="?colorPrimary"
-        node:layout_constraintTop_toBottomOf        ="@id/userIcon"
+        node:layout_constraintTop_toBottomOf        ="@id/profileImage"
         node:layout_constraintStart_toStartOf       ="parent"
         tools:ignore                                ="RtlSymmetry">
 
@@ -151,7 +151,7 @@
         android:layout_width                        ="100dip"
         node:boxStrokeColor                         ="?colorPrimary"
         node:hintTextColor                          ="?colorPrimary"
-        node:layout_constraintTop_toBottomOf        ="@id/userIcon"
+        node:layout_constraintTop_toBottomOf        ="@id/profileImage"
         node:layout_constraintStart_toEndOf         ="@id/gradeBox"
         tools:ignore                                ="RtlSymmetry">
 

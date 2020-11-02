@@ -3,7 +3,7 @@ package dev.jzdevelopers.cstracker.libs
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.text.Editable
@@ -20,9 +20,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.bottomappbar.BottomAppBar
 import dev.jzdevelopers.cstracker.R
@@ -35,37 +36,30 @@ import android.os.Build.VERSION_CODES.R as ANDROID_R
 // Type Aliases For Lambda Functions//
 private typealias ActivityResult = (requestCode: Int, resultCode: Int, data: Intent?) -> Unit
 
-// Suspend Type Aliases For Lambda Functions//
-private typealias Click          = suspend ()                                                                 -> Unit
-private typealias ClickBack      = suspend ()                                                                 -> Unit
-private typealias ClickRecycler  = suspend (position: Int)                                                    -> Unit
-private typealias LongClick      = suspend ()                                                                 -> Unit
-private typealias ProgressChange = suspend (seekBar: SeekBar?, progress: Int, isUser: Boolean)                -> Unit
-private typealias TextChange     = suspend (text: String, totalCount: Int, lastCount: Int, currentCount: Int) -> Unit
+//<editor-fold desc="Suspend Lambda Type Aliases">
+private typealias Click              = suspend ()                                                                 -> Unit
+private typealias ClickBack          = suspend ()                                                                 -> Unit
+private typealias ClickRecycler      = suspend (position: Int)                                                    -> Unit
+private typealias LongClick          = suspend ()                                                                 -> Unit
+private typealias LongClickRecycler  = suspend (position: Int)                                                    -> Unit
+private typealias ProgressChange     = suspend (seekBar: SeekBar?, progress: Int, isUser: Boolean)                -> Unit
+private typealias ProgressTouchStart = suspend (seekBar: SeekBar?)                                                -> Unit
+private typealias ProgressTouchStop  = suspend (seekBar: SeekBar?)                                                -> Unit
+private typealias QueryChange        = suspend (newText: String?)                                                 -> Unit
+private typealias QuerySubmit        = suspend (query: String?)                                                   -> Unit
+private typealias SearchOpen         = suspend ()                                                                 -> Unit
+private typealias SearchClose        = suspend ()                                                                 -> Unit
+private typealias TextAfterChange    = suspend (text: String)                                                     -> Unit
+private typealias TextBeforeChange   = suspend (text: String, totalCount: Int, currentCount: Int, newCount: Int)  -> Unit
+private typealias TextCurrentChange  = suspend (text: String, totalCount: Int, lastCount: Int, currentCount: Int) -> Unit
+//</editor-fold>
 
 /** Kotlin Abstract Class JZActivity
  *  Abstract Class That Streamlines Various Android Activity Functions
  *  @author Jordan Zimmitti
  */
-@Suppress("unused")
+@Suppress("unused", "SameParameterValue")
 abstract class JZActivity: AppCompatActivity() {
-
-    //<editor-fold desc="Class Variables">
-
-    // Define Menu Variable For Late Initialization//
-    protected lateinit var menu: Menu
-
-    // Define And Initializes ClickBack Variable//
-    private var clickBack: ClickBack? = null
-
-    // Define And Initializes ActivityResult Variable//
-    private var activityResult: ActivityResult = { _, _, _ -> }
-
-    // Define And Initializes Lambda Value//
-    private val empty: suspend UI.() -> Unit = {}
-
-    //</editor-fold>
-
 
     /**.
      * Configures Static Variables And Functions
@@ -84,10 +78,34 @@ abstract class JZActivity: AppCompatActivity() {
             MaterialDialog(context).show {
                 title(title)
                 message(error)
-                negativeButton(R.string.button_negative_only)
+                negativeButton(R.string.button_only)
             }
         }
     }
+
+    //<editor-fold desc="Class Variables">
+
+    // Define Menu Variable For Late Initialization//
+    protected lateinit var menu: Menu
+
+    // Define And Initializes ClickBack Variable//
+    private var activityResult     : ActivityResult?     = null
+    private var clickBack          : ClickBack?          = null
+    private var progressChange     : ProgressChange?     = null
+    private var progressTouchStart : ProgressTouchStart? = null
+    private var progressTouchStop  : ProgressTouchStop?  = null
+    private var queryChange        : QueryChange?        = null
+    private var querySubmit        : QuerySubmit?        = null
+    private var textAfterChange    : TextAfterChange?    = null
+    private var textBeforeChange   : TextBeforeChange?   = null
+    private var textCurrentChange  : TextCurrentChange?  = null
+
+    // Define And Initializes Lambda Value//
+    private val empty: suspend UI.() -> Unit = {}
+
+    //</editor-fold>
+
+    //<editor-fold desc="Override Functions">
 
     /**.
      * Called To Send Information From One Activity To Another
@@ -99,7 +117,7 @@ abstract class JZActivity: AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         // Sets The Activity Result//
-        activityResult.invoke(requestCode, resultCode, data)
+        activityResult?.invoke(requestCode, resultCode, data)
     }
 
     /**.
@@ -152,6 +170,9 @@ abstract class JZActivity: AppCompatActivity() {
      */
     protected open suspend fun apiCalls() {}
 
+    //</editor-fold>
+
+    //<editor-fold desc="Click Listeners">
 
     /**.
      * Function That Handles When A Recycler-Adapter Is Clicked
@@ -215,10 +236,10 @@ abstract class JZActivity: AppCompatActivity() {
      * @param [adapter]     Any type of recycler adapter
      * @param [longClicked] The invoked function for when the recycler-adapter is Long clicked (lambda)
      */
-    protected fun longClick(adapter: JZRecyclerAdapterFB<*>, longClicked: LongClick) {
+    protected fun longClick(adapter: JZRecyclerAdapterFB<*>, longClicked: LongClickRecycler) {
 
         // Sets The Long-Click Listener//
-        adapter.itemLongClick { longClicked.invoke() }
+        adapter.itemLongClick { longClicked.invoke(it) }
     }
 
     /**.
@@ -249,56 +270,125 @@ abstract class JZActivity: AppCompatActivity() {
         }
     }
 
+    //</editor-fold>
+
+    //<editor-fold desc="Specific Listeners">
+
     /**.
-     * Function That Handles When A SeekBar's Progress Changes
-     * @param [seekBar]         The seek-bar node
-     * @param [progressChanged] The invoked function for when the seek-bar's progress changes (lambda)
+     * Function That Handles When The SeekBar Progress Is Being Changed
+     * @param [seekBar]        The seek-bar node
+     * @param [progressChange] The invoked function for when the seek-bar progress is changing (lambda)
      */
-    protected fun progressChange(seekBar: SeekBar, progressChanged: ProgressChange) {
-
-        // Sets The SeekBar Change Listener//
-        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-
-            // When The SeekBar Progress Changes
-            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                lifecycleScope.launch { progressChanged.invoke(p0, p1, p2) }
-            }
-
-            // Not Implemented//
-            override fun onStartTrackingTouch(p0: SeekBar?) {}
-            override fun onStopTrackingTouch(p0: SeekBar?) {}
-        })
+    protected fun progressChange(seekBar: SeekBar, progressChange: ProgressChange) {
+        this.progressChange = progressChange
+        onSeekBarChange(seekBar)
     }
 
     /**.
-     * Function That Handles When A EditText's Text Changes
-     * @param [editText]   The edit-text node
-     * @param [textChange] The invoked function for when the edit-text's text changes (lambda)
+     * Function That Handles When The User Starts Touching The SeekBar Progress Tracker
+     * @param [seekBar]            The seek-bar node
+     * @param [progressTouchStart] The invoked function for when the user starts touching the seek-bar progress tracker (lambda)
      */
-    protected fun textChange(editText: EditText, textChange: TextChange) {
-
-        // Sets The EditText Change Listener//
-        editText.addTextChangedListener(object : TextWatcher {
-
-            // What Happens As Text Is Being Changed//
-            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
-                lifecycleScope.launch { textChange.invoke(text.toString(), start, before, count) }
-            }
-
-            // Not Implemented//
-            override fun beforeTextChanged(
-                text: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
-            }
-
-            override fun afterTextChanged(text: Editable?) {
-            }
-        })
+    protected fun progressTouchStart(seekBar: SeekBar, progressTouchStart: ProgressTouchStart) {
+        this.progressTouchStart = progressTouchStart
+        onSeekBarChange(seekBar)
     }
 
+    /**.
+     * Function That Handles When The User Stops Touching The SeekBar Progress Tracker
+     * @param [seekBar]            The seek-bar node
+     * @param [progressTouchStop] The invoked function for when the user stops touching the seek-bar progress tracker (lambda)
+     */
+    protected fun progressTouchStop(seekBar: SeekBar, progressTouchStop: ProgressTouchStop) {
+        this.progressTouchStop = progressTouchStop
+        onSeekBarChange(seekBar)
+    }
+
+    /**.
+     * Function That Handles When A SearchView Field Is Closed Into An Icon
+     * @param [searchView]   The search-view node
+     * @param [searchClosed] The invoked function for when the search-view field closes (lambda)
+     */
+    protected fun searchClose(searchView: SearchView, searchClosed: SearchClose) {
+
+        // Sets The On Search Click Listener//
+        searchView.setOnCloseListener {
+            lifecycleScope.launch {
+                searchClosed.invoke()
+            }
+            searchView.onActionViewCollapsed()
+            return@setOnCloseListener true
+        }
+    }
+
+    /**.
+     * Function That Handles When A SearchView Icon Is Clicked And Opened Into A Field
+     * @param [searchView]   The search-view node
+     * @param [searchOpened] The invoked function for when the search-view field opens (lambda)
+     */
+    protected fun searchOpen(searchView: SearchView, searchOpened: SearchOpen) {
+
+        // Sets The On Search Click Listener//
+        searchView.setOnSearchClickListener {
+            lifecycleScope.launch {
+                searchOpened.invoke()
+            }
+        }
+    }
+
+    /**.
+     * Function That Handles When A Search Query Is Changed
+     * @param [searchView]  The search-view node
+     * @param [queryChange] The invoked function for when the search-view query is changed (lambda)
+     */
+    protected fun searchQueryChange(searchView: SearchView, queryChange: QueryChange) {
+        this.queryChange = queryChange
+        onQuerySearch(searchView)
+    }
+
+    /**.
+     * Function That Handles When A Search Query Is Submitted
+     * @param [searchView]  The search-view node
+     * @param [querySubmit] The invoked function for when the search-view query is submitted (lambda)
+     */
+    protected fun searchQuerySubmit(searchView: SearchView, querySubmit: QuerySubmit) {
+        this.querySubmit = querySubmit
+        onQuerySearch(searchView)
+    }
+
+    /**.
+     * Function That Handles After An EditText Field's Text Has Been Changed
+     * @param [editText]        The edit-text node
+     * @param [textAfterChange] The invoked function for after an edit-text field's text has been changed
+     */
+    protected fun textAfterChange(editText: EditText, textAfterChange: TextAfterChange) {
+        this.textAfterChange = textAfterChange
+        onTextChange(editText)
+    }
+
+    /**.
+     * Function That Handles Before An EditText Field's Text Has Been Changed
+     * @param [editText]         The edit-text node
+     * @param [textBeforeChange] The invoked function for before an edit-text field's text has been changed
+     */
+    protected fun textBeforeChange(editText: EditText, textBeforeChange: TextBeforeChange) {
+        this.textBeforeChange = textBeforeChange
+        onTextChange(editText)
+    }
+
+    /**.
+     * Function That Handles When The EditText Field's Text Has Been Changed
+     * @param [editText]          The edit-text node
+     * @param [textCurrentChange] The invoked function for when the edit-text field's text has been changed
+     */
+    protected fun textCurrentChange(editText: EditText, textCurrentChange: TextCurrentChange) {
+        this.textCurrentChange = textCurrentChange
+        onTextChange(editText)
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="Activity Functions">
 
     /**.
      * Function That Shows The Layout And Theme Configurations
@@ -316,45 +406,17 @@ abstract class JZActivity: AppCompatActivity() {
     }
 
     /**.
-     * Function That Correctly Exits The Activity
-     * @param [isAnimation] Checks whether to exit with the default animation
+     * Function That Gets A Drawable Resource Id For A File In The Drawable Folder
+     * @param [drawable] The id of the drawable file
+     * @return The drawable
      */
-    protected fun exitActivity(isAnimation: Boolean) {
-
-        // Finishes With Default Animation//
-        if (isAnimation) {finish(); return}
-
-        // Finishes With No Animation//
-        finish()
-        overridePendingTransition(0, 0)
+    protected fun getDrawableCompat(@DrawableRes drawable: Int): Drawable? {
+        return ContextCompat.getDrawable(this, drawable)
     }
 
     /**.
-     * Function That Correctly Exits The Activity
-     * @param [animIn]  The custom start animation
-     * @param [animOut] The custom end animation
-     */
-    protected fun exitActivity(animIn: Int, animOut: Int) {
-
-        // Finishes With A Custom Animation//
-        finish()
-        overridePendingTransition(animIn, animOut)
-    }
-
-    /**.
-     * Function That Correctly Exits The Application
-     */
-    protected fun exitApp() {
-
-        // Finishes The Application//
-        val killApp = Intent(Intent.ACTION_MAIN)
-        killApp.addCategory(Intent.CATEGORY_HOME)
-        killApp.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(killApp)
-    }
-
-    /**.
-     * Function That Gets A [color] Resource id From The Colors.xml File In The Res Folder
+     * Function That Gets A Color Resource id From The Colors.xml File In The Res Folder
+     * @param [color] The id of the color
      * @return The color
      */
     protected fun getColorCompat(@ColorRes color: Int): Int {
@@ -395,6 +457,64 @@ abstract class JZActivity: AppCompatActivity() {
     }
 
     /**.
+     * Function That Shows A Long Toast Message
+     * @param [message] The message to show
+     */
+    protected fun toastLong(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    /**.
+     * Function That Shows A Short Toast Message
+     * @param [message] The message to show
+     */
+    protected fun toastShort(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="Activity Transitions">
+
+    /**.
+     * Function That Correctly Exits The Activity
+     * @param [isAnimation] Checks whether to exit with the default animation
+     */
+    protected fun exitActivity(isAnimation: Boolean) {
+
+        // Finishes With Default Animation//
+        if (isAnimation) {finish(); return}
+
+        // Finishes With No Animation//
+        finish()
+        overridePendingTransition(0, 0)
+    }
+
+    /**.
+     * Function That Correctly Exits The Activity
+     * @param [animIn]  The custom start animation
+     * @param [animOut] The custom end animation
+     */
+    protected fun exitActivity(animIn: Int, animOut: Int) {
+
+        // Finishes With A Custom Animation//
+        finish()
+        overridePendingTransition(animIn, animOut)
+    }
+
+    /**.
+     * Function That Correctly Exits The Application
+     */
+    protected fun exitApp() {
+
+        // Finishes The Application//
+        val killApp = Intent(Intent.ACTION_MAIN)
+        killApp.addCategory(Intent.CATEGORY_HOME)
+        killApp.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(killApp)
+    }
+
+    /**.
      * Function That Starts A New Activity
      * @param [activity]    An android activity kotlin Class
      * @param [isAnimation] Checks whether to use the default animation
@@ -406,7 +526,7 @@ abstract class JZActivity: AppCompatActivity() {
 
         // Starts The Activity With The Default Animation//
         if (isAnimation) {
-            startActivity(newActivity);
+            startActivity(newActivity)
             return
         }
 
@@ -443,42 +563,104 @@ abstract class JZActivity: AppCompatActivity() {
         this.activityResult = activityResult
     }
 
+    //</editor-fold>
+
+    //<editor-fold desc="Private Specific Listeners">
+
     /**.
-     * Function That Shows A Long Toast Message
-     * @param [message] The message to show
+     * Function That Handles Search Text Queries
+     * @param [searchView] The search-view node
      */
-    protected fun toastLong(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    private fun onQuerySearch(searchView: SearchView) {
+
+        // Sets The Query Text Listener//
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+
+            // When The Query Is Submitted//
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                lifecycleScope.launch {
+                    querySubmit?.invoke(p0)
+                }
+                return true
+            }
+
+            // When The Query Text Is Changing//
+            override fun onQueryTextChange(p0: String?): Boolean {
+                lifecycleScope.launch {
+                    queryChange?.invoke(p0)
+                }
+                return true
+            }
+
+        })
     }
 
     /**.
-     * Function That Shows A Short Toast Message
-     * @param [message] The message to show
+     * Function That Handles When A SeekBar Changes
+     * @param [seekBar] The seek-bar node
      */
-    protected fun toastShort(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun onSeekBarChange(seekBar: SeekBar) {
+
+        // Sets The SeekBar Change Listener//
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+
+            // When The SeekBar Progress Changes
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                lifecycleScope.launch {
+                    progressChange?.invoke(p0, p1, p2)
+                }
+            }
+
+            // When The User Starts Tracking The SeekBar//
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+                lifecycleScope.launch {
+                    progressTouchStart?.invoke(p0)
+                }
+            }
+
+            // When The User Stops Tracking The SeekBar//
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+                lifecycleScope.launch {
+                    progressTouchStop?.invoke(p0)
+                }
+            }
+        })
     }
 
     /**.
-     * Class That Specifies The Amount Of White Space Between Each Item
-     * @param [height] The amount of white space between each item
+     * Function That Handles When A EditText's Text Changes
+     * @param [editText]   The edit-text node
+     * @param [textChange] The invoked function for when the edit-text's text changes (lambda)
      */
-    class Spacing(private val height: Int): RecyclerView.ItemDecoration() {
+    private fun onTextChange(editText: EditText) {
 
-        /**.
-         * Function that controls The Amount Of Spacing Between Items
-         * @param spacing The amount of white space between each item
-         */
-        override fun getItemOffsets(spacing: Rect, view: View, parent: RecyclerView, c: RecyclerView.State) {
+        // Sets The EditText Text Change Listener//
+        editText.addTextChangedListener(object : TextWatcher {
 
-            // Sets The Spacing//
-            spacing.bottom = height
+            // What Happens As Text Is Currently Being Changed//
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                lifecycleScope.launch {
+                    textCurrentChange?.invoke(p0.toString(), p1, p2, p3)
+                }
+            }
 
-            // Sets The Spacing For The Last Item//
-            if (parent.getChildAdapterPosition(view) == parent.adapter?.itemCount?.minus(1) ?: 0)
-                spacing.bottom = 280
-        }
+            // What Happens Before The Text Is Changed//
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                lifecycleScope.launch {
+                    textBeforeChange?.invoke(p0.toString(), p1, p2, p3)
+                }
+            }
+
+            // What Happens After The Text Is Changed//
+            override fun afterTextChanged(p0: Editable?) {
+                lifecycleScope.launch {
+                    textAfterChange?.invoke(p0.toString())
+                }
+            }
+        })
     }
+
+    //</editor-fold>
 
     /** Kotlin Inner Class UI
      *  Inner Class For Easily Configuring UI Options

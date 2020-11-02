@@ -1,7 +1,6 @@
 package dev.jzdevelopers.cstracker.user.models
 
 import android.content.Context
-import android.view.View
 import android.widget.ProgressBar
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.common.FireBaseModel
@@ -46,9 +45,6 @@ abstract class User(
      */
     override suspend fun add(loadingBar: ProgressBar): Boolean {
 
-        // Shows The Loading Bar//
-        loadingBar.visibility = View.VISIBLE
-
         // Checks If The User Input Is Valid//
         if (!isValidFirstName()) return false
         if (!isValidLastName())  return false
@@ -63,9 +59,6 @@ abstract class User(
      */
     override suspend fun edit(id: String, loadingBar: ProgressBar): Boolean {
 
-        // Shows The Loading Bar//
-        loadingBar.visibility = View.VISIBLE
-
         // Checks If The User Input Is Valid//
         if (!isValidFirstName()) return false
         if (!isValidLastName())  return false
@@ -75,10 +68,9 @@ abstract class User(
     /**.
      * Abstract Function For Deleting A User In The Database
      * @param [id]         The id of the user
-     * @param [loadingBar] Circular progress bar to alert the user when the deletion is in progress
      * @return Whether the user was deleted successfully
      */
-    override suspend fun delete(id: String, loadingBar: ProgressBar): Boolean {
+    override suspend fun delete(id: String): Boolean {
         return false
     }
 

@@ -3,9 +3,9 @@ package dev.jzdevelopers.cstracker.common
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.event.EventView
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView
 import dev.jzdevelopers.cstracker.user.controller.authentication.UserActivation
 import dev.jzdevelopers.cstracker.user.controller.authentication.UserSignIn
+import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser.Companion.getCachedMultiUser
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser.Companion.isActivated
 import dev.jzdevelopers.cstracker.user.models.User.Companion.isSignedIn

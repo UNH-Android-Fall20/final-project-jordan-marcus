@@ -185,7 +185,7 @@ class PrimaryUser(
                 val document   = collection.get().await()
 
                 // Gets Whether The Primary-User Is Keeping Track Of Secondary-Users//
-                val isMultiUser = document.data?.get("isMultiUser") as Boolean
+                val isMultiUser = document.data?.get("multiUser") as Boolean
 
                 // Hides The Loading Bar//
                 loadingBar.visibility = View.GONE
@@ -242,6 +242,9 @@ class PrimaryUser(
             if (!isValidEmail()) return false
             if (!isValidPassword(password, confirmPassword)) return false
 
+            // Shows The Loading Bar//
+            loadingBar.visibility = View.VISIBLE
+
             // Signs-Up The User//
             firebaseAuth.createUserWithEmailAndPassword(email, password.trim()).await()
 
@@ -271,10 +274,9 @@ class PrimaryUser(
 
     /**.
      * Function That Deletes A Primary-User In The Database
-     * @param [loadingBar] Circular progress bar to alert the user when the deletion is in progress
      * @return Whether the primary-user was deleted successfully
      */
-    suspend fun delete(loadingBar: ProgressBar): Boolean {
+    suspend fun delete(): Boolean {
         try {
 
             // When Context Is Null//
@@ -284,9 +286,6 @@ class PrimaryUser(
                 throw NullPointerException("Context must not be null")
             }
 
-            // Shows The Loading Bar//
-            loadingBar.visibility = View.VISIBLE
-
             // Gets The Signed-In User//
             val user = firebaseAuth.currentUser ?: throw Error()
 
@@ -294,9 +293,6 @@ class PrimaryUser(
             val document = fireStore.collection("PrimaryUsers").document(user.uid)
             document.delete().await()
             user.delete()
-
-            // Hides The Loading Bar//
-            loadingBar.visibility = View.GONE
 
             // Saves Primary-User's Multi-User Preference//
             JZPrefs.savePref(context, PREF_MULTI_USER, isMultiUser)
@@ -306,7 +302,6 @@ class PrimaryUser(
             return true
         }
         catch (_: Exception) {
-            loadingBar.visibility = View.GONE
             showGeneralError()
             return false
         }
@@ -329,6 +324,9 @@ class PrimaryUser(
 
             // Checks If The User Input Is Valid//
             if (!super.edit("", loadingBar)) return false
+
+            // Shows The Loading Bar//
+            loadingBar.visibility = View.VISIBLE
 
             // Gets The Primary-Users Id//
             val id = getId(context)

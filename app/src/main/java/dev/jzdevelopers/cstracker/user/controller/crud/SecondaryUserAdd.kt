@@ -1,7 +1,7 @@
 package dev.jzdevelopers.cstracker.user.controller.crud
 
 import android.content.Intent
-import android.net.Uri
+import android.graphics.drawable.Drawable
 import android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
@@ -25,8 +25,8 @@ class SecondaryUserAdd: JZActivity() {
     // Define And Initialize Int Value//
     private val userIconCode = 0
 
-    // Define And Initialize Uri Variable//
-    private var userIconUri: Uri? = null
+    // Define And Initialize Drawable Variable//
+    private var profileImageDrawable: Drawable? = null
 
     //</editor-fold>
 
@@ -60,8 +60,8 @@ class SecondaryUserAdd: JZActivity() {
                 negativeButton(R.string.button_negative)
                 positiveButton(R.string.button_positive) {
 
-                    // Goes Back To Activity SecondaryUserView//
-                    exitActivity(R.anim.faze_in, R.anim.faze_out)
+                    // Starts The SecondaryUserView Activity//
+                    startActivity(SecondaryUserView::class, R.anim.faze_in, R.anim.faze_out)
                 }
             }
         }
@@ -89,41 +89,41 @@ class SecondaryUserAdd: JZActivity() {
 
             // Signs Up The New Secondary User//
             val secondaryUser = SecondaryUser(this, firstName, lastName, theme, goal, 0, grade, nameLetter, organization, primaryUserId, "0:00")
-            val isSuccessful  = secondaryUser.add(progressBar, userIconUri)
+            val isSuccessful  = secondaryUser.add(progressBar, profileImageDrawable)
             if (!isSuccessful) return@click
 
             // Starts The SecondaryUserView Activity//
             startActivity(SecondaryUserView::class, R.anim.faze_in, R.anim.faze_out)
         }
 
-        // When userIcon Is Clicked//
-        click(userIcon) {
+        // When profileImage Is Clicked//
+        click(profileImage) {
             val pickIcon = Intent(Intent.ACTION_PICK, INTERNAL_CONTENT_URI)
-            startActivityResult(pickIcon, userIconCode) {requestCode, _, data ->
+            startActivityResult(pickIcon, userIconCode) {requestCode, _, image ->
 
                 // When A Picture Was Not Picked Successfully//
-                if (requestCode != userIconCode || data == null)
+                if (requestCode != userIconCode || image == null)
                     return@startActivityResult
-
-                // Sets The Picked Image Uri//
-                userIconUri = data.data
 
                 // Hides The Name Letter//
                 nameLetter.visibility = View.INVISIBLE
 
-                // Shoes The userIcon Image To The User//
-                userIcon.setImageURI(userIconUri)
-                userIcon.borderColor = getColorCompat(R.color.transparent)
+                // Shows The Profile-Image To The User//
+                profileImage.setImageURI(image.data)
+                profileImage.borderColor = getColorCompat(R.color.transparent)
+
+                // Sets The Picked Image Drawable//
+                profileImageDrawable = profileImage.drawable
             }
         }
 
-        // When userIcon Is Long Clicked//
-        longClick(userIcon) {
+        // When profileImage Is Long Clicked//
+        longClick(profileImage) {
 
             // Clears The Image//
-            userIcon.setImageResource(R.color.transparent)
-            userIcon.borderColor = getColorAttr(R.attr.colorPrimary)
-            userIconUri = null
+            profileImage.setImageResource(R.color.transparent)
+            profileImage.borderColor = getColorAttr(R.attr.colorPrimary)
+            profileImageDrawable = null
 
             // Makes nameLetter Visible//
             nameLetter.visibility = View.VISIBLE
@@ -161,10 +161,10 @@ class SecondaryUserAdd: JZActivity() {
         }
 
         // When The firstName Text Changes//
-        textChange(firstName) {text, _, _, _ ->
+        textCurrentChange(firstName) {text, _, _, _ ->
 
             // Gets The First Letter Inputted//
-            if (text.isBlank()) return@textChange
+            if (text.isBlank()) return@textCurrentChange
             nameLetter.text = text[0].toString().trim().capitalize(getDefault())
         }
     }

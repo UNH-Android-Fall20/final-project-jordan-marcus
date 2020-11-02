@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -22,6 +23,9 @@ import kotlin.reflect.KClass
 private typealias ItemClickFB       = suspend (position: Int)                                                  -> Unit
 private typealias ItemLongClickFB   = suspend (position: Int)                                                  -> Unit
 private typealias ItemMultiSelectFB = suspend (itemPosition: Int, itemSelectedCount: Int, isSelected: Boolean) -> Unit
+private typealias ItemSwipeFB       = suspend (position: Int)                                                  -> Unit
+private typealias ItemSwipeLeftFB   = suspend (position: Int)                                                  -> Unit
+private typealias ItemSwipeRightFB  = suspend (position: Int)                                                  -> Unit
 private typealias ScrollFB          = suspend (dy: Int)                                                        -> Unit
 
 /** Kotlin Class JZRecyclerAdapter,
@@ -34,13 +38,14 @@ private typealias ScrollFB          = suspend (dy: Int)                         
  *  @param [model]    The model that structures and stores the data
  *  @param [views]    Matches the nodes in the layout with the properties in the model (lambda)
  */
+@Suppress("unused")
 class JZRecyclerAdapterFB<TYPE : Any>(
     private val context : Context,
     private val scope   : LifecycleCoroutineScope,
     layoutId : Int,
     query    : Query,
     model    : KClass<TYPE>,
-    views    : suspend View.(TYPE) -> Unit
+    views    : View.(TYPE, position: Int) -> Unit
 ) {
 
     //<editor-fold desc="Class Variables">
@@ -65,6 +70,8 @@ class JZRecyclerAdapterFB<TYPE : Any>(
     private var itemClickFB       : ItemClickFB?       = null
     private var itemLongClickFB   : ItemLongClickFB?   = null
     private var itemMultiSelectFB : ItemMultiSelectFB? = null
+    private var itemSwipeLeftFB   : ItemSwipeLeftFB?   = null
+    private var itemSwipeRightFB  : ItemSwipeRightFB?  = null
     private var scrollFB          : ScrollFB?          = null
 
     // Define And Instantiates ArrayList Value//
@@ -76,12 +83,11 @@ class JZRecyclerAdapterFB<TYPE : Any>(
      * Function That Attaches The RecyclerView To The Adapter To Show The Items
      * @param [recyclerView] Any recycler-view node
      */
-    fun attachRecyclerView(recyclerView: RecyclerView) {
+    fun attachRecyclerView(recyclerView: RecyclerView, gap: Int = 60, lastGap: Int = 230) {
         this.recyclerView          = recyclerView
         recyclerView.adapter       = fireBaseAdapter
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.hasFixedSize()
-        setSpacing()
+        setSpacing(gap, lastGap)
     }
 
     /**.
@@ -102,7 +108,7 @@ class JZRecyclerAdapterFB<TYPE : Any>(
 
     /**.
      * Function That Handles When A RecyclerView Item Is Clicked
-     * @param [itemClick] The invoked function for when the item is clicked (lambda)
+     * @param [itemClicked] The invoked function for when the item is clicked (lambda)
      */
     fun itemClick(itemClicked: ItemClickFB) {
         itemClickFB = itemClicked
@@ -110,7 +116,7 @@ class JZRecyclerAdapterFB<TYPE : Any>(
 
     /**.
      * Function That Handles When A RecyclerView Item Is Long Clicked
-     * @param [itemLongClick] The invoked function for when the item is long clicked (lambda)
+     * @param [itemLongClicked] The invoked function for when the item is long clicked (lambda)
      */
     fun itemLongClick(itemLongClicked: ItemLongClickFB) {
         itemLongClickFB = itemLongClicked
@@ -118,10 +124,38 @@ class JZRecyclerAdapterFB<TYPE : Any>(
 
     /**.
      * Function That Handles When A RecyclerView Item Is Multi-Selected
-     * @param [itemMultiSelect] The invoked function for when the item is multi-selected (lambda)
+     * @param [itemMultiSelected] The invoked function for when the item is multi-selected (lambda)
      */
     fun itemMultiSelect(itemMultiSelected: ItemMultiSelectFB) {
         itemMultiSelectFB = itemMultiSelected
+    }
+
+    /**.
+     * Function That Handles When A RecyclerView Item Is Swiped Left Or Right
+     * @param [itemSwiped] The invoked function for when the item is swiped left or right (lambda)
+     */
+    fun itemSwipe(itemSwiped: ItemSwipeFB) {
+        itemSwipeLeftFB  = itemSwiped
+        itemSwipeRightFB = itemSwiped
+        onItemSwipe()
+    }
+
+    /**.
+     * Function That Handles When A RecyclerView Item Is Swiped Left
+     * @param [itemSwipedLeft] The invoked function for when the item is swiped left (lambda)
+     */
+    fun itemSwipeLeft(itemSwipedLeft: ItemSwipeLeftFB) {
+        itemSwipeLeftFB = itemSwipedLeft
+        onItemSwipe()
+    }
+
+    /**.
+     * Function That Handles When A RecyclerView Item Is Swiped Right
+     * @param [itemSwipedRight] The invoked function for when the item is swiped right (lambda)
+     */
+    fun itemSwipeRight(itemSwipedRight: ItemSwipeRightFB) {
+        itemSwipeRightFB = itemSwipedRight
+        onItemSwipe()
     }
 
     /**.
@@ -136,25 +170,13 @@ class JZRecyclerAdapterFB<TYPE : Any>(
      * Function That Restarts The Adapter
      */
     fun restart() {
+
+        // Reattach The Adapter//
+        recyclerView.adapter = fireBaseAdapter
+
+        // Restart Listening To The Database//
         fireBaseAdapter.stopListening()
         fireBaseAdapter.startListening()
-        attachRecyclerView(recyclerView)
-    }
-
-    /**.
-     * Function That Sets The Amount Of White Space Between Each Item And Underneath The Last Item
-     * @param [gap]     The amount of white space between each item
-     * @param [lastGap] The amount of white space after the last item
-     */
-    fun setSpacing(gap: Int = 60, lastGap: Int = 280) {
-
-        // Removes All The Added Spacing Decorations//
-        while (recyclerView.itemDecorationCount > 0) {
-            recyclerView.removeItemDecorationAt(0)
-        }
-
-        // Adds The New Spacing Decoration
-        recyclerView.addItemDecoration(Spacing(gap, lastGap))
     }
 
     /**.
@@ -210,6 +232,58 @@ class JZRecyclerAdapterFB<TYPE : Any>(
     }
 
     /**.
+     * Function That Handles When A User Swipes An Item
+     */
+    private fun onItemSwipe() {
+
+        // Gets The Touch Directions//
+        var touchDirections = 0
+        when {
+
+            // When Both ItemSwipeLeft And ItemSwipeRight Lambdas Are Being Used//
+            itemSwipeLeftFB != null && itemSwipeRightFB != null -> {
+                touchDirections = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            }
+
+            // When The ItemSwipeLeft Lambda Is Being Used//
+            itemSwipeLeftFB != null -> {
+                touchDirections = ItemTouchHelper.LEFT
+            }
+
+            // When The ItemSwipeRight Lambda Is Being Used//
+            itemSwipeRightFB != null -> {
+                touchDirections = ItemTouchHelper.RIGHT
+            }
+        }
+
+        // Creates The Callback For When An Item Is Swiped//
+        val itemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, touchDirections) {
+
+            // When The User Swipes An Item Left Or Right//
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                when(direction) {
+                    4 -> {
+                        scope.launch { itemSwipeLeftFB?.invoke(viewHolder.adapterPosition) }
+                    }
+                    8 -> {
+                        scope.launch { itemSwipeRightFB?.invoke(viewHolder.adapterPosition) }
+                    }
+                }
+            }
+
+            // Not Implemented//
+            override fun onMove(a: RecyclerView, b: RecyclerView.ViewHolder, c: RecyclerView.ViewHolder): Boolean {
+                return false
+            }
+        }
+
+        // Attaches The Callback To The RecyclerView//
+        val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(null)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
+
+    /**.
      * Function That Handles When The RecyclerView Items Are Scrolling
      */
     private fun onScroll() {
@@ -221,6 +295,17 @@ class JZRecyclerAdapterFB<TYPE : Any>(
                 scope.launch { scrollFB?.invoke(dy) }
             }
         })
+    }
+
+    /**.
+     * Function That Sets The Amount Of White Space Between Each Item And Underneath The Last Item
+     * @param [gap]     The amount of white space between each item
+     * @param [lastGap] The amount of white space after the last item
+     */
+    private fun setSpacing(gap: Int, lastGap: Int) {
+
+        // Adds The New Spacing Decoration
+        recyclerView.addItemDecoration(Spacing(gap, lastGap))
     }
 
     /**
@@ -254,7 +339,7 @@ class JZRecyclerAdapterFB<TYPE : Any>(
         override fun onBindViewHolder(holder: JZRecyclerAdapterFB<TYPE>.ViewHolder, position: Int, model: TYPE) {
 
             // Binds The Layout Nodes With The Model Properties//
-            scope.launch { holder.itemView.views(model) }
+            holder.itemView.views(model, holder.adapterPosition)
 
             // When An RecyclerView Item Is Clicked//
             holder.itemView.setOnClickListener {
