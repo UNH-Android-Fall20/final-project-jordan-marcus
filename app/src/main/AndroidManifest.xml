@@ -17,6 +17,12 @@
         android:supportsRtl         ="true"
         android:theme               ="@style/GreenTheme">
 
+        <!-- Activity EventAdd -->
+        <activity
+            android:name=".event.EventAdd"
+            android:screenOrientation="portrait"
+        />
+
         <!-- Activity EventView -->
         <activity
             android:name=".event.EventView"
@@ -42,6 +48,12 @@
         <!-- Activity SecondaryUserView -->
         <activity
             android:name=".user.controller.crud.SecondaryUserView"
+            android:screenOrientation="portrait"
+        />
+
+        <!-- Activity SeniorTechHelp -->
+        <activity
+            android:name=".event.SeniorTechHelp"
             android:screenOrientation="portrait"
         />
 
