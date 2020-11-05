@@ -68,20 +68,55 @@ class SecondaryUser(
          */
         fun getAll(primaryUserId: String, sort: UserSort): Query {
 
-            // Gets How To Order The Secondary-Users//
-            val orderField = when (sort) {
-                FIRST_NAME   -> "firstName"
-                GRADE        -> "grade"
-                LAST_NAME    -> "lastName"
-                ORGANIZATION -> "organization"
-                TOTAL_TIME   -> "totalTime"
-            }
-
             // Returns The Query//
-            return fireStore
-                .collection("SecondaryUsers")
-                .whereIn("primaryUserId", mutableListOf(primaryUserId))
-                .orderBy(orderField)
+            return when(sort) {
+                FIRST_NAME -> {
+                    fireStore
+                        .collection("SecondaryUsers")
+                        .whereIn("primaryUserId", mutableListOf(primaryUserId))
+                        .orderBy("firstName")
+                        .orderBy("lastName")
+                        .orderBy("grade")
+                        .orderBy("organization")
+                }
+                GRADE -> {
+                    fireStore
+                        .collection("SecondaryUsers")
+                        .whereIn("primaryUserId", mutableListOf(primaryUserId))
+                        .orderBy("grade")
+                        .orderBy("firstName")
+                        .orderBy("lastName")
+                        .orderBy("organization")
+                }
+                LAST_NAME -> {
+                    fireStore
+                        .collection("SecondaryUsers")
+                        .whereIn("primaryUserId", mutableListOf(primaryUserId))
+                        .orderBy("lastName")
+                        .orderBy("firstName")
+                        .orderBy("grade")
+                        .orderBy("organization")
+                }
+                ORGANIZATION -> {
+                    fireStore
+                        .collection("SecondaryUsers")
+                        .whereIn("primaryUserId", mutableListOf(primaryUserId))
+                        .orderBy("organization")
+                        .orderBy("firstName")
+                        .orderBy("lastName")
+                        .orderBy("grade")
+                }
+                TOTAL_TIME -> {
+                    fireStore
+                        .collection("SecondaryUsers")
+                        .whereIn("primaryUserId", mutableListOf(primaryUserId))
+                        .orderBy("totalTime")
+                        .orderBy("firstName")
+                        .orderBy("lastName")
+                        .orderBy("grade")
+                        .orderBy("organization")
+                }
+            }
         }
     }
 
@@ -127,8 +162,8 @@ class SecondaryUser(
 
     /**.
      * Function That Adds A Secondary-User To The Database
-     * @param [loadingBar] Circular progress bar to alert the user when the addition is in progress
-     * @param [icon]       The secondary-user's profile icon
+     * @param [loadingBar]   Circular progress bar to alert the user when the addition is in progress
+     * @param [profileImage] The secondary-user's profile icon
      * @return Whether the secondary-user was added successfully
      */
     suspend fun add(loadingBar: ProgressBar, profileImage: Drawable?): Boolean {
