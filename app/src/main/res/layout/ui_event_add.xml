@@ -302,6 +302,21 @@
         node:layout_constraintEnd_toEndOf           ="parent"
     />
 
+    <!-- ContentLoadingProgressBar progressBar -->
+    <androidx.core.widget.ContentLoadingProgressBar
+        style                                   ="?android:attr/progressBarStyleLarge"
+        android:id                              ="@+id/progressBar"
+        android:indeterminate                   ="true"
+        android:indeterminateTint               ="?colorPrimary"
+        android:visibility                      ="gone"
+        android:layout_height                   ="wrap_content"
+        android:layout_width                    ="wrap_content"
+        node:layout_constraintTop_toTopOf       ="parent"
+        node:layout_constraintBottom_toBottomOf ="parent"
+        node:layout_constraintStart_toStartOf   ="parent"
+        node:layout_constraintEnd_toEndOf       ="parent"
+    />
+
   </androidx.constraintlayout.widget.ConstraintLayout>
 
   <!-- FloatingActionButton fabSaveEvent -->

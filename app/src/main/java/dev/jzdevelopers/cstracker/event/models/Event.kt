@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
+import com.google.firebase.firestore.Exclude
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.common.FireBaseModel
 import dev.jzdevelopers.cstracker.libs.JZActivity
@@ -27,16 +28,16 @@ import java.util.regex.Pattern
  *  @param [userId]            The id of the user that the event belongs to
  */
 class Event(
-    val context        : Context? = null,
-    var date           : String   = "",
-    var endTime        : String   = "0:00",
-    var location       : String   = "",
-    var name           : String   = "",
-    var notes          : String   = "",
-    var peopleInCharge : String   = "",
-    var phoneNumber    : String   = "000-000-0000",
-    var startTime      : String   = "0:00",
-    val userId         : String   = ""
+    @get:Exclude val context : Context? = null,
+    var date                 : String   = "",
+    var endTime              : String   = "0:00",
+    var location             : String   = "",
+    var name                 : String   = "",
+    var notes                : String   = "",
+    var peopleInCharge       : String   = "",
+    var phoneNumber          : String   = "000-000-0000",
+    var startTime            : String   = "0:00",
+    val userId               : String   = ""
 ): FireBaseModel() {
 
     /**.
@@ -44,7 +45,7 @@ class Event(
      * @param [loadingBar] Circular progress bar to alert the user when the addition is in progress
      * @return Whether the event was added successfully
      */
-    override suspend fun add(loadingBar: ProgressBar): Boolean {
+    public override suspend fun add(loadingBar: ProgressBar): Boolean {
         try {
 
             // When Context Is Null//
@@ -90,7 +91,7 @@ class Event(
      * @param [loadingBar] Circular progress bar to alert the user when the edit is in progress
      * @return Whether the event was edited successfully
      */
-    override suspend fun edit(id: String, loadingBar: ProgressBar): Boolean {
+    public override suspend fun edit(id: String, loadingBar: ProgressBar): Boolean {
 
         // Checks If The Event Input Is Valid//
         if (!isValidName()) return false
@@ -109,14 +110,14 @@ class Event(
      * @param [id]         The id of the event
      * @return Whether the event was deleted successfully
      */
-    override suspend fun delete(id: String): Boolean {
+    public override suspend fun delete(id: String): Boolean {
         return false
     }
 
     /**.
      * Function That Shows A General Database Error Dialog
      */
-    protected fun showGeneralError() {
+    private fun showGeneralError() {
 
         // When Context Is Null//
         if (context == null) {
@@ -357,7 +358,7 @@ class Event(
         return try {
 
             // Successfully Find The Phone Number Via Regex//
-            val reg = "^[+]?[0-9]{10,13}\$"
+            val reg = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*\$"
             val p: Pattern = Pattern.compile(reg)
             p.matcher(phoneNumber).find()
             true

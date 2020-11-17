@@ -1,16 +1,11 @@
 package dev.jzdevelopers.cstracker.event.controller
 
-import android.widget.TextView
-import android.widget.Toast
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.common.DatePickerFragment
 import dev.jzdevelopers.cstracker.event.models.Event
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser
-import dev.jzdevelopers.cstracker.user.models.SecondaryUser
 import kotlinx.android.synthetic.main.ui_event_add.*
-import kotlinx.android.synthetic.main.ui_secondary_user_add.*
 
 class EventAdd : JZActivity() {
 
