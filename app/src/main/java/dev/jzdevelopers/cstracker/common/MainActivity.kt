@@ -1,7 +1,7 @@
 package dev.jzdevelopers.cstracker.common
 
 import dev.jzdevelopers.cstracker.R
-import dev.jzdevelopers.cstracker.event.EventView
+import dev.jzdevelopers.cstracker.event.controller.EventView
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.user.controller.authentication.UserActivation
 import dev.jzdevelopers.cstracker.user.controller.authentication.UserSignIn

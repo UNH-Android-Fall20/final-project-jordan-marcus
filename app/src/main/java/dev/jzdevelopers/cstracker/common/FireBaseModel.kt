@@ -49,7 +49,7 @@ abstract class FireBaseModel: Serializable {
      * @param [loadingBar] Circular progress bar to alert the user when the addition is in progress
      * @return Whether the model was added successfully
      */
-    protected abstract suspend fun add(loadingBar: ProgressBar): Boolean
+    abstract suspend fun add(loadingBar: ProgressBar): Boolean
 
     /**.
      * Abstract Function For Deleting A Model In The Database

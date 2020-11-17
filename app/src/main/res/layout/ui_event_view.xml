@@ -9,7 +9,7 @@
     android:padding       ="16dip"
     android:layout_width  ="match_parent"
     android:layout_height ="match_parent"
-    tools:context         =".event.EventView">
+    tools:context         =".event.controller.EventView">
 
   <!-- TextView events -->
   <TextView

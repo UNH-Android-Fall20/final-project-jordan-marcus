@@ -1,6 +1,7 @@
-package dev.jzdevelopers.cstracker.event
+package dev.jzdevelopers.cstracker.event.controller
 
 import dev.jzdevelopers.cstracker.R
+import dev.jzdevelopers.cstracker.event.models.SeniorTechHelp
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import kotlinx.android.synthetic.main.ui_event_view.*
 

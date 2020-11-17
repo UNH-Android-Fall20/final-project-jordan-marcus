@@ -29,11 +29,13 @@
     <string name="password"         > Password         </string>
     <string name="password_confirm" > Confirm Password </string>
     <string name="people_in_charge" > People In Charge </string>
-    <string name="phone_number"     > Phone Number     </string>
+    <string name="phone_number"     > Phone            </string>
 
     <!-- FAB Content Description -->
-    <string name="fab_add"  > Adds a user profile  </string>
-    <string name="fab_save" > Saves a user profile </string>
+    <string name="fab_add"        > Adds a user profile  </string>
+    <string name="fab_add_event"  > Adds a user event    </string>
+    <string name="fab_save"       > Saves a user profile </string>
+    <string name="fab_save_event" > Saves a user event   </string>
 
     <!-- FAB Strings -->
     <string name="check_activation" > Check Activation </string>
@@ -48,6 +50,13 @@
     <string name="error_email_blank"          > The email must not be blank                                                                                </string>
     <string name="error_email_match"          > The text entered is not an email                                                                           </string>
     <string name="error_email_verification"   > Your account is still not verified please try again                                                        </string>
+    <string name="error_event_location_blank" > The event location must not be blank                                                                       </string>
+    <string name="error_event_location_long"  > The event location must be smaller or equal to 100 characters                                              </string>
+    <string name="error_event_name_blank"     > The event name must not be blank                                                                           </string>
+    <string name="error_event_name_long"      > The event name must be smaller or equal to 50 characters                                                   </string>
+    <string name="error_event_incharge_blank" > The event people in charge must not be blank                                                               </string>
+    <string name="error_event_incharge_long"  > The event people in charge must be smaller or equal to 50 characters                                       </string>
+    <string name="error_event_notes_long"     > The event notes must be smaller or equal to 1000 characters                                                </string>
     <string name="error_first_name_blank"     > The first name must not be blank                                                                           </string>
     <string name="error_first_name_long"      > The first name must be smaller or equal to 20 characters                                                   </string>
     <string name="error_first_name_symbol"    > The first name must not contain a symbol                                                                   </string>
@@ -80,7 +89,7 @@
     <string name="back_to_sign_in_text"    > Go back to sign in            </string>
     <string name="end_time"                > End Time                      </string>
     <string name="event_date"              > Date                          </string>
-    <string name="event_date_picker"       > MM-DD-YYYY                    </string>
+    <string name="event_date_picker"       > Pick A Date                   </string>
     <string name="forgot_password_text"    > Forgot password?              </string>
     <string name="name_text"               > name                          </string>
     <string name="name_letter_text"        > A                             </string>

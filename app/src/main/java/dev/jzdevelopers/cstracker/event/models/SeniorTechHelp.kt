@@ -1,4 +1,4 @@
-package dev.jzdevelopers.cstracker.event
+package dev.jzdevelopers.cstracker.event.models
 
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
