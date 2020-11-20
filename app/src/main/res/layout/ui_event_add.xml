@@ -297,7 +297,7 @@
         android:layout_height                       ="wrap_content"
         android:layout_width                        ="0dip"
         node:layout_constraintHorizontal_chainStyle ="spread"
-        node:layout_constraintTop_toBottomOf        ="@id/endTime"
+        node:layout_constraintTop_toBottomOf        ="@id/totalTime"
         node:layout_constraintStart_toEndOf         ="@id/endTimeValue"
         node:layout_constraintEnd_toEndOf           ="parent"
     />
