@@ -26,5 +26,4 @@ enum class UserSort {
     GRADE,
     LAST_NAME,
     ORGANIZATION,
-    TOTAL_TIME
 }

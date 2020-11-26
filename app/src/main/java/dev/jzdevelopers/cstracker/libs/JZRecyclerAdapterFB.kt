@@ -67,15 +67,22 @@ class JZRecyclerAdapterFB<TYPE : Any>(
     private lateinit var recyclerView: RecyclerView
 
     // Define And Initialize Lambda Variables//
-    private var itemClickFB       : ItemClickFB?       = null
-    private var itemLongClickFB   : ItemLongClickFB?   = null
-    private var itemMultiSelectFB : ItemMultiSelectFB? = null
-    private var itemSwipeLeftFB   : ItemSwipeLeftFB?   = null
-    private var itemSwipeRightFB  : ItemSwipeRightFB?  = null
-    private var scrollFB          : ScrollFB?          = null
+    private var itemClickFB       : ItemClickFB?               = null
+    private var itemLongClickFB   : ItemLongClickFB?           = null
+    private var itemMultiSelectFB : ItemMultiSelectFB?         = null
+    private var itemSwipeLeftFB   : ItemSwipeLeftFB?           = null
+    private var itemSwipeRightFB  : ItemSwipeRightFB?          = null
+    private var scrollFB          : ScrollFB?                  = null
+    private var searchConditional : ((item: TYPE) -> Boolean)? = null
+
+    // Define And Initialize Boolean Variable//
+    private var isSearch = false
 
     // Define And Instantiates ArrayList Value//
     private val multiSelectedList = ArrayList<Int>()
+
+    // Define And Instantiates MutableList Value//
+    private val searchItems: MutableList<TYPE> = mutableListOf()
 
     //</editor-fold>
 
@@ -103,7 +110,24 @@ class JZRecyclerAdapterFB<TYPE : Any>(
      * @return The item
      */
     fun getItemId(position: Int): String {
-        return fireBaseAdapter.snapshots.getSnapshot(position).id
+
+        // When Nothing Is Being Searched//
+        if (!isSearch) return fireBaseAdapter.snapshots.getSnapshot(position).id
+
+        // Gets The Searched Item At A Given Position//
+        val searchedItem = searchItems[position]
+
+        // Finds The Real Position Of The Searched Item//
+        fireBaseAdapter.snapshots.forEachIndexed { index, model ->
+            if (model == searchedItem) {
+
+                // Returns The Id Of The Searched Item//
+                return fireBaseAdapter.snapshots.getSnapshot(index).id
+            }
+        }
+
+        // Returns Empty String//
+        return ""
     }
 
     /**.
@@ -171,12 +195,34 @@ class JZRecyclerAdapterFB<TYPE : Any>(
      */
     fun restart() {
 
+        // Clear Multi-Selected List//
+        multiSelectedList.clear()
+
+        // Sets That Searching Is Not Occurring//
+        isSearch = false
+
         // Reattach The Adapter//
         recyclerView.adapter = fireBaseAdapter
 
         // Restart Listening To The Database//
         fireBaseAdapter.stopListening()
         fireBaseAdapter.startListening()
+    }
+
+    /**.
+     * Function That Searches Items
+     * @param [searchConditional] - The invoked conditional function for what item fits the search criteria
+     */
+    fun search (searchConditional: (item: TYPE) -> Boolean) {
+
+        // Sets The Lambda And That A Search is Happening//
+        this.searchConditional = searchConditional
+
+        // Sets That Searching Is Occurring//
+        isSearch = true
+
+        // Notifies Firestore That The Data Has Changed//
+        fireBaseAdapter.notifyDataSetChanged()
     }
 
     /**.
@@ -381,6 +427,47 @@ class JZRecyclerAdapterFB<TYPE : Any>(
                 }
                 return@setOnLongClickListener true
             }
+        }
+
+        /**.
+         * Function That Gets The Item At The Specified Position From The Backing Snapshot Array
+         * @return The item
+         */
+        override fun getItem(position: Int): TYPE {
+
+            // When Nothing Is Being Searched//
+            if (!isSearch) return super.getItem(position)
+
+            // Returns The Searched Item At A Given Position//
+            return searchItems[position]
+        }
+
+        /**.
+         * Function That Gets The Size Of The Snapshots In The Adapter
+         * @return The total count of snapshots in the adapter
+         */
+        override fun getItemCount(): Int {
+
+            // When Nothing Is Being Searched//
+            if (!isSearch) return super.getItemCount()
+
+            // Clears The Search Items//
+            searchItems.clear()
+
+            // Goes Through All Of The Positions Found//
+            for (position in 0 until super.getItemCount()) {
+
+                // Gets The item At The Found Position//
+                val item = super.getItem(position)
+
+                // When An Item Fits The Search Criteria//
+                if (searchConditional?.invoke(item) == true) {
+                    searchItems.add(item)
+                }
+            }
+
+            // Returns The Size Of The Searched Items//
+            return searchItems.size
         }
     }
 

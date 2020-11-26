@@ -246,7 +246,7 @@
       android:src                ="@drawable/save"
       android:layout_height      ="wrap_content"
       android:layout_width       ="wrap_content"
-      node:backgroundTint        ="?colorPrimary"
+      node:backgroundTint        ="?colorPrimaryDark"
       node:fabSize               ="normal"
       node:layout_anchor         ="@id/bottomBar"
       node:rippleColor           ="?attr/rippleColor"

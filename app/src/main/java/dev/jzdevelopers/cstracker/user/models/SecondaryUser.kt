@@ -106,31 +106,8 @@ class SecondaryUser(
                         .orderBy("lastName")
                         .orderBy("grade")
                 }
-                TOTAL_TIME -> {
-                    fireStore
-                        .collection("SecondaryUsers")
-                        .whereIn("primaryUserId", mutableListOf(primaryUserId))
-                        .orderBy("totalTime")
-                        .orderBy("firstName")
-                        .orderBy("lastName")
-                        .orderBy("grade")
-                        .orderBy("organization")
-                }
             }
         }
-    }
-
-    /**.
-     * Function That Gets The Profile-Image Reference
-     * @return The profile-image reference
-     */
-    fun profileImageReference(): StorageReference? {
-
-        // When The Icon Id Is Empty//
-        if (profileImageId == "") return null
-
-        // Returns The Icon Reference//
-        return appStorage.child("android/cs-tracker/$profileImageId")
     }
 
     /**.
@@ -158,6 +135,19 @@ class SecondaryUser(
             showGeneralError()
             false
         }
+    }
+
+    /**.
+     * Function That Gets The Profile-Image Reference
+     * @return The profile-image reference
+     */
+    fun profileImageReference(): StorageReference? {
+
+        // When The Icon Id Is Empty//
+        if (profileImageId == "") return null
+
+        // Returns The Icon Reference//
+        return appStorage.child("android/cs-tracker/$profileImageId")
     }
 
     /**.
@@ -210,8 +200,7 @@ class SecondaryUser(
             Log.v("Secondary_User", "Secondary user [$firstName $lastName] has been added to primary user id: $primaryUserId")
             return true
         }
-        catch (e: Exception) {
-            e.printStackTrace()
+        catch (_: Exception) {
             loadingBar.visibility = View.GONE
             showGeneralError()
             return false
@@ -302,12 +291,8 @@ class SecondaryUser(
      */
     private fun isValidGoal(): Boolean {
 
-        // When Context Is Null//
-        if (context == null) {
-
-            // Throws A Runtime Error//
-            throw NullPointerException("Context must not be null")
-        }
+        // Gets The Context If It Exists//
+        val context = context ?: throw NullPointerException("Context must not be null")
 
         // Checks The Goal For Validity//
         return when {
@@ -333,12 +318,8 @@ class SecondaryUser(
      */
     private fun isValidGrade(): Boolean {
 
-        // When Context Is Null//
-        if (context == null) {
-
-            // Throws A Runtime Error//
-            throw NullPointerException("Context must not be null")
-        }
+        // Gets The Context If It Exists//
+        val context = context ?: throw NullPointerException("Context must not be null")
 
         // Checks The Grade For Validity//
         return when {
@@ -364,12 +345,8 @@ class SecondaryUser(
      */
     private fun isValidOrganization(): Boolean {
 
-        // When Context Is Null//
-        if (context == null) {
-
-            // Throws A Runtime Error//
-            throw NullPointerException("Context must not be null")
-        }
+        // Gets The Context If It Exists//
+        val context = context ?: throw NullPointerException("Context must not be null")
 
         // Checks The Organization For Validity//
         return when {

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Menu For Activity UserView -->
+<menu
+    xmlns:android ="http://schemas.android.com/apk/res/android"
+    xmlns:app     ="http://schemas.android.com/apk/res-auto"
+    xmlns:tools   ="http://schemas.android.com/tools"
+    tools:context =".user.controller.crud.SecondaryUserView">
+
+    <!-- Item clear -->
+    <item
+        android:id              ="@+id/clear"
+        android:icon            ="@drawable/menu_clear"
+        android:orderInCategory ="3"
+        android:title           ="@string/menu_clear"
+        app:showAsAction        ="ifRoom"
+    />
+
+    <!-- Item delete -->
+    <item
+        android:id              ="@+id/delete"
+        android:icon            ="@drawable/menu_delete"
+        android:orderInCategory ="1"
+        android:title           ="@string/menu_delete"
+        app:showAsAction        ="ifRoom"
+    />
+
+    <!-- Item edit -->
+    <item
+        android:id              ="@+id/edit"
+        android:icon            ="@drawable/menu_edit"
+        android:orderInCategory ="2"
+        android:title           ="@string/menu_edit"
+        app:showAsAction        ="ifRoom"
+    />
+</menu>

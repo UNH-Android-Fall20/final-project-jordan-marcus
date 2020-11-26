@@ -5,7 +5,7 @@ import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.user.common.UserTheme.GREEN
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser.Companion.activate
-import dev.jzdevelopers.cstracker.user.models.User.Companion.isSignedIn
+import dev.jzdevelopers.cstracker.user.models.PrimaryUser.Companion.isSignedIn
 import kotlinx.android.synthetic.main.ui_user_sign_up.*
 
 /** Android Activity UserSignUp,
@@ -55,7 +55,7 @@ class UserSignUp: JZActivity() {
             val primaryUser  = PrimaryUser(this, firstName, lastName, GREEN, isMultiUser, email)
             val isSuccessful = primaryUser.add(progressBar, password, confirmPassword)
             if (!isSuccessful) return@click
-            if (!isSignedIn()) {
+            if (!isSignedIn(this)) {
 
                 // Shows The Error Dialog//
                 showGeneralDialog(

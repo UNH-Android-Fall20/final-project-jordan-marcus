@@ -8,10 +8,10 @@
 
         <!-- Default Android Specific Theme Options -->
         <item name="android:navigationBarColor" >@color/green      </item>
+        <item name="android:radioButtonStyle"   >@color/green      </item>
         <item name="android:statusBarColor"     >@color/white      </item>
         <item name="android:textColorHighlight" >@color/greenLight </item>
-        <item name="android:radioButtonStyle"   >@color/green      </item>
-        <item name="colorAccent"                >@color/green      </item>
+        <item name="colorAccent"                >@color/greenDark  </item>
         <item name="colorPrimary"               >@color/green      </item>
         <item name="colorPrimaryDark"           >@color/greenDark  </item>
 

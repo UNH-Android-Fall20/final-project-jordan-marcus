@@ -45,6 +45,12 @@
             android:screenOrientation="portrait"
         />
 
+        <!-- Activity SecondaryUserEdit -->
+        <activity
+            android:name=".user.controller.crud.SecondaryUserEdit"
+            android:screenOrientation="portrait"
+        />
+
         <!-- Activity SecondaryUserView -->
         <activity
             android:name=".user.controller.crud.SecondaryUserView"

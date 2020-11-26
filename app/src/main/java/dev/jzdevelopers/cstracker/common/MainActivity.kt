@@ -8,7 +8,7 @@ import dev.jzdevelopers.cstracker.user.controller.authentication.UserSignIn
 import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser.Companion.getCachedMultiUser
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser.Companion.isActivated
-import dev.jzdevelopers.cstracker.user.models.User.Companion.isSignedIn
+import dev.jzdevelopers.cstracker.user.models.PrimaryUser.Companion.isSignedIn
 
 /** Android Activity MainActivity
  *  Activity That Starts When The Application Is Open
@@ -49,7 +49,7 @@ class MainActivity: JZActivity() {
     private suspend fun checkSignInStatus() {
 
         // When The Primary-User Is Not Signed In//
-        if (!isSignedIn()) {
+        if (!isSignedIn(this)) {
             startActivity(UserSignIn::class, false)
             return
         }

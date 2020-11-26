@@ -6,7 +6,7 @@ import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser.Companion.getCachedMultiUser
-import dev.jzdevelopers.cstracker.user.models.User.Companion.isSignedIn
+import dev.jzdevelopers.cstracker.user.models.PrimaryUser.Companion.isSignedIn
 import kotlinx.android.synthetic.main.ui_user_sign_in.*
 
 /** Android Activity UserSignIn,
@@ -74,10 +74,10 @@ class UserSignIn: JZActivity() {
     /**.
      * Function That Signs The User In
      */
-    private fun signInUser() {
+    private suspend fun signInUser() {
 
         // When The Primary-User Is Not Signed In//
-        if (!isSignedIn()) return
+        if (!isSignedIn(this)) return
 
         // Gets The Primary-User's Multi-User Preference//
         val isMultiUser = getCachedMultiUser(this)
