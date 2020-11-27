@@ -692,13 +692,16 @@ abstract class JZActivity: AppCompatActivity() {
 
         /**.
          * Function That Sets A Custom Navigation Bar Color And Icon Tint
-         * @param [color]       The color resource
+         * @param [color]       The color resource, default is the style item 'colorPrimary'
          * @param [isDarkIcons] Whether the navigation bar icon tint should be dark
          */
         fun navigationColor(@ColorRes color: Int? = null, isDarkIcons: Boolean) {
 
-            // When A Custom Navigation Bar Color Is Set//
-            if (color != null) window.navigationBarColor = getColorCompat(color)
+            // When A Color Exists Or Not//
+            when (color) {
+                null -> window.navigationBarColor = getColorAttr(R.attr.colorPrimary)
+                else -> window.navigationBarColor = getColorCompat(color)
+            }
 
             // Sets The Icon Color of The System Bars//
             isDarkIconsNavigation = isDarkIcons
@@ -707,13 +710,16 @@ abstract class JZActivity: AppCompatActivity() {
 
         /**.
          * Function That Sets A Custom Status Bar Color And Icon Tint
-         * @param [color]       The color resource
+         * @param [color]       The color resource, default is the style item 'colorPrimaryDark'
          * @param [isDarkIcons] Whether the status bar icon tint should be dark
          */
         fun statusBarColor(@ColorRes color: Int? = null, isDarkIcons: Boolean) {
 
-            // When A Custom Status Bar Color Is Set//
-            if (color != null) window.statusBarColor = getColorCompat(color)
+            // When A Color Exists Or Not//
+            when (color) {
+                null -> window.statusBarColor = getColorAttr(R.attr.colorPrimaryDark)
+                else -> window.statusBarColor = getColorCompat(color)
+            }
 
             // Sets The Icon Color of The System Bars//
             isDarkIconsStatus = isDarkIcons
@@ -739,6 +745,8 @@ abstract class JZActivity: AppCompatActivity() {
 
             // Sets The Theme And Layout//
             setTheme(theme)
+            navigationColor(isDarkIcons = false)
+            statusBarColor(isDarkIcons = false)
             setContentView(layout)
         }
 

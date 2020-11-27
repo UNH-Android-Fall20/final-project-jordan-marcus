@@ -7,6 +7,7 @@ import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
+import dev.jzdevelopers.cstracker.settings.Theme
 import dev.jzdevelopers.cstracker.user.common.UserTheme
 import dev.jzdevelopers.cstracker.user.common.UserTheme.*
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser
@@ -38,8 +39,16 @@ class SecondaryUserAdd: JZActivity() {
         // Creates The UI//
         createUI(R.layout.ui_secondary_user_add_edit) {
 
-            // Sets The Icon Color of The System Bars//
-            statusBarColor(isDarkIcons = true)
+            // Sets The Theme//
+            val theme = Theme.getAppTheme(this@SecondaryUserAdd)
+            theme(theme)
+
+            // Sets The Status Bar Color And Icon Color//
+            val statusBarColor = Theme.getStatusBarColor(this@SecondaryUserAdd)
+            when(statusBarColor) {
+                R.color.white -> statusBarColor(statusBarColor, true)
+                else          -> statusBarColor(statusBarColor, false)
+            }
         }
     }
 
@@ -145,18 +154,18 @@ class SecondaryUserAdd: JZActivity() {
 
             // Set SeekBar Title Based On SeekBar Progress//
             when(progress) {
-                DEFAULT.ordinal -> userThemeText.setText(R.string.user_theme_default_text)
-                RED.ordinal     -> userThemeText.setText(R.string.user_theme_red_text)
-                ORANGE.ordinal  -> userThemeText.setText(R.string.user_theme_orange_text)
-                YELLOW.ordinal  -> userThemeText.setText(R.string.user_theme_yellow_text)
-                GREEN.ordinal   -> userThemeText.setText(R.string.user_theme_green_text)
-                BLUE.ordinal    -> userThemeText.setText(R.string.user_theme_blue_text)
-                INDIGO.ordinal  -> userThemeText.setText(R.string.user_theme_indigo_text)
-                VIOLET.ordinal  -> userThemeText.setText(R.string.user_theme_violet_text)
-                PINK.ordinal    -> userThemeText.setText(R.string.user_theme_pink_text)
-                TEAL.ordinal    -> userThemeText.setText(R.string.user_theme_teal_text)
-                BROWN.ordinal   -> userThemeText.setText(R.string.user_theme_brown_text)
-                BLACK.ordinal   -> userThemeText.setText(R.string.user_theme_black_text)
+                DEFAULT.ordinal -> textUserTheme.setText(R.string.user_theme_default_text)
+                RED.ordinal     -> textUserTheme.setText(R.string.user_theme_red_text)
+                ORANGE.ordinal  -> textUserTheme.setText(R.string.user_theme_orange_text)
+                YELLOW.ordinal  -> textUserTheme.setText(R.string.user_theme_yellow_text)
+                GREEN.ordinal   -> textUserTheme.setText(R.string.user_theme_green_text)
+                BLUE.ordinal    -> textUserTheme.setText(R.string.user_theme_blue_text)
+                INDIGO.ordinal  -> textUserTheme.setText(R.string.user_theme_indigo_text)
+                VIOLET.ordinal  -> textUserTheme.setText(R.string.user_theme_violet_text)
+                PINK.ordinal    -> textUserTheme.setText(R.string.user_theme_pink_text)
+                TEAL.ordinal    -> textUserTheme.setText(R.string.user_theme_teal_text)
+                BROWN.ordinal   -> textUserTheme.setText(R.string.user_theme_brown_text)
+                BLACK.ordinal   -> textUserTheme.setText(R.string.user_theme_black_text)
             }
         }
 

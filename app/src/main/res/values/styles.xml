@@ -3,26 +3,354 @@
 <!-- Android Global Style Themes For Application -->
 <resources>
 
+    <!-- Red Theme -->
+    <style name="RedTheme" parent="Theme.MaterialComponents.Light.NoActionBar" >
+
+        <!-- Default Android Specific Theme Options -->
+        <item name="android:radioButtonStyle"   >@color/red      </item>
+        <item name="android:textColorHighlight" >@color/redLight </item>
+        <item name="android:textColor"          >@color/red      </item>
+        <item name="colorAccent"                >@color/redDark  </item>
+        <item name="colorPrimary"               >@color/red      </item>
+        <item name="colorPrimaryDark"           >@color/redDark  </item>
+
+        <!-- Custom Theme Options -->
+        <item name="ripplePrimary" >@color/white </item>
+        <item name="rippleAccent"  >@color/red   </item>
+        <item name="layoutPrimary" >@color/white </item>
+
+        <!-- Material Dialog Options -->
+        <item name="md_color_button_text" >@color/red       </item>
+        <item name="md_color_content"     >@color/blackOled </item>
+        <item name="md_color_title"       >@color/redDark   </item>
+        <item name="md_corner_radius"     >16dp             </item>
+
+        <!-- Menu Item Options -->
+        <item name="popupMenuStyle">@style/PopupStyle</item>
+
+    </style>
+
+    <!-- Orange Theme -->
+    <style name="OrangeTheme" parent="Theme.MaterialComponents.Light.NoActionBar" >
+
+        <!-- Default Android Specific Theme Options -->
+        <item name="android:radioButtonStyle"   >@color/orange      </item>
+        <item name="android:textColorHighlight" >@color/orangeLight </item>
+        <item name="android:textColor"          >@color/orange      </item>
+        <item name="colorAccent"                >@color/orangeDark  </item>
+        <item name="colorPrimary"               >@color/orange      </item>
+        <item name="colorPrimaryDark"           >@color/orangeDark  </item>
+
+        <!-- Custom Theme Options -->
+        <item name="ripplePrimary" >@color/white  </item>
+        <item name="rippleAccent"  >@color/orange </item>
+        <item name="layoutPrimary" >@color/white  </item>
+
+        <!-- Material Dialog Options -->
+        <item name="md_color_button_text" >@color/orange     </item>
+        <item name="md_color_content"     >@color/blackOled  </item>
+        <item name="md_color_title"       >@color/orangeDark </item>
+        <item name="md_corner_radius"     >16dp              </item>
+
+        <!-- Menu Item Options -->
+        <item name="popupMenuStyle">@style/PopupStyle</item>
+
+    </style>
+
+    <!-- Yellow Theme -->
+    <style name="YellowTheme" parent="Theme.MaterialComponents.Light.NoActionBar" >
+
+        <!-- Default Android Specific Theme Options -->
+        <item name="android:radioButtonStyle"   >@color/yellow     </item>
+        <item name="android:textColorHighlight" >@color/yellowDark </item>
+        <item name="android:textColor"          >@color/yellow     </item>
+        <item name="colorAccent"                >@color/yellowDark </item>
+        <item name="colorPrimary"               >@color/yellow     </item>
+        <item name="colorPrimaryDark"           >@color/yellowDark </item>
+
+        <!-- Custom Theme Options -->
+        <item name="ripplePrimary" >@color/white  </item>
+        <item name="rippleAccent"  >@color/yellow </item>
+        <item name="layoutPrimary" >@color/white  </item>
+
+        <!-- Material Dialog Options -->
+        <item name="md_color_button_text" >@color/yellow     </item>
+        <item name="md_color_content"     >@color/blackOled  </item>
+        <item name="md_color_title"       >@color/yellowDark </item>
+        <item name="md_corner_radius"     >16dp              </item>
+
+        <!-- Menu Item Options -->
+        <item name="popupMenuStyle">@style/PopupStyle</item>
+
+    </style>
+
     <!-- Green Theme -->
     <style name="GreenTheme" parent="Theme.MaterialComponents.Light.NoActionBar" >
 
         <!-- Default Android Specific Theme Options -->
-        <item name="android:navigationBarColor" >@color/green      </item>
         <item name="android:radioButtonStyle"   >@color/green      </item>
-        <item name="android:statusBarColor"     >@color/white      </item>
         <item name="android:textColorHighlight" >@color/greenLight </item>
+        <item name="android:textColor"          >@color/green      </item>
         <item name="colorAccent"                >@color/greenDark  </item>
         <item name="colorPrimary"               >@color/green      </item>
         <item name="colorPrimaryDark"           >@color/greenDark  </item>
 
         <!-- Custom Theme Options -->
-        <item name="rippleColor" >@color/white </item>
+        <item name="ripplePrimary" >@color/white </item>
+        <item name="rippleAccent"  >@color/green </item>
+        <item name="layoutPrimary" >@color/white </item>
 
         <!-- Material Dialog Options -->
         <item name="md_color_button_text" >@color/green     </item>
         <item name="md_color_content"     >@color/blackOled </item>
         <item name="md_color_title"       >@color/green     </item>
         <item name="md_corner_radius"     >16dp             </item>
+
+        <!-- Menu Item Options -->
+        <item name="popupMenuStyle">@style/PopupStyle</item>
+
+    </style>
+
+    <!-- Blue Theme -->
+    <style name="BlueTheme" parent="Theme.MaterialComponents.Light.NoActionBar" >
+
+        <!-- Default Android Specific Theme Options -->
+        <item name="android:radioButtonStyle"   >@color/blue      </item>
+        <item name="android:textColorHighlight" >@color/blueLight </item>
+        <item name="android:textColor"          >@color/blue      </item>
+        <item name="colorAccent"                >@color/blueDark  </item>
+        <item name="colorPrimary"               >@color/blue      </item>
+        <item name="colorPrimaryDark"           >@color/blueDark  </item>
+
+        <!-- Custom Theme Options -->
+        <item name="ripplePrimary" >@color/white </item>
+        <item name="rippleAccent"  >@color/blue  </item>
+        <item name="layoutPrimary" >@color/white </item>
+
+        <!-- Material Dialog Options -->
+        <item name="md_color_button_text" >@color/blue      </item>
+        <item name="md_color_content"     >@color/blackOled </item>
+        <item name="md_color_title"       >@color/blue      </item>
+        <item name="md_corner_radius"     >16dp             </item>
+
+        <!-- Menu Item Options -->
+        <item name="popupMenuStyle">@style/PopupStyle</item>
+
+    </style>
+
+    <!-- Indigo Theme -->
+    <style name="IndigoTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <!-- Default Android Specific Theme Options -->
+        <item name="android:radioButtonStyle"   >@color/indigo      </item>
+        <item name="android:textColorHighlight" >@color/indigoLight </item>
+        <item name="android:textColor"          >@color/indigo      </item>
+        <item name="colorAccent"                >@color/indigoDark  </item>
+        <item name="colorPrimary"               >@color/indigo      </item>
+        <item name="colorPrimaryDark"           >@color/indigoDark  </item>
+
+        <!-- Custom Theme Options -->
+        <item name="ripplePrimary" >@color/white  </item>
+        <item name="rippleAccent"  >@color/indigo </item>
+        <item name="layoutPrimary" >@color/white </item>
+
+        <!-- Material Dialog Options -->
+        <item name="md_color_button_text" >@color/indigo    </item>
+        <item name="md_color_content"     >@color/blackOled </item>
+        <item name="md_color_title"       >@color/indigo    </item>
+        <item name="md_corner_radius"     >16dp             </item>
+
+        <!-- Menu Item Options -->
+        <item name="popupMenuStyle">@style/PopupStyle</item>
+
+    </style>
+
+    <!-- Violet Theme -->
+    <style name="VioletTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <!-- Default Android Specific Theme Options -->
+        <item name="android:radioButtonStyle"   >@color/violet      </item>
+        <item name="android:textColorHighlight" >@color/violetLight </item>
+        <item name="android:textColor"          >@color/violet      </item>
+        <item name="colorAccent"                >@color/violetDark  </item>
+        <item name="colorPrimary"               >@color/violet      </item>
+        <item name="colorPrimaryDark"           >@color/violetDark  </item>
+
+        <!-- Custom Theme Options -->
+        <item name="ripplePrimary" >@color/white  </item>
+        <item name="rippleAccent"  >@color/violet </item>
+        <item name="layoutPrimary" >@color/white  </item>
+
+        <!-- Material Dialog Options -->
+        <item name="md_color_button_text" >@color/violet    </item>
+        <item name="md_color_content"     >@color/blackOled </item>
+        <item name="md_color_title"       >@color/violet    </item>
+        <item name="md_corner_radius"     >16dp             </item>
+
+        <!-- Menu Item Options -->
+        <item name="popupMenuStyle">@style/PopupStyle</item>
+
+    </style>
+
+    <!-- Pink Theme -->
+    <style name="PinkTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <!-- Default Android Specific Theme Options -->
+        <item name="android:radioButtonStyle"   >@color/pink      </item>
+        <item name="android:textColorHighlight" >@color/pinkLight </item>
+        <item name="android:textColor"          >@color/pink      </item>
+        <item name="colorAccent"                >@color/pinkDark  </item>
+        <item name="colorPrimary"               >@color/pink      </item>
+        <item name="colorPrimaryDark"           >@color/pinkDark  </item>
+
+        <!-- Custom Theme Options -->
+        <item name="ripplePrimary" >@color/white </item>
+        <item name="rippleAccent"  >@color/pink  </item>
+        <item name="layoutPrimary" >@color/white </item>
+
+        <!-- Material Dialog Options -->
+        <item name="md_color_button_text" >@color/pink      </item>
+        <item name="md_color_content"     >@color/blackOled </item>
+        <item name="md_color_title"       >@color/pink      </item>
+        <item name="md_corner_radius"     >16dp             </item>
+
+        <!-- Menu Item Options -->
+        <item name="popupMenuStyle">@style/PopupStyle</item>
+
+    </style>
+
+    <!-- Teal Theme -->
+    <style name="TealTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <!-- Default Android Specific Theme Options -->
+        <item name="android:radioButtonStyle"   >@color/teal      </item>
+        <item name="android:textColorHighlight" >@color/tealLight </item>
+        <item name="android:textColor"          >@color/teal      </item>
+        <item name="colorAccent"                >@color/tealDark  </item>
+        <item name="colorPrimary"               >@color/teal      </item>
+        <item name="colorPrimaryDark"           >@color/tealDark  </item>
+
+        <!-- Custom Theme Options -->
+        <item name="ripplePrimary" >@color/white </item>
+        <item name="rippleAccent"  >@color/teal  </item>
+        <item name="layoutPrimary" >@color/white </item>
+
+        <!-- Material Dialog Options -->
+        <item name="md_color_button_text" >@color/teal      </item>
+        <item name="md_color_content"     >@color/blackOled </item>
+        <item name="md_color_title"       >@color/teal      </item>
+        <item name="md_corner_radius"     >16dp             </item>
+
+        <!-- Menu Item Options -->
+        <item name="popupMenuStyle">@style/PopupStyle</item>
+
+    </style>
+
+    <!-- Brown Theme -->
+    <style name="BrownTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <!-- Default Android Specific Theme Options -->
+        <item name="android:radioButtonStyle"   >@color/brown      </item>
+        <item name="android:textColorHighlight" >@color/brownLight </item>
+        <item name="android:textColor"          >@color/brown      </item>
+        <item name="colorAccent"                >@color/brownDark  </item>
+        <item name="colorPrimary"               >@color/brown      </item>
+        <item name="colorPrimaryDark"           >@color/brownDark  </item>
+
+        <!-- Custom Theme Options -->
+        <item name="ripplePrimary" >@color/white </item>
+        <item name="rippleAccent"  >@color/brown </item>
+        <item name="layoutPrimary" >@color/white </item>
+
+        <!-- Material Dialog Options -->
+        <item name="md_color_button_text" >@color/brown     </item>
+        <item name="md_color_content"     >@color/blackOled </item>
+        <item name="md_color_title"       >@color/brown     </item>
+        <item name="md_corner_radius"     >16dp             </item>
+
+        <!-- Menu Item Options -->
+        <item name="popupMenuStyle">@style/PopupStyle</item>
+
+    </style>
+
+    <!-- Matte Black Theme -->
+    <style name="MatteBlackTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <!-- Default Android Specific Theme Options -->
+        <item name="android:radioButtonStyle"   >@color/grey     </item>
+        <item name="android:textColorHighlight" >@color/grey     </item>
+        <item name="android:textColor"          >@color/grey     </item>
+        <item name="colorAccent"                >@color/greyDark </item>
+        <item name="colorPrimary"               >@color/grey     </item>
+        <item name="colorPrimaryDark"           >@color/greyDark </item>
+
+        <!-- Custom Theme Options -->
+        <item name="ripplePrimary" >@color/white      </item>
+        <item name="rippleAccent"  >@color/grey       </item>
+        <item name="layoutPrimary" >@color/blackMatte </item>
+
+        <!-- Material Dialog Options -->
+        <item name="md_background_color"  >@color/blackMatte </item>
+        <item name="md_color_button_text" >@color/grey       </item>
+        <item name="md_color_content"     >@color/grey       </item>
+        <item name="md_color_title"       >@color/grey       </item>
+        <item name="md_corner_radius"     >16dp              </item>
+
+        <!-- Menu Item Options -->
+        <item name="popupMenuStyle">@style/PopupStyle</item>
+
+    </style>
+
+    <!-- OLED Black Theme -->
+    <style name="OledBlackTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <!-- Default Android Specific Theme Options -->
+        <item name="android:radioButtonStyle"   >@color/grey     </item>
+        <item name="android:textColorHighlight" >@color/grey     </item>
+        <item name="android:textColor"          >@color/grey     </item>
+        <item name="colorAccent"                >@color/greyDark </item>
+        <item name="colorPrimary"               >@color/grey     </item>
+        <item name="colorPrimaryDark"           >@color/greyDark </item>
+
+        <!-- Custom Theme Options -->
+        <item name="ripplePrimary" >@color/white     </item>
+        <item name="rippleAccent"  >@color/grey      </item>
+        <item name="layoutPrimary" >@color/blackOled </item>
+
+        <!-- Material Dialog Options -->
+        <item name="md_background_color"  >@color/blackMatte </item>
+        <item name="md_color_button_text" >@color/grey       </item>
+        <item name="md_color_content"     >@color/grey       </item>
+        <item name="md_color_title"       >@color/grey       </item>
+        <item name="md_corner_radius"     >16dp              </item>
+
+        <!-- Menu Item Options -->
+        <item name="popupMenuStyle">@style/PopupStyle</item>
+
+    </style>
+
+    <!-- White Theme -->
+    <style name="WhiteTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <!-- Default Android Specific Theme Options -->
+        <item name="android:radioButtonStyle"   >@color/white </item>
+        <item name="android:textColorHighlight" >@color/white </item>
+        <item name="android:textColor"          >@color/white </item>
+        <item name="colorAccent"                >@color/white </item>
+        <item name="colorPrimary"               >@color/white </item>
+        <item name="colorPrimaryDark"           >@color/white </item>
+
+        <!-- Custom Theme Options -->
+        <item name="ripplePrimary" >@color/white </item>
+        <item name="rippleAccent"  >@color/white </item>
+        <item name="layoutPrimary" >@color/white </item>
+
+        <!-- Material Dialog Options -->
+        <item name="md_background_color"  >@color/white </item>
+        <item name="md_color_button_text" >@color/white </item>
+        <item name="md_color_content"     >@color/white </item>
+        <item name="md_color_title"       >@color/white </item>
+        <item name="md_corner_radius"     >16dp         </item>
 
         <!-- Menu Item Options -->
         <item name="popupMenuStyle">@style/PopupStyle</item>

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- CoordinatorLayout UI For Class SecondaryUserAdd -->
+<!-- CoordinatorLayout UI For Class SecondaryUserAdd/Edit -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android         ="http://schemas.android.com/apk/res/android"
     xmlns:node            ="http://schemas.android.com/apk/res-auto"
     xmlns:tools           ="http://schemas.android.com/tools"
+    android:background    ="?attr/layoutPrimary"
     android:layout_height ="match_parent"
     android:layout_width  ="match_parent" >
 
-  <!-- ConstraintLayout UI For Class SecondaryUserAdd -->
+  <!-- ConstraintLayout UI For Class SecondaryUserAdd/Edit -->
   <androidx.constraintlayout.widget.ConstraintLayout
       android:id            ="@+id/uiSecondaryUserAdd"
       android:padding       ="16dip"
@@ -16,9 +17,9 @@
       android:layout_width  ="match_parent"
       tools:context         =".user.controller.authentication.UserSignIn">
 
-    <!-- TextView secondaryUserAdd -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id                        ="@+id/secondaryUserAdd"
+    <!-- TextView activitySecondaryUserAdd -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id                        ="@+id/activitySecondaryUserAdd"
         android:gravity                   ="center"
         android:text                      ="@string/secondary_user_add"
         android:textColor                 ="?colorPrimary"
@@ -38,12 +39,12 @@
         android:layout_width                  ="70dip"
         node:civ_border_color                 ="?colorPrimary"
         node:civ_border_width                 ="2dip"
-        node:layout_constraintTop_toBottomOf  ="@id/secondaryUserAdd"
+        node:layout_constraintTop_toBottomOf  ="@id/activitySecondaryUserAdd"
         node:layout_constraintStart_toStartOf ="parent"
     />
 
     <!-- TextView nameLetter -->
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                              ="@+id/nameLetter"
         android:gravity                         ="center"
         android:text                            ="@string/name_letter_text"
@@ -63,6 +64,7 @@
         android:id                                  ="@+id/firstNameBox"
         style                                       ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:paddingEnd                          ="5dip"
+        android:textColorHint                       ="@color/greyDark"
         android:layout_marginTop                    ="3dip"
         android:layout_marginStart                  ="16dip"
         android:layout_height                       ="wrap_content"
@@ -81,6 +83,7 @@
           android:hint          ="@string/first_name"
           android:inputType     ="text"
           android:lines         ="1"
+          android:textColor     ="@color/greyDark"
           android:layout_height ="wrap_content"
           android:layout_width  ="match_parent"
       />
@@ -92,6 +95,7 @@
         android:id                                  ="@+id/lastNameBox"
         style                                       ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:paddingStart                        ="5dip"
+        android:textColorHint                       ="@color/greyDark"
         android:layout_marginTop                    ="3dip"
         android:layout_height                       ="wrap_content"
         android:layout_width                        ="0dip"
@@ -109,6 +113,7 @@
           android:hint          ="@string/last_name"
           android:inputType     ="text"
           android:lines         ="1"
+          android:textColor     ="@color/greyDark"
           android:layout_height ="wrap_content"
           android:layout_width  ="match_parent"
       />
@@ -119,6 +124,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id                                  ="@+id/gradeBox"
         style                                       ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:textColorHint                       ="@color/greyDark"
         android:layout_marginTop                    ="16dip"
         android:layout_height                       ="wrap_content"
         android:layout_width                        ="80dip"
@@ -135,6 +141,7 @@
           android:hint          ="@string/grade"
           android:inputType     ="number"
           android:lines         ="1"
+          android:textColor     ="@color/greyDark"
           android:layout_height ="wrap_content"
           android:layout_width  ="match_parent"
       />
@@ -145,6 +152,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id                                  ="@+id/goalBox"
         style                                       ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:textColorHint                       ="@color/greyDark"
         android:layout_marginTop                    ="16dip"
         android:layout_marginStart                  ="10dip"
         android:layout_height                       ="wrap_content"
@@ -162,6 +170,7 @@
           android:hint          ="@string/goal"
           android:inputType     ="number"
           android:lines         ="1"
+          android:textColor     ="@color/greyDark"
           android:layout_height ="wrap_content"
           android:layout_width  ="match_parent"
       />
@@ -172,6 +181,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id                           ="@+id/organizationBox"
         style                                ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:textColorHint                ="@color/greyDark"
         android:layout_marginTop             ="16dip"
         android:layout_height                ="wrap_content"
         android:layout_width                 ="match_parent"
@@ -186,15 +196,16 @@
           android:hint          ="@string/organization"
           android:inputType     ="text"
           android:lines         ="1"
+          android:textColor     ="@color/greyDark"
           android:layout_height ="wrap_content"
           android:layout_width  ="match_parent"
       />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- TextView userThemeText -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id                            ="@+id/userThemeText"
+    <!-- TextView textUserTheme -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id                            ="@+id/textUserTheme"
         android:text                          ="@string/user_theme_default_text"
         android:textColor                     ="?colorPrimary"
         android:textSize                      ="14sp"
@@ -218,7 +229,7 @@
         android:layout_width                 ="match_parent"
         node:backgroundTint                  ="?colorPrimary"
         node:tickMarkTint                    ="?colorPrimary"
-        node:layout_constraintTop_toBottomOf ="@id/userThemeText"
+        node:layout_constraintTop_toBottomOf ="@id/textUserTheme"
         tools:ignore                         ="RtlSymmetry"
     />
 
@@ -242,14 +253,14 @@
   <!-- FloatingActionButton fabSaveProfile -->
   <com.google.android.material.floatingactionbutton.FloatingActionButton
       android:id                 ="@+id/fabSaveProfile"
-      android:contentDescription ="@string/fab_save"
       android:src                ="@drawable/save"
+      android:contentDescription ="@string/fab_save"
       android:layout_height      ="wrap_content"
       android:layout_width       ="wrap_content"
       node:backgroundTint        ="?colorPrimaryDark"
       node:fabSize               ="normal"
       node:layout_anchor         ="@id/bottomBar"
-      node:rippleColor           ="?attr/rippleColor"
+      node:rippleColor           ="?attr/ripplePrimary"
       node:tint                  ="@color/white"
   />
 

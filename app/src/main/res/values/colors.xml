@@ -3,6 +3,9 @@
 <!-- Color Values For Application -->
 <resources>
 
+    <!-- Override Default Android Colors -->
+    <color name="mtrl_textinput_default_box_stroke_color">#707070</color>
+
     <!-- Red -->
     <color name="red"         >#F44336</color>
     <color name="redDark"     >#BA000D</color>
@@ -14,8 +17,8 @@
     <color name="orangeLight" >#FFC947</color>
 
     <!-- Yellow -->
-    <color name="yellow"      >#FFEB3B</color>
-    <color name="yellowDark"  >#C8B900</color>
+    <color name="yellow"      >#FBC02D</color>
+    <color name="yellowDark"  >#F9A825</color>
     <color name="yellowLight" >#FFFF72</color>
 
     <!-- Green -->
@@ -47,6 +50,11 @@
     <color name="teal"        >#009688</color>
     <color name="tealDark"    >#00675B</color>
     <color name="tealLight"   >#52C7B8</color>
+
+    <!-- Brown -->
+    <color name="brown"      >#795548</color>
+    <color name="brownDark"  >#4B2C20</color>
+    <color name="brownLight" >#A98274</color>
 
     <!-- Grey -->
     <color name="grey"        >#9E9E9E</color>

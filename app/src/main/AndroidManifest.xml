@@ -15,7 +15,7 @@
         android:label               ="@string/app_name"
         android:roundIcon           ="@mipmap/ic_launcher_round"
         android:supportsRtl         ="true"
-        android:theme               ="@style/GreenTheme">
+        android:theme               ="@style/WhiteTheme">
 
         <!-- Activity EventAdd -->
         <activity
@@ -57,17 +57,29 @@
             android:screenOrientation="portrait"
         />
 
+        <!-- Activity Settings -->
+        <activity
+            android:name=".settings.Settings"
+            android:screenOrientation="portrait"
+        />
+
         <!-- Activity SeniorTechHelp -->
         <activity
             android:name=".event.SeniorTechHelp"
             android:screenOrientation="portrait"
         />
 
+        <!-- Activity Theme -->
+        <activity
+            android:name=".settings.Theme"
+            android:screenOrientation="portrait"
+        />
+
         <!-- Activity UserActivation -->
         <activity
             android:name="dev.jzdevelopers.cstracker.user.controller.authentication.UserActivation"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"
+        />
 
         <!-- Activity UserPasswordReset -->
         <activity

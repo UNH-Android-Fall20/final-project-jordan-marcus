@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- CoordinatorLayout UI For Class Theme -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android         ="http://schemas.android.com/apk/res/android"
+    xmlns:node            ="http://schemas.android.com/apk/res-auto"
+    xmlns:tools           ="http://schemas.android.com/tools"
+    android:background    ="?attr/layoutPrimary"
+    android:layout_height ="match_parent"
+    android:layout_width  ="match_parent">
+
+  <!-- ConstraintLayout UI For Class Theme -->
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:id            ="@+id/uiTheme"
+      android:padding       ="16dip"
+      android:layout_height ="match_parent"
+      android:layout_width  ="match_parent"
+      tools:context         =".settings.Theme">
+
+    <!-- TextView activityTheme -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id                        ="@+id/activityTheme"
+        android:gravity                   ="center"
+        android:text                      ="@string/theme"
+        android:textColor                 ="?colorPrimary"
+        android:textSize                  ="30sp"
+        android:textStyle                 ="bold"
+        android:layout_height             ="wrap_content"
+        android:layout_width              ="match_parent"
+        node:layout_constraintTop_toTopOf ="parent"
+    />
+
+    <!-- CardView cardTheme -->
+    <com.google.android.material.card.MaterialCardView
+        android:id                           ="@+id/cardTheme"
+        android:clickable                    ="true"
+        android:focusable                    ="true"
+        android:layout_marginTop             ="32dip"
+        android:layout_height                ="wrap_content"
+        android:layout_width                 ="match_parent"
+        node:cardBackgroundColor             ="?attr/layoutPrimary"
+        node:cardCornerRadius                ="16dip"
+        node:cardElevation                   ="0dip"
+        node:rippleColor                     ="?colorPrimary"
+        node:layout_constraintTop_toBottomOf ="@id/activityTheme">
+
+      <!-- ConstraintLayout UI For cardColor -->
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_height ="match_parent"
+          android:layout_width  ="match_parent">
+
+        <!-- TextView textTitleColor -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id                            ="@+id/textTitleColor"
+            android:text                          ="@string/title_color_text"
+            android:textSize                      ="18sp"
+            android:textStyle                     ="bold"
+            android:layout_marginTop              ="16dip"
+            android:layout_marginStart            ="16dip"
+            android:paddingBottom                 ="5dip"
+            android:layout_height                 ="wrap_content"
+            android:layout_width                  ="wrap_content"
+            node:layout_constraintTop_toTopOf     ="parent"
+            node:layout_constraintStart_toStartOf ="parent"
+        />
+
+        <!-- TextView textDescriptionColor -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id                              ="@+id/textDescriptionColor"
+            android:text                            ="@string/description_color_text"
+            android:textSize                        ="14sp"
+            android:layout_marginBottom             ="16dip"
+            android:layout_marginStart              ="16dip"
+            android:layout_height                   ="wrap_content"
+            android:layout_width                    ="wrap_content"
+            node:layout_constraintTop_toBottomOf    ="@id/textTitleColor"
+            node:layout_constraintBottom_toBottomOf ="parent"
+            node:layout_constraintStart_toStartOf   ="parent"
+        />
+
+        <!-- CircleImageView themePicker -->
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id                              ="@+id/themePicker"
+            android:src                             ="?colorPrimary"
+            android:clickable                       ="false"
+            android:layout_marginEnd                ="16dip"
+            android:layout_height                   ="50dip"
+            android:layout_width                    ="50dip"
+            node:civ_border_color                   ="?colorPrimary"
+            node:civ_border_width                   ="2dip"
+            node:layout_constraintTop_toTopOf       ="parent"
+            node:layout_constraintBottom_toBottomOf ="parent"
+            node:layout_constraintEnd_toEndOf       ="parent"
+        />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- CardView cardOled-->
+    <com.google.android.material.card.MaterialCardView
+        android:id                           ="@+id/cardOled"
+        android:clickable                    ="true"
+        android:focusable                    ="true"
+        android:layout_marginTop             ="16dip"
+        android:layout_height                ="wrap_content"
+        android:layout_width                 ="match_parent"
+        node:cardBackgroundColor             ="?attr/layoutPrimary"
+        node:cardCornerRadius                ="16dip"
+        node:cardElevation                   ="0dip"
+        node:rippleColor                     ="?colorPrimary"
+        node:layout_constraintTop_toBottomOf ="@id/cardTheme">
+
+      <!-- ConstraintLayout UI For cardOled -->
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_height ="match_parent"
+          android:layout_width  ="match_parent">
+
+        <!-- TextView textTitleOled -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id                            ="@+id/textTitleOled"
+            android:text                          ="@string/title_oled_text"
+            android:textSize                      ="18sp"
+            android:textStyle                     ="bold"
+            android:layout_marginTop              ="16dip"
+            android:layout_marginStart            ="16dip"
+            android:paddingBottom                 ="5dip"
+            android:layout_height                 ="wrap_content"
+            android:layout_width                  ="wrap_content"
+            node:layout_constraintTop_toTopOf     ="parent"
+            node:layout_constraintStart_toStartOf ="parent"
+        />
+
+        <!-- TextView textDescriptionOled -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id                              ="@+id/textDescriptionOled"
+            android:text                            ="@string/description_oled_text"
+            android:textSize                        ="14sp"
+            android:layout_marginBottom             ="16dip"
+            android:layout_marginStart              ="16dip"
+            android:layout_height                   ="wrap_content"
+            android:layout_width                    ="wrap_content"
+            node:layout_constraintTop_toBottomOf    ="@id/textTitleOled"
+            node:layout_constraintBottom_toBottomOf ="parent"
+            node:layout_constraintStart_toStartOf   ="parent"
+        />
+
+        <!-- Switch switchOled -->
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id                              ="@+id/switchOled"
+            android:clickable                       ="false"
+            android:layout_marginEnd                ="8dip"
+            android:layout_height                   ="wrap_content"
+            android:layout_width                    ="wrap_content"
+            node:layout_constraintTop_toTopOf       ="parent"
+            node:layout_constraintBottom_toBottomOf ="parent"
+            node:layout_constraintEnd_toEndOf       ="parent"
+        />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- CardView cardRandomTheme -->
+    <com.google.android.material.card.MaterialCardView
+        android:id                           ="@+id/cardRandomTheme"
+        android:clickable                    ="true"
+        android:focusable                    ="true"
+        android:layout_marginTop             ="16dip"
+        android:layout_height                ="wrap_content"
+        android:layout_width                 ="match_parent"
+        node:cardBackgroundColor             ="?attr/layoutPrimary"
+        node:cardCornerRadius                ="16dip"
+        node:cardElevation                   ="0dip"
+        node:rippleColor                     ="?colorPrimary"
+        node:layout_constraintTop_toBottomOf ="@id/cardOled">
+
+      <!-- ConstraintLayout UI For cardRandomTheme -->
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_height ="match_parent"
+          android:layout_width  ="match_parent">
+
+        <!-- TextView textTitleRandomTheme -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id                            ="@+id/textTitleRandomTheme"
+            android:text                          ="@string/title_random_text"
+            android:textSize                      ="18sp"
+            android:textStyle                     ="bold"
+            android:layout_marginTop              ="16dip"
+            android:layout_marginStart            ="16dip"
+            android:paddingBottom                 ="5dip"
+            android:layout_height                 ="wrap_content"
+            android:layout_width                  ="wrap_content"
+            node:layout_constraintTop_toTopOf     ="parent"
+            node:layout_constraintStart_toStartOf ="parent"
+        />
+
+        <!-- TextView textDescriptionRandomTheme -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id                              ="@+id/textDescriptionRandomTheme"
+            android:text                            ="@string/description_random_text"
+            android:textSize                        ="14sp"
+            android:layout_marginBottom             ="16dip"
+            android:layout_marginStart              ="16dip"
+            android:layout_height                   ="wrap_content"
+            android:layout_width                    ="wrap_content"
+            node:layout_constraintTop_toBottomOf    ="@id/textTitleRandomTheme"
+            node:layout_constraintBottom_toBottomOf ="parent"
+            node:layout_constraintStart_toStartOf   ="parent"
+        />
+
+        <!-- Switch switchRandomTheme -->
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id                              ="@+id/switchRandomTheme"
+            android:clickable                       ="false"
+            android:layout_marginEnd                ="8dip"
+            android:layout_height                   ="wrap_content"
+            android:layout_width                    ="wrap_content"
+            node:layout_constraintTop_toTopOf       ="parent"
+            node:layout_constraintBottom_toBottomOf ="parent"
+            node:layout_constraintEnd_toEndOf       ="parent"
+        />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <!-- FloatingActionButton fabExit -->
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+      android:id                 ="@+id/fabExit"
+      android:src                ="@drawable/menu_clear"
+      android:contentDescription ="@string/fab_exit"
+      android:layout_height      ="wrap_content"
+      android:layout_width       ="wrap_content"
+      node:backgroundTint        ="?colorPrimaryDark"
+      node:fabSize               ="normal"
+      node:layout_anchor         ="@id/bottomBar"
+      node:rippleColor           ="?attr/ripplePrimary"
+      node:tint                  ="@color/white"
+  />
+
+  <!-- BottomBar bottomBar -->
+  <com.google.android.material.bottomappbar.BottomAppBar
+      android:id             ="@+id/bottomBar"
+      android:layout_gravity ="bottom"
+      android:layout_height  ="wrap_content"
+      android:layout_width   ="match_parent"
+      node:backgroundTint    ="?colorPrimary"
+      node:fabAlignmentMode  ="center"
+  />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

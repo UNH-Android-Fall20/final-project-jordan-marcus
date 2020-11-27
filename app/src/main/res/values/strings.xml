@@ -10,11 +10,19 @@
     <string name="senior_tech_help"     > Senior Tech Help    </string>
     <string name="secondary_user_add"   > Add A Profile       </string>
     <string name="secondary_user_view"  > Profiles            </string>
+    <string name="settings"             > Settings            </string>
+    <string name="theme"                > Theme               </string>
     <string name="user_add"             > Add A User          </string>
     <string name="user_password_reset"  > Reset Your Password </string>
 
     <!-- CheckBox Strings -->
     <string name="signUpCheckBox" > Are you keeping track of someone else\'s hours?</string>
+
+    <!-- Content Description -->
+    <string name="iconAboutDescription"   > An information icon  </string>
+    <string name="iconSignOutDescription" > A user sign out icon </string>
+    <string name="iconThemeDescription"   > A theme icon         </string>
+    <string name="iconUserDescription"    > A user mode icon     </string>
 
     <!-- EditText Strings -->
     <string name="email"            > Email            </string>
@@ -33,6 +41,7 @@
 
     <!-- FAB Content Description -->
     <string name="fab_add"  > Adds a user profile  </string>
+    <string name="fab_exit" > Exits the activity   </string>
     <string name="fab_save" > Saves a user profile </string>
 
     <!-- FAB Strings -->
@@ -62,10 +71,13 @@
     <string name="error_password_blank"       > The password must not be blank                                                                             </string>
     <string name="error_password_match"       > The two passwords do not match                                                                             </string>
     <string name="error_password_short"       > The password must be longer than 12 characters                                                             </string>
+    <string name="general_app_close"          > This will close the CS Tracker app                                                                         </string>
     <string name="general_delete_check_user"  > Deleting this profile will remove all if its data                                                          </string>
     <string name="general_email_verification" > An activation email was sent. Please activate your account and click the button to continue.               </string>
     <string name="general_reset_password"     > An email request was sent to change your password. It could take up to five minutes to receive the message </string>
+    <string name="general_sign_out"           > This will sign out of the CS Tracker app                                                                   </string>
     <string name="positive_no_save"           > Any data entered will be lost                                                                              </string>
+    <string name="title_theme"                > Pick A Theme Color                                                                                         </string>
     <string name="title_double_check"         > Are You Sure?                                                                                              </string>
     <string name="title_error"                > Uh Oh                                                                                                      </string>
     <string name="title_request"              > Request Sent                                                                                               </string>
@@ -81,32 +93,46 @@
     <string name="menu_sort"     > Sort     </string>
 
     <!-- TextViews -->
-    <string name="back_to_sign_in_text"    > Go back to sign in            </string>
-    <string name="end_time"                > End Time                      </string>
-    <string name="event_date"              > Date                          </string>
-    <string name="event_date_picker"       > MM-DD-YYYY                    </string>
-    <string name="forgot_password_text"    > Forgot password?              </string>
-    <string name="name_text"               > name                          </string>
-    <string name="name_letter_text"        > A                             </string>
-    <string name="resend_email_text"       > No email? Resend verification </string>
-    <string name="signup_text"             > Need an account? Sign Up      </string>
-    <string name="start_time"              > Start Time                    </string>
-    <string name="time_default_text"       > 0:00                          </string>
-    <string name="title_grade_text"        > Grade:                        </string>
-    <string name="title_goal_text"         > Goal:                         </string>
-    <string name="title_organization_text" > Organization:                 </string>
-    <string name="total_time"              > Total Time                    </string>
-    <string name="user_theme_default_text" > User Theme (Default)          </string>
-    <string name="user_theme_red_text"     > User Theme (Red)              </string>
-    <string name="user_theme_orange_text"  > User Theme (Orange)           </string>
-    <string name="user_theme_yellow_text"  > User Theme (Yellow)           </string>
-    <string name="user_theme_green_text"   > User Theme (Green)            </string>
-    <string name="user_theme_blue_text"    > User Theme (Blue)             </string>
-    <string name="user_theme_indigo_text"  > User Theme (Indigo)           </string>
-    <string name="user_theme_violet_text"  > User Theme (Violet)           </string>
-    <string name="user_theme_pink_text"    > User Theme (Pink)             </string>
-    <string name="user_theme_teal_text"    > User Theme (Teal)             </string>
-    <string name="user_theme_brown_text"   > User Theme (Brown)            </string>
-    <string name="user_theme_black_text"   > User Theme (Black)            </string>
+    <string name="back_to_sign_in_text"      > Go back to sign in                           </string>
+    <string name="description_about_text"    > CS Tracker and contact info                  </string>
+    <string name="description_color_text"    > The primary theme color for CS Tracker       </string>
+    <string name="description_oled_text"     > Makes the black theme true black             </string>
+    <string name="description_random_text"   > A new theme is set when the app starts       </string>
+    <string name="description_sign_out_text" > Sign out of the CS Tracker app               </string>
+    <string name="description_theme_text"    > Choose a custom theme                        </string>
+    <string name="description_user_text"     > Toggle single or multiple profiles           </string>
+    <string name="end_time"                  > End Time                                     </string>
+    <string name="event_date"                > Date                                         </string>
+    <string name="event_date_picker"         > MM-DD-YYYY                                   </string>
+    <string name="forgot_password_text"      > Forgot password?                             </string>
+    <string name="name_text"                 > name                                         </string>
+    <string name="name_letter_text"          > A                                            </string>
+    <string name="resend_email_text"         > No email? Resend verification                </string>
+    <string name="signup_text"               > Need an account? Sign Up                     </string>
+    <string name="start_time"                > Start Time                                   </string>
+    <string name="time_default_text"         > 0:00                                         </string>
+    <string name="title_about_text"          > About                                        </string>
+    <string name="title_color_text"          > Color                                        </string>
+    <string name="title_grade_text"          > Grade:                                       </string>
+    <string name="title_goal_text"           > Goal:                                        </string>
+    <string name="title_oled_text"           > OLED Black                                   </string>
+    <string name="title_organization_text"   > Organization:                                </string>
+    <string name="title_random_text"         > Random Theme                                 </string>
+    <string name="title_sign_out_text"       > Sign Out                                     </string>
+    <string name="title_theme_text"          > Theme                                        </string>
+    <string name="title_user_text"           > User Mode                                    </string>
+    <string name="total_time"                > Total Time                                   </string>
+    <string name="user_theme_default_text"   > User Theme (Default)                         </string>
+    <string name="user_theme_red_text"       > User Theme (Red)                             </string>
+    <string name="user_theme_orange_text"    > User Theme (Orange)                          </string>
+    <string name="user_theme_yellow_text"    > User Theme (Yellow)                          </string>
+    <string name="user_theme_green_text"     > User Theme (Green)                           </string>
+    <string name="user_theme_blue_text"      > User Theme (Blue)                            </string>
+    <string name="user_theme_indigo_text"    > User Theme (Indigo)                          </string>
+    <string name="user_theme_violet_text"    > User Theme (Violet)                          </string>
+    <string name="user_theme_pink_text"      > User Theme (Pink)                            </string>
+    <string name="user_theme_teal_text"      > User Theme (Teal)                            </string>
+    <string name="user_theme_brown_text"     > User Theme (Brown)                           </string>
+    <string name="user_theme_black_text"     > User Theme (Black)                           </string>
 
 </resources>

@@ -3,6 +3,7 @@ package dev.jzdevelopers.cstracker.common
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.event.EventView
 import dev.jzdevelopers.cstracker.libs.JZActivity
+import dev.jzdevelopers.cstracker.settings.Theme
 import dev.jzdevelopers.cstracker.user.controller.authentication.UserActivation
 import dev.jzdevelopers.cstracker.user.controller.authentication.UserSignIn
 import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView
@@ -24,8 +25,22 @@ class MainActivity: JZActivity() {
         // Creates The UI//
         createUI(R.layout.ui_blank) {
 
-            // Sets The Icon Color of The System Bars//
-            navigationColor(R.color.white, true)
+            // Sets The Theme//
+            val theme = Theme.getAppTheme(this@MainActivity)
+            theme(theme)
+
+            // Sets The Bar Colors And Icon Colors//
+            val barColor = Theme.getStatusBarColor(this@MainActivity)
+            when(barColor) {
+                R.color.white -> {
+                    navigationColor(barColor, true)
+                    statusBarColor(barColor, true)
+                }
+                else -> {
+                    navigationColor(barColor, false)
+                    statusBarColor(barColor, false)
+                }
+            }
         }
     }
 

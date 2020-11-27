@@ -11,8 +11,12 @@ import dev.jzdevelopers.cstracker.common.GlideApp
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.libs.JZPrefs
 import dev.jzdevelopers.cstracker.libs.JZRecyclerAdapterFB
+import dev.jzdevelopers.cstracker.settings.Settings
+import dev.jzdevelopers.cstracker.settings.Theme
+import dev.jzdevelopers.cstracker.settings.Theme.Companion.getCardColor
 import dev.jzdevelopers.cstracker.user.common.UserSort
 import dev.jzdevelopers.cstracker.user.common.UserSort.*
+import dev.jzdevelopers.cstracker.user.common.UserTheme.DEFAULT
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser
 import dev.jzdevelopers.cstracker.user.models.SecondaryUser
 import kotlinx.android.synthetic.main.ui_secondary_user_design.view.*
@@ -70,8 +74,16 @@ class SecondaryUserView: JZActivity() {
         // Creates The UI//
         createUI(R.layout.ui_secondary_user_view) {
 
-            // Sets The Icon Color of The System Bars//
-            statusBarColor(isDarkIcons = true)
+            // Sets The Theme//
+            val theme = Theme.getAppTheme(this@SecondaryUserView)
+            theme(theme)
+
+            // Sets The Status Bar Color And Icon Color//
+            val statusBarColor = Theme.getStatusBarColor(this@SecondaryUserView)
+            when(statusBarColor) {
+                R.color.white -> statusBarColor(statusBarColor, true)
+                else          -> statusBarColor(statusBarColor, false)
+            }
 
             // Sets The Menu For The Activity//
             menu(bottomBar, R.menu.menu_secondary_user_view)
@@ -90,6 +102,20 @@ class SecondaryUserView: JZActivity() {
         val settings = menu.findItem(R.id.settings)
         val sort     = menu.findItem(R.id.sort)
 
+        // When Back Is Clicked//
+        clickBack {
+
+            // Shows The Dialog//
+            MaterialDialog(this).show {
+                title(R.string.title_double_check)
+                message(R.string.general_app_close)
+                negativeButton(R.string.button_negative)
+                positiveButton(R.string.button_positive) {
+                    exitApp()
+                }
+            }
+        }
+
         // When An Adapter Item Is Clicked//
         click(adapter) {
             toastShort("clicked $it")
@@ -105,6 +131,8 @@ class SecondaryUserView: JZActivity() {
         // When settings Is Clicked//
         click(settings) {
 
+            // Starts The Settings Activity//
+            startActivity(Settings::class, R.anim.faze_in, R.anim.faze_out)
         }
 
         // When Sort Is Clicked//
@@ -361,13 +389,20 @@ class SecondaryUserView: JZActivity() {
             val fullName = "${it.firstName} ${it.lastName}"
             val goal     = if (it.goal in 1..9)  "0${it.goal}"  else it.goal.toString()
             val grade    = if (it.grade in 1..9) "0${it.grade}" else it.grade.toString()
+            val theme    = getCardColor(it.theme)
 
             // Matches The Basic Properties With Their Nodes//
-            goalText.text         = goal
-            gradeText.text        = grade
-            nameText.text         = fullName
-            organizationText.text = it.organization
-            totalTimeText.text    = it.totalTime
+            textGoal.text         = goal
+            textGrade.text        = grade
+            textName.text         = fullName
+            textOrganization.text = it.organization
+            textTotalTime.text    = it.totalTime
+
+            // Sets The Background Color Of The Card//
+            when(it.theme) {
+                DEFAULT -> cardSecondaryUser.setCardBackgroundColor(getColorAttr(theme))
+                else    -> cardSecondaryUser.setCardBackgroundColor(getColorCompat(theme))
+            }
 
             // Clears The Image And Name-Letter Data//
             val whiteImage = getDrawableCompat(R.drawable.white)

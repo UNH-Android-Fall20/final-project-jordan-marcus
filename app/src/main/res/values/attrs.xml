@@ -4,6 +4,7 @@
 <resources>
 
     <!-- Controls Various Colorings For Dynamic Themes -->
-    <attr name="rippleColor"  format="reference" />
-
+    <attr name="ripplePrimary"  format="reference" />
+    <attr name="rippleAccent"   format="reference" />
+    <attr name="layoutPrimary"  format="reference" />
 </resources>

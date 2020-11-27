@@ -3,5 +3,5 @@
 <!-- Custom Ripple -->
 <ripple
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="?attr/ripplePrimary">
+    android:color="?attr/rippleAccent">
 </ripple>
