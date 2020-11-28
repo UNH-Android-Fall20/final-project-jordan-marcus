@@ -3,7 +3,7 @@ package dev.jzdevelopers.cstracker.libs
 import android.content.Context
 import androidx.core.content.edit
 
-/** Kotlin Class JZPrefs
+/** Kotlin Object JZPrefs
  *  Object That Streamlines The Getting And Saving Of Shared Preferences
  *  @author Jordan Zimmitti
  */

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.text.Editable
@@ -455,6 +456,27 @@ abstract class JZActivity: AppCompatActivity() {
         // Replaces The Current Menu With The New One//
         bottomBar.replaceMenu(menu)
         this.menu = bottomBar.menu
+    }
+
+    /**.
+     * Function That Prepares An Email To Be Sent Using The Users Default Email App
+     * @param [to]      Who the email is being sent to
+     * @param [subject] The subject of the email
+     * @param [body]    A predefined email body, maybe for the user to fill in
+     */
+    protected fun prepareEmailToSend(to: String, subject: String, body: String) {
+
+        // Generates The Email Template//
+        val uri = Uri.parse("mailto:")
+            .buildUpon()
+            .appendQueryParameter("to", to)
+            .appendQueryParameter("subject", subject)
+            .appendQueryParameter("body", body)
+            .build()
+
+        // Opens The Users Default Email App To Send The Message//
+        val emailIntent = Intent(Intent.ACTION_SENDTO, uri)
+        startActivity(Intent.createChooser(emailIntent, "Sending Email..."))
     }
 
     /**.

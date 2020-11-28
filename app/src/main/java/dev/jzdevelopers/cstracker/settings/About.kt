@@ -1,7 +1,5 @@
 package dev.jzdevelopers.cstracker.settings
 
-import android.content.Intent
-import android.net.Uri
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView
@@ -60,20 +58,11 @@ class About: JZActivity() {
 
             // Defines The Email Information//
             val to      = "jordanzimmitti@gmail.com"
-            val body    = "Please fill in the following information below\n\n 1. Device Name:\n\n 2. Android Version:\n\n My problem is..."
             val subject = "CS Tracker: Contact Us"
+            val body    = "Please fill in the following information below\n\n 1. Device Name:\n\n 2. Android Version:\n\n My problem is..."
 
-            // Generates The Email Template//
-            val uri = Uri.parse("mailto:")
-                .buildUpon()
-                .appendQueryParameter("to", to)
-                .appendQueryParameter("subject", subject)
-                .appendQueryParameter("body", body)
-                .build()
-
-            // Opens The Users Default Email App To Send The Message//
-            val emailIntent = Intent(Intent.ACTION_SENDTO, uri)
-            startActivity(Intent.createChooser(emailIntent, "Sending Email..."))
+            // Prepares An Email To Be Sent//
+            prepareEmailToSend(to, subject, body)
         }
 
         // When cardFeedback Is Clicked//
@@ -81,20 +70,11 @@ class About: JZActivity() {
 
             // Defines The Email Information//
             val to      = "jordanzimmitti@gmail.com"
-            val body    = "Please fill in the following information below\n\n 1. What I like:\n\n 2. What I don't like:\n\n Some suggestions I have are..."
             val subject = "CS Tracker: Feedback"
+            val body    = "Please fill in the following information below\n\n 1. What I like:\n\n 2. What I don't like:\n\n Some suggestions I have are..."
 
-            // Generates The Email Template//
-            val uri = Uri.parse("mailto:")
-                .buildUpon()
-                .appendQueryParameter("to", to)
-                .appendQueryParameter("subject", subject)
-                .appendQueryParameter("body", body)
-                .build()
-
-            // Opens The Users Default Email App To Send The Message//
-            val emailIntent = Intent(Intent.ACTION_SENDTO, uri)
-            startActivity(Intent.createChooser(emailIntent, "Sending Email..."))
+            // Prepares An Email To Be Sent//
+            prepareEmailToSend(to, subject, body)
         }
     }
 }
