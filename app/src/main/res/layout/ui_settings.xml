@@ -53,7 +53,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id                              ="@+id/iconAbout"
             android:src                             ="@drawable/icon_about"
-            android:contentDescription              ="@string/iconAboutDescription"
+            android:contentDescription              ="@string/icon_about_description"
             android:layout_marginTop                ="16dip"
             android:layout_marginBottom             ="16dip"
             android:layout_marginStart              ="16dip"
@@ -120,7 +120,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id                              ="@+id/iconTheme"
             android:src                             ="@drawable/icon_theme"
-            android:contentDescription              ="@string/iconThemeDescription"
+            android:contentDescription              ="@string/icon_theme_description"
             android:layout_marginTop                ="16dip"
             android:layout_marginBottom             ="16dip"
             android:layout_marginStart              ="16dip"
@@ -187,7 +187,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id                              ="@+id/iconUser"
             android:src                             ="@drawable/icon_user"
-            android:contentDescription              ="@string/iconUserDescription"
+            android:contentDescription              ="@string/icon_user_description"
             android:layout_marginTop                ="16dip"
             android:layout_marginBottom             ="16dip"
             android:layout_marginStart              ="16dip"
@@ -266,7 +266,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id                              ="@+id/iconSignOut"
             android:src                             ="@drawable/icon_sign_out"
-            android:contentDescription              ="@string/iconSignOutDescription"
+            android:contentDescription              ="@string/icon_sign_out_description"
             android:layout_marginTop                ="16dip"
             android:layout_marginBottom             ="16dip"
             android:layout_marginStart              ="16dip"

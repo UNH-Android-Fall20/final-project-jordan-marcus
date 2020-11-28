@@ -47,11 +47,11 @@ class Settings: JZActivity() {
             startActivity(SecondaryUserView::class, R.anim.faze_in, R.anim.faze_out)
         }
 
-        // When fabExit Is Clicked//
-        click(fabExit) {
+        // When cardAbout Is Clicked//
+        click(cardAbout) {
 
-            // Starts The SecondaryUserView Activity//
-            startActivity(SecondaryUserView::class, R.anim.faze_in, R.anim.faze_out)
+            // Starts The About Activity//
+            startActivity(About::class, R.anim.faze_in, R.anim.faze_out)
         }
 
         // When cardSignOut Is Clicked//
@@ -74,6 +74,13 @@ class Settings: JZActivity() {
 
             // Starts The SecondaryUserView Activity//
             startActivity(Theme::class, R.anim.faze_in, R.anim.faze_out)
+        }
+
+        // When fabExit Is Clicked//
+        click(fabExit) {
+
+            // Starts The SecondaryUserView Activity//
+            startActivity(SecondaryUserView::class, R.anim.faze_in, R.anim.faze_out)
         }
     }
 }

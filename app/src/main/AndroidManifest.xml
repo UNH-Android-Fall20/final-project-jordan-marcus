@@ -17,6 +17,12 @@
         android:supportsRtl         ="true"
         android:theme               ="@style/WhiteTheme">
 
+        <!-- Activity About -->
+        <activity
+            android:name=".settings.About"
+            android:screenOrientation="portrait"
+            />
+
         <!-- Activity EventAdd -->
         <activity
             android:name=".event.EventAdd"
