@@ -5,9 +5,11 @@ import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import com.google.firebase.firestore.Exclude
+import com.google.firebase.firestore.Query
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.common.FireBaseModel
 import dev.jzdevelopers.cstracker.libs.JZActivity
+import dev.jzdevelopers.cstracker.event.common.EventSort
 import kotlinx.coroutines.tasks.await
 import java.text.DateFormat
 import java.util.*
@@ -16,16 +18,16 @@ import java.util.regex.Pattern
 /** Kotlin Class Event,
  *  Class That Handles Event Functions/Properties
  *  @author Jordan Zimmitti, Marcus Novoa
- *  @param [context]           Gets the instance from the caller activity
- *  @param [date]              The date of the event (MM-DD-YYYY)
- *  @param [endTime]           The last recorded end time of the event service hours
- *  @param [location]          The location of the event
- *  @param [name]              The name of the event
- *  @param [notes]             Any notes worth mentioning for the event
- *  @param [peopleInCharge]    The people in charge of the event
- *  @param [phoneNumber]       The contact phone number for the event
- *  @param [startTime]         The start time of the event service hours
- *  @param [userId]            The id of the user that the event belongs to
+ *  @param [context]        Gets the instance from the caller activity
+ *  @param [date]           The date of the event (MM-DD-YYYY)
+ *  @param [endTime]        The last recorded end time of the event service hours
+ *  @param [location]       The location of the event
+ *  @param [name]           The name of the event
+ *  @param [notes]          Any notes worth mentioning for the event
+ *  @param [peopleInCharge] The people in charge of the event
+ *  @param [phoneNumber]    The contact phone number for the event
+ *  @param [startTime]      The start time of the event service hours
+ *  @param [userId]         The id of the user that the event belongs to
  */
 class Event(
     @get:Exclude val context : Context? = null,
@@ -39,6 +41,71 @@ class Event(
     var startTime            : String   = "0:00",
     val userId               : String   = ""
 ): FireBaseModel() {
+
+    /**.
+     * Configures Static Functions And Variables
+     */
+    companion object {
+
+        /**.
+         * Function That Creates The Query For Getting All Of The Events Under A Specific User
+         * @param [userId] The id of the event owner
+         * @param [sort]   How the events will be sorted
+         * @return The query for getting all of the events under a user id
+         */
+        fun getAll(userId: String, sort: EventSort): Query {
+
+            // Returns The Query//
+            return when(sort) {
+                EventSort.DATE -> {
+                    fireStore
+                        .collection("Events")
+                        .whereIn("userId", mutableListOf(userId))
+                        .orderBy("date")
+                        .orderBy("name")
+                        .orderBy("location")
+                        .orderBy("peopleInCharge")
+                }
+                EventSort.LOCATION -> {
+                    fireStore
+                        .collection("Events")
+                        .whereIn("userId", mutableListOf(userId))
+                        .orderBy("location")
+                        .orderBy("name")
+                        .orderBy("date")
+                        .orderBy("peopleInCharge")
+                }
+                EventSort.NAME -> {
+                    fireStore
+                        .collection("Events")
+                        .whereIn("userId", mutableListOf(userId))
+                        .orderBy("name")
+                        .orderBy("date")
+                        .orderBy("location")
+                        .orderBy("peopleInCharge")
+                }
+                EventSort.PEOPLE_IN_CHARGE -> {
+                    fireStore
+                        .collection("Events")
+                        .whereIn("userId", mutableListOf(userId))
+                        .orderBy("peopleInCharge")
+                        .orderBy("name")
+                        .orderBy("date")
+                        .orderBy("location")
+                }
+//                EventSort.TOTAL_TIME -> {
+//                    fireStore
+//                        .collection("Events")
+//                        .whereIn("userId", mutableListOf(userId))
+//                        .orderBy("totalTime")
+//                        .orderBy("name")
+//                        .orderBy("date")
+//                        .orderBy("location")
+//                        .orderBy("peopleInCharge")
+//                }
+            }
+        }
+    }
 
     /**.
      * Function That Adds An Event To The Database
@@ -57,7 +124,7 @@ class Event(
 
             // Checks If The Event Input Is Valid//
             if (!isValidName()) return false
-//            if (!isValidDate()) return false
+            // if (!isValidDate()) return false
             if (!isValidLocation()) return false
             if (!isValidPeopleInCharge()) return false
             if (!isValidPhoneNumber()) return false
@@ -92,17 +159,36 @@ class Event(
      * @return Whether the event was edited successfully
      */
     public override suspend fun edit(id: String, loadingBar: ProgressBar): Boolean {
+        try {
 
-        // Checks If The Event Input Is Valid//
-        if (!isValidName()) return false
-        if (!isValidDate()) return false
-        if (!isValidLocation()) return false
-        if (!isValidPeopleInCharge()) return false
-        if (!isValidPhoneNumber()) return false
-        if (!isValidNotes()) return false
-        // !isValidUserId
+            // Checks If The Event Input Is Valid//
+            if (!isValidName()) return false
+            // if (!isValidDate()) return false
+            if (!isValidLocation()) return false
+            if (!isValidPeopleInCharge()) return false
+            if (!isValidPhoneNumber()) return false
+            if (!isValidNotes()) return false
+            // !isValidUserId
 
-        return true
+            // Shows The Loading Bar//
+            loadingBar.visibility = View.VISIBLE
+
+            // Sends The Edited Event Data To The Database//
+            val document = fireStore.collection("Events").document(id)
+            document.set(this)
+
+            // Hides The Loading Bar//
+            loadingBar.visibility = View.GONE
+
+            // Logs That The Event Was Edited Successfully//
+            Log.v("Event", "Event [$name] has been edited")
+            return true
+        }
+        catch (_: Exception) {
+            loadingBar.visibility = View.GONE
+            showGeneralError()
+            return false
+        }
     }
 
     /**.
@@ -111,7 +197,20 @@ class Event(
      * @return Whether the event was deleted successfully
      */
     public override suspend fun delete(id: String): Boolean {
-        return false
+        return try {
+
+            // Deletes The Event And Its Data From The Database//
+            val document = fireStore.collection("Events").document(id)
+            document.delete().await()
+
+            // Logs That The Event Was Deleted Successfully//
+            Log.v("Event", "Event [$name] has been deleted")
+            true
+        }
+        catch (_: Exception) {
+            showGeneralError()
+            false
+        }
     }
 
     /**.

@@ -2,216 +2,217 @@
 
 <!-- CardView UI For Class EventView -->
 <androidx.cardview.widget.CardView
-	xmlns:android              ="http://schemas.android.com/apk/res/android"
-	xmlns:node                 ="http://schemas.android.com/apk/res-auto"
-	android:id                 ="@+id/uiEventDesign"
-	android:clickable          ="true"
-	android:fitsSystemWindows  ="true"
-	android:focusable          ="true"
-	android:foreground         ="@drawable/ripple"
-	android:layout_marginStart ="16dip"
-	android:layout_marginEnd  ="16dip"
-	android:layout_height     ="wrap_content"
-	android:layout_width      ="match_parent"
-	node:cardBackgroundColor  ="?attr/colorPrimary"
-	node:cardCornerRadius     ="16dip">
+    xmlns:android              ="http://schemas.android.com/apk/res/android"
+    xmlns:node                 ="http://schemas.android.com/apk/res-auto"
+    android:id                 ="@+id/uiEventDesign"
+    android:clickable          ="true"
+    android:fitsSystemWindows  ="true"
+    android:focusable          ="true"
+    android:foreground         ="@drawable/ripple"
+    android:layout_marginStart ="16dip"
+    android:layout_marginEnd   ="16dip"
+    android:layout_height      ="wrap_content"
+    android:layout_width       ="match_parent"
+    node:cardBackgroundColor   ="?attr/colorPrimary"
+    node:cardCornerRadius      ="16dip">
 
-	<!-- ConstraintLayout UI For Class EventView -->
-	<androidx.constraintlayout.widget.ConstraintLayout
-		android:id            ="@+id/uiEventView"
-		android:padding       ="16dip"
-		android:layout_height ="match_parent"
-		android:layout_width  ="match_parent">
+    <!-- ConstraintLayout UI For Class EventView -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id            ="@+id/uiEventView"
+        android:padding       ="16dip"
+        android:layout_height ="match_parent"
+        android:layout_width  ="match_parent">
 
-		<!-- TextView titleEventNameText -->
-		<androidx.appcompat.widget.AppCompatTextView
-			android:id                            ="@+id/titleEventNameText"
-			android:text                          ="@string/title_event_name_text"
-			android:textColor                     ="@color/white"
-			android:textSize                      ="16sp"
-			android:textStyle                     ="bold"
-			android:layout_height                 ="wrap_content"
-			android:layout_width                  ="wrap_content"
-			node:layout_constraintTop_toTopOf     ="parent"
-			node:layout_constraintStart_toStartOf ="parent"
-			/>
+        <!-- TextView titleEventNameText -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id                            ="@+id/titleEventNameText"
+            android:text                          ="@string/title_event_name_text"
+            android:textColor                     ="@color/white"
+            android:textSize                      ="16sp"
+            android:textStyle                     ="bold"
+            android:layout_height                 ="wrap_content"
+            android:layout_width                  ="wrap_content"
+            node:layout_constraintTop_toTopOf     ="parent"
+            node:layout_constraintStart_toStartOf ="parent"
+            />
 
-		<!-- TextView eventNameText -->
-		<androidx.appcompat.widget.AppCompatTextView
-			android:id                          ="@+id/eventNameText"
-			android:text                        ="@string/event_name"
-			android:textColor                   ="@color/white"
-			android:textSize                    ="16sp"
-			android:layout_marginStart          ="5dip"
-			android:layout_height               ="wrap_content"
-			android:layout_width                ="wrap_content"
-			node:layout_constraintTop_toTopOf   ="@id/titleEventNameText"
-			node:layout_constraintStart_toEndOf ="@id/titleEventNameText"
-			/>
+        <!-- TextView eventNameText -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id                          ="@+id/eventNameText"
+            android:text                        ="@string/event_name"
+            android:textColor                   ="@color/white"
+            android:textSize                    ="16sp"
+            android:layout_marginStart          ="5dip"
+            android:layout_height               ="wrap_content"
+            android:layout_width                ="wrap_content"
+            node:layout_constraintTop_toTopOf   ="@id/titleEventNameText"
+            node:layout_constraintStart_toEndOf ="@id/titleEventNameText"
+            />
 
-		<!-- TextView titleEventDateText -->
-		<androidx.appcompat.widget.AppCompatTextView
-			android:id                          ="@+id/titleEventDateText"
-			android:text                        ="@string/title_event_date_text"
-			android:textColor                   ="@color/white"
-			android:textSize                    ="16sp"
-			android:textStyle                   ="bold"
-			android:layout_marginEnd            ="5dip"
-			android:layout_height               ="wrap_content"
-			android:layout_width                ="wrap_content"
-			node:layout_constraintTop_toTopOf   ="@id/eventDateText"
-			node:layout_constraintEnd_toStartOf ="@+id/eventDateText"
-			/>
+        <!-- TextView titleEventDateText -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id                          ="@+id/titleEventDateText"
+            android:text                        ="@string/title_event_date_text"
+            android:textColor                   ="@color/white"
+            android:textSize                    ="16sp"
+            android:textStyle                   ="bold"
+            android:layout_marginEnd            ="5dip"
+            android:layout_height               ="wrap_content"
+            android:layout_width                ="wrap_content"
+            node:layout_constraintTop_toTopOf   ="@id/eventDateText"
+            node:layout_constraintEnd_toStartOf ="@+id/eventDateText"
+            />
 
-		<!-- TextView eventDateText -->
-		<androidx.appcompat.widget.AppCompatTextView
-			android:id                        ="@+id/eventDateText"
-			android:text                      ="@string/event_date"
-			android:textColor                 ="@color/white"
-			android:textSize                  ="16sp"
-			android:layout_height             ="wrap_content"
-			android:layout_width              ="wrap_content"
-			node:layout_constraintTop_toTopOf ="parent"
-			node:layout_constraintEnd_toEndOf ="parent"
-			/>
+        <!-- TextView eventDateText -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id                        ="@+id/eventDateText"
+            android:text                      ="@string/event_date"
+            android:textColor                 ="@color/white"
+            android:textSize                  ="16sp"
+            android:layout_height             ="wrap_content"
+            android:layout_width              ="wrap_content"
+            node:layout_constraintTop_toTopOf ="parent"
+            node:layout_constraintEnd_toEndOf ="parent"
+            />
 
-		<!-- TextView titleEventLocationText -->
-		<androidx.appcompat.widget.AppCompatTextView
-			android:id                          	="@+id/titleEventLocationText"
-			android:text                        	="@string/title_event_location_text"
-			android:textColor                   	="@color/white"
-			android:textSize                    	="16sp"
-			android:textStyle                   	="bold"
-			android:layout_marginTop              ="16dip"
-			android:layout_height               	="wrap_content"
-			android:layout_width                	="wrap_content"
-			node:layout_constraintTop_toBottomOf  ="@id/titleEventNameText"
-			node:layout_constraintStart_toStartOf ="parent"
-			/>
+        <!-- TextView titleEventLocationText -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id                            ="@+id/titleEventLocationText"
+            android:text                          ="@string/title_event_location_text"
+            android:textColor                     ="@color/white"
+            android:textSize                      ="16sp"
+            android:textStyle                     ="bold"
+            android:layout_marginTop              ="16dip"
+            android:layout_height                 ="wrap_content"
+            android:layout_width                  ="wrap_content"
+            node:layout_constraintTop_toBottomOf  ="@id/titleEventNameText"
+            node:layout_constraintStart_toStartOf ="parent"
+            />
 
-		<!-- TextView eventLocationText -->
-		<androidx.appcompat.widget.AppCompatTextView
-			android:id                        	="@+id/eventLocationText"
-			android:text                      	="@string/location"
-			android:textColor                 	="@color/white"
-			android:textSize                  	="16sp"
-			android:layout_height             	="wrap_content"
-			android:layout_width              	="wrap_content"
-			node:layout_constraintTop_toTopOf 	="@id/titleEventLocationText"
-			node:layout_constraintStart_toEndOf ="@id/titleEventLocationText"
-			/>
+        <!-- TextView eventLocationText -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id                			="@+id/eventLocationText"
+            android:text              			="@string/location"
+            android:textColor         			="@color/white"
+            android:textSize          			="16sp"
+            android:layout_marginStart			="5dip"
+            android:layout_height     			="wrap_content"
+            android:layout_width      			="wrap_content"
+            node:layout_constraintTop_toTopOf	="@id/titleEventLocationText"
+            node:layout_constraintStart_toEndOf	="@id/titleEventLocationText"
+            />
 
-		<!-- TextView eventStartTime -->
-    <TextView
-        android:id                                  ="@+id/eventStartTime"
-        android:clickable                           ="true"
-        android:focusable                           ="true"
-        android:gravity                             ="center"
-        android:text                                ="@string/start_time"
-        android:textColor                           ="@color/white"
-        android:textSize                            ="16sp"
-        android:textStyle                           ="bold"
-        android:layout_marginTop                    ="16dip"
-        android:layout_height                       ="wrap_content"
-        android:layout_width                        ="0dip"
-        node:layout_constraintHorizontal_chainStyle ="spread"
-        node:layout_constraintTop_toBottomOf        ="@id/titleEventLocationText"
-        node:layout_constraintStart_toStartOf       ="parent"
-        node:layout_constraintEnd_toStartOf         ="@id/eventEndTime"
-    />
+        <!-- TextView eventStartTime -->
+        <TextView
+            android:id                                  ="@+id/eventStartTime"
+            android:clickable                           ="true"
+            android:focusable                           ="true"
+            android:gravity                             ="center"
+            android:text                                ="@string/start_time"
+            android:textColor                           ="@color/white"
+            android:textSize                            ="16sp"
+            android:textStyle                           ="bold"
+            android:layout_marginTop                    ="16dip"
+            android:layout_height                       ="wrap_content"
+            android:layout_width                        ="0dip"
+            node:layout_constraintHorizontal_chainStyle ="spread"
+            node:layout_constraintTop_toBottomOf        ="@id/titleEventLocationText"
+            node:layout_constraintStart_toStartOf       ="parent"
+            node:layout_constraintEnd_toStartOf         ="@id/eventEndTime"
+            />
 
-    <!-- TextView eventStartTimeValue -->
-    <TextView
-        android:id                                  ="@+id/eventStartTimeValue"
-        android:clickable                           ="true"
-        android:focusable                           ="true"
-        android:gravity                             ="center"
-        android:text                                ="@string/time_default_text"
-        android:textColor                           ="@color/white"
-        android:textSize                            ="16sp"
-        android:layout_marginTop                    ="8dip"
-        android:layout_height                       ="wrap_content"
-        android:layout_width                        ="0dip"
-        node:layout_constraintHorizontal_chainStyle ="spread"
-        node:layout_constraintTop_toBottomOf        ="@id/eventStartTime"
-        node:layout_constraintStart_toStartOf       ="parent"
-        node:layout_constraintEnd_toStartOf         ="@id/eventEndTimeValue"
-    />
+        <!-- TextView eventStartTimeValue -->
+        <TextView
+            android:id                                  ="@+id/eventStartTimeValue"
+            android:clickable                           ="true"
+            android:focusable                           ="true"
+            android:gravity                             ="center"
+            android:text                                ="@string/time_default_text"
+            android:textColor                           ="@color/white"
+            android:textSize                            ="16sp"
+            android:layout_marginTop                    ="8dip"
+            android:layout_height                       ="wrap_content"
+            android:layout_width                        ="0dip"
+            node:layout_constraintHorizontal_chainStyle ="spread"
+            node:layout_constraintTop_toBottomOf        ="@id/eventStartTime"
+            node:layout_constraintStart_toStartOf       ="parent"
+            node:layout_constraintEnd_toStartOf         ="@id/eventEndTimeValue"
+            />
 
-    <!-- TextView eventEndTime -->
-    <TextView
-        android:id                                  ="@+id/eventEndTime"
-        android:clickable                           ="true"
-        android:focusable                           ="true"
-        android:gravity                             ="center"
-        android:text                                ="@string/end_time"
-        android:textColor                           ="@color/white"
-        android:textSize                            ="16sp"
-        android:textStyle                           ="bold"
-        android:layout_marginTop                    ="16dip"
-        android:layout_height                       ="wrap_content"
-        android:layout_width                        ="0dip"
-        node:layout_constraintHorizontal_chainStyle ="spread"
-        node:layout_constraintTop_toBottomOf        ="@id/titleEventLocationText"
-        node:layout_constraintStart_toEndOf         ="@id/eventStartTime"
-        node:layout_constraintEnd_toStartOf         ="@id/eventTotalTime"
-    />
+        <!-- TextView eventEndTime -->
+        <TextView
+            android:id                                  ="@+id/eventEndTime"
+            android:clickable                           ="true"
+            android:focusable                           ="true"
+            android:gravity                             ="center"
+            android:text                                ="@string/end_time"
+            android:textColor                           ="@color/white"
+            android:textSize                            ="16sp"
+            android:textStyle                           ="bold"
+            android:layout_marginTop                    ="16dip"
+            android:layout_height                       ="wrap_content"
+            android:layout_width                        ="0dip"
+            node:layout_constraintHorizontal_chainStyle ="spread"
+            node:layout_constraintTop_toBottomOf        ="@id/titleEventLocationText"
+            node:layout_constraintStart_toEndOf         ="@id/eventStartTime"
+            node:layout_constraintEnd_toStartOf         ="@id/eventTotalTime"
+            />
 
-    <!-- TextView eventEndTimeValue -->
-    <TextView
-        android:id                                  ="@+id/eventEndTimeValue"
-        android:clickable                           ="true"
-        android:focusable                           ="true"
-        android:gravity                             ="center"
-        android:text                                ="@string/time_default_text"
-        android:textColor                           ="@color/white"
-        android:textSize                            ="16sp"
-        android:layout_marginTop                    ="8dip"
-        android:layout_height                       ="wrap_content"
-        android:layout_width                        ="0dip"
-        node:layout_constraintHorizontal_chainStyle ="spread"
-        node:layout_constraintTop_toBottomOf        ="@id/eventEndTime"
-        node:layout_constraintStart_toEndOf         ="@id/eventStartTimeValue"
-        node:layout_constraintEnd_toStartOf         ="@id/eventTotalTimeValue"
-    />
+        <!-- TextView eventEndTimeValue -->
+        <TextView
+            android:id                                  ="@+id/eventEndTimeValue"
+            android:clickable                           ="true"
+            android:focusable                           ="true"
+            android:gravity                             ="center"
+            android:text                                ="@string/time_default_text"
+            android:textColor                           ="@color/white"
+            android:textSize                            ="16sp"
+            android:layout_marginTop                    ="8dip"
+            android:layout_height                       ="wrap_content"
+            android:layout_width                        ="0dip"
+            node:layout_constraintHorizontal_chainStyle ="spread"
+            node:layout_constraintTop_toBottomOf        ="@id/eventEndTime"
+            node:layout_constraintStart_toEndOf         ="@id/eventStartTimeValue"
+            node:layout_constraintEnd_toStartOf         ="@id/eventTotalTimeValue"
+            />
 
-    <!-- TextView eventTotalTime -->
-    <TextView
-        android:id                                  ="@+id/eventTotalTime"
-        android:clickable                           ="true"
-        android:focusable                           ="true"
-        android:gravity                             ="center"
-        android:text                                ="@string/total_time"
-        android:textColor                           ="@color/white"
-        android:textSize                            ="16sp"
-        android:textStyle                           ="bold"
-        android:layout_marginTop                    ="16dip"
-        android:layout_height                       ="wrap_content"
-        android:layout_width                        ="0dip"
-        node:layout_constraintHorizontal_chainStyle ="spread"
-        node:layout_constraintTop_toBottomOf        ="@id/titleEventLocationText"
-        node:layout_constraintStart_toEndOf         ="@id/eventEndTime"
-        node:layout_constraintEnd_toEndOf           ="parent"
-    />
+        <!-- TextView eventTotalTime -->
+        <TextView
+            android:id                                  ="@+id/eventTotalTime"
+            android:clickable                           ="true"
+            android:focusable                           ="true"
+            android:gravity                             ="center"
+            android:text                                ="@string/total_time"
+            android:textColor                           ="@color/white"
+            android:textSize                            ="16sp"
+            android:textStyle                           ="bold"
+            android:layout_marginTop                    ="16dip"
+            android:layout_height                       ="wrap_content"
+            android:layout_width                        ="0dip"
+            node:layout_constraintHorizontal_chainStyle ="spread"
+            node:layout_constraintTop_toBottomOf        ="@id/titleEventLocationText"
+            node:layout_constraintStart_toEndOf         ="@id/eventEndTime"
+            node:layout_constraintEnd_toEndOf           ="parent"
+            />
 
-    <!-- TextView eventTotalTimeValue -->
-    <TextView
-        android:id                                  ="@+id/eventTotalTimeValue"
-        android:clickable                           ="true"
-        android:focusable                           ="true"
-        android:gravity                             ="center"
-        android:text                                ="@string/time_default_text"
-        android:textColor                           ="@color/white"
-        android:textSize                            ="16sp"
-        android:layout_marginTop                    ="8dip"
-        android:layout_height                       ="wrap_content"
-        android:layout_width                        ="0dip"
-        node:layout_constraintHorizontal_chainStyle ="spread"
-        node:layout_constraintTop_toBottomOf        ="@id/eventTotalTime"
-        node:layout_constraintStart_toEndOf         ="@id/eventEndTimeValue"
-        node:layout_constraintEnd_toEndOf           ="parent"
-    />
+        <!-- TextView eventTotalTimeValue -->
+        <TextView
+            android:id                                  ="@+id/eventTotalTimeValue"
+            android:clickable                           ="true"
+            android:focusable                           ="true"
+            android:gravity                             ="center"
+            android:text                                ="@string/time_default_text"
+            android:textColor                           ="@color/white"
+            android:textSize                            ="16sp"
+            android:layout_marginTop                    ="8dip"
+            android:layout_height                       ="wrap_content"
+            android:layout_width                        ="0dip"
+            node:layout_constraintHorizontal_chainStyle ="spread"
+            node:layout_constraintTop_toBottomOf        ="@id/eventTotalTime"
+            node:layout_constraintStart_toEndOf         ="@id/eventEndTimeValue"
+            node:layout_constraintEnd_toEndOf           ="parent"
+            />
 
-	</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

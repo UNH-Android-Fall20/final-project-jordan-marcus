@@ -14,7 +14,7 @@
       android:padding       ="16dip"
       android:layout_height ="match_parent"
       android:layout_width  ="match_parent"
-      tools:context         =".event.controller.EventView">
+      tools:context         =".event.controller.EventAdd">
 
     <!-- TextView eventAdd -->
     <TextView

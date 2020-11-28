@@ -77,6 +77,7 @@
     <string name="title_error"                > Uh Oh                                                                                                      </string>
     <string name="title_no_save"              > Are You Sure?                                                                                              </string>
     <string name="title_request"              > Request Sent                                                                                               </string>
+    <string name="title_sort_event"           > Sort Events                                                                                                </string>
     <string name="title_sort_secondary_user"  > Sort User Profiles                                                                                         </string>
     <string name="title_verification_sent"    > Email Verification Sent                                                                                    </string>
 
