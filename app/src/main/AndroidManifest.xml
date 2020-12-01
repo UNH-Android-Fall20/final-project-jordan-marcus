@@ -21,7 +21,7 @@
         <activity
             android:name=".settings.About"
             android:screenOrientation="portrait"
-            />
+        />
 
         <!-- Activity EventAdd -->
         <activity
@@ -66,12 +66,6 @@
         <!-- Activity Settings -->
         <activity
             android:name=".settings.Settings"
-            android:screenOrientation="portrait"
-        />
-
-        <!-- Activity SeniorTechHelp -->
-        <activity
-            android:name=".event.models.SeniorTechHelp"
             android:screenOrientation="portrait"
         />
 

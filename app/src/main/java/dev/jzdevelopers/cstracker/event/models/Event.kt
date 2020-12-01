@@ -6,10 +6,12 @@ import android.view.View
 import android.widget.ProgressBar
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.Query.Direction.ASCENDING
+import com.google.firebase.firestore.Query.Direction.DESCENDING
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.common.FireBaseModel
-import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.event.common.EventSort
+import dev.jzdevelopers.cstracker.libs.JZActivity
 import kotlinx.coroutines.tasks.await
 import java.text.DateFormat
 import java.util.*
@@ -31,7 +33,7 @@ import java.util.regex.Pattern
  */
 class Event(
     @get:Exclude val context : Context? = null,
-    var date                 : String   = "",
+    var date                 : String   = "MM/DD/YYYY",
     var endTime              : String   = "0:00",
     var location             : String   = "",
     var name                 : String   = "",
@@ -39,6 +41,7 @@ class Event(
     var peopleInCharge       : String   = "",
     var phoneNumber          : String   = "000-000-0000",
     var startTime            : String   = "0:00",
+    var totalTime            : String   = "0:00",
     val userId               : String   = ""
 ): FireBaseModel() {
 
@@ -77,7 +80,7 @@ class Event(
                     fireStore
                         .collection("Events")
                         .whereIn("userId", mutableListOf(userId))
-                        .orderBy("date")
+                        .orderBy("date", DESCENDING)
                         .orderBy("name")
                         .orderBy("location")
                 }
@@ -85,7 +88,7 @@ class Event(
                     fireStore
                         .collection("Events")
                         .whereIn("userId", mutableListOf(userId))
-                        .orderBy("date")
+                        .orderBy("date", ASCENDING)
                         .orderBy("name")
                         .orderBy("location")
                 }

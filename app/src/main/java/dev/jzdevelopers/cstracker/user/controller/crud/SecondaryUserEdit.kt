@@ -23,17 +23,14 @@ class SecondaryUserEdit: JZActivity() {
 
     //<editor-fold desc="Class Variables">
 
-    // Define And Initialize Int Value//
-    private val userIconCode = 0
+    // Defines SecondaryUser Variable//
+    private lateinit var secondaryUser: SecondaryUser
 
     // Define And Initialize Drawable Variable//
     private var profileImageDrawable: Drawable? = null
 
-    // Define And Initialize Int Variable//
-    private var secondaryUserId = ""
-
-    // Defines SecondaryUser Variable//
-    private lateinit var secondaryUser: SecondaryUser
+    // Define And Initialize Int Value//
+    private val userIconCode = 0
 
     //</editor-fold>
 
@@ -43,8 +40,7 @@ class SecondaryUserEdit: JZActivity() {
     override fun createActivity() {
 
         // Gets The Secondary-User And Its Id That Was Clicked On//
-        secondaryUser   = intent.extras?.get("SECONDARY_USER") as SecondaryUser
-        secondaryUserId = intent.extras?.get("ID") as String
+        secondaryUser = intent.extras?.get("SECONDARY_USER")    as SecondaryUser
 
         // Creates The UI//
         createUI(R.layout.ui_secondary_user_add_edit) {
@@ -93,6 +89,9 @@ class SecondaryUserEdit: JZActivity() {
 
         // When fabSaveProfile Is Clicked//
         click(fabSaveProfile) {
+
+            // Gets The Secondary User Id//
+            val secondaryUserId = intent.extras?.get("SECONDARY_USER_ID") as String
 
             // Gets The Inputted Int Data//
             val goalEditText  = goal.text.toString()

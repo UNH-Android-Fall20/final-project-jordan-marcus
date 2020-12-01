@@ -1,6 +1,5 @@
 package dev.jzdevelopers.cstracker.event.controller
 
-import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
@@ -9,12 +8,11 @@ import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.event.common.EventSort
 import dev.jzdevelopers.cstracker.event.common.EventSort.*
 import dev.jzdevelopers.cstracker.event.models.Event
-//import dev.jzdevelopers.cstracker.event.models.SeniorTechHelp
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.libs.JZRecyclerAdapterFB
 import dev.jzdevelopers.cstracker.libs.JZPrefs
+import dev.jzdevelopers.cstracker.libs.JZRecyclerAdapterFB
+import dev.jzdevelopers.cstracker.settings.Theme
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser
-import kotlinx.android.synthetic.main.ui_event_add.view.*
 import kotlinx.android.synthetic.main.ui_event_design.view.*
 import kotlinx.android.synthetic.main.ui_event_view.*
 
@@ -65,11 +63,23 @@ class EventView : JZActivity() {
         // Creates The UI//
         createUI(R.layout.ui_event_view) {
 
-            // Sets The Icon Color of The System Bars//
-            statusBarColor(isDarkIcons = true)
+            // Sets The Theme//
+            val theme = Theme.getAppTheme(this@EventView)
+            theme(theme)
+
+            // Sets The Status Bar Color And Icon Color//
+            val statusBarColor = Theme.getStatusBarColor(this@EventView)
+            when(statusBarColor) {
+                R.color.white -> statusBarColor(statusBarColor, true)
+                else          -> statusBarColor(statusBarColor, false)
+            }
 
             // Sets The Menu For The Activity//
-            menu(bottomBar, R.menu.menu_secondary_user_view)
+            menu(bottomBar, R.menu.menu_event_view)
+
+            // Sets The Title For The Activity//
+            val firstName = intent.extras?.get("SECONDARY_USER_FIRST_NAME") as String
+            title(eventView, "$firstName's Events")
         }
 
         // Shows The Events//
@@ -82,8 +92,7 @@ class EventView : JZActivity() {
     override fun createListeners() {
 
         // Define And Initialize MenuItem Values//
-        val settings = menu.findItem(R.id.settings)
-        val sort     = menu.findItem(R.id.sort)
+        val sort = menu.findItem(R.id.sort)
 
         // When An Adapter Item Is Clicked//
         click(adapter) {
@@ -224,17 +233,15 @@ class EventView : JZActivity() {
         adapter = JZRecyclerAdapterFB(this, scope, layout, query, Event::class) { it, _ ->
 
             // Generates The Different Properties//
-            val date     = it.date
-            val location = it.location
-            val name     = it.name
+            val date = it.date
 
             // Matches The Basic Properties With Their Nodes//
-            eventNameText.text     = name
-            eventDateText.text     = date
-            eventLocationText.text = location
-            startTimeValue.text    = it.startTime
-            endTimeValue.text      = it.endTime
-//            eventTotalTimeValue.text     = it.totalTime
+            eventNameText.text       = it.name
+            eventDateText.text       = date
+            eventLocationText.text   = it.location
+            eventStartTimeValue.text = it.startTime
+            eventEndTimeValue.text   = it.endTime
+            eventTotalTimeValue.text = it.totalTime
         }
         adapter.attachRecyclerView(eventList)
     }

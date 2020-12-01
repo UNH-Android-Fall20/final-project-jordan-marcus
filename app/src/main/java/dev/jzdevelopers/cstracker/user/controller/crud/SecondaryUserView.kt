@@ -8,7 +8,9 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.common.GlideApp
+import dev.jzdevelopers.cstracker.event.controller.EventView
 import dev.jzdevelopers.cstracker.libs.*
+import dev.jzdevelopers.cstracker.libs.JZDateFormat.*
 import dev.jzdevelopers.cstracker.settings.Settings
 import dev.jzdevelopers.cstracker.settings.Theme
 import dev.jzdevelopers.cstracker.settings.Theme.Companion.getCardColor
@@ -115,8 +117,18 @@ class SecondaryUserView: JZActivity() {
         }
 
         // When An Adapter Item Is Clicked//
-        click(adapter) {
-            toastShort("clicked $it")
+        click(adapter) { position ->
+
+            // Gets The Secondary User Data//
+            val secondaryUserId = adapter.getItemId(position)
+            val secondaryUser   = adapter.getItem(position)
+
+            // Starts The EventView Activity//
+            startActivity(EventView::class, R.anim.faze_in, R.anim.faze_out) {
+                it.putExtra("SECONDARY_USER_ID", secondaryUserId)
+                it.putExtra("SECONDARY_USER_FIRST_NAME", secondaryUser.firstName)
+                it.putExtra("SECONDARY_USER_THEME", secondaryUser.theme)
+            }
         }
 
         // When fabAddProfile Is Clicked//
@@ -259,8 +271,8 @@ class SecondaryUserView: JZActivity() {
 
                 // Starts The SecondaryUserEdit Activity//
                 startActivity(SecondaryUserEdit::class, R.anim.faze_in, R.anim.faze_out) {
+                    it.putExtra("SECONDARY_USER_ID", id)
                     it.putExtra("SECONDARY_USER", secondaryUser)
-                    it.putExtra("ID", id)
                 }
             }
 
@@ -281,6 +293,11 @@ class SecondaryUserView: JZActivity() {
 
                 // When An Item Is Not Selected//
                 !isSelected -> {
+
+                    // Hides The 'Edit' Menu Item//
+                    if (itemSelectedCount > 1) edit.isVisible = false
+
+                    // Removes The Item If It Exists//
                     val index = selectedItemList.indexOfFirst { savedItemPosition ->
                         savedItemPosition == itemPosition
                     }

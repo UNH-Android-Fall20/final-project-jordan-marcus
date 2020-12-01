@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Menu For Activity EventView -->
+<menu
+    xmlns:android ="http://schemas.android.com/apk/res/android"
+    xmlns:app     ="http://schemas.android.com/apk/res-auto"
+    xmlns:tools   ="http://schemas.android.com/tools"
+    tools:context =".event.controller.EventView">
+
+    <!-- Item search -->
+    <item
+        android:id              ="@+id/search"
+        android:icon            ="@drawable/menu_search"
+        android:orderInCategory ="1"
+        android:title           ="@string/menu_search"
+        app:actionViewClass     ="androidx.appcompat.widget.SearchView"
+        app:showAsAction        ="ifRoom"
+    />
+
+    <!-- Item Sort -->
+    <item
+        android:id              ="@+id/sort"
+        android:icon            ="@drawable/menu_sort"
+        android:orderInCategory ="2"
+        android:title           ="@string/menu_sort"
+        app:showAsAction        ="ifRoom"
+    />
+
+</menu>
