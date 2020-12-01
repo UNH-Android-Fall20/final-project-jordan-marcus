@@ -2,6 +2,7 @@ package dev.jzdevelopers.cstracker.user.models
 
 import android.content.Context
 import android.widget.ProgressBar
+import com.google.firebase.firestore.Exclude
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.common.FireBaseModel
 import dev.jzdevelopers.cstracker.libs.JZActivity
@@ -17,26 +18,11 @@ import java.util.*
  *   @param [theme]     The theme for the user
  */
 abstract class User(
-    protected val context: Context? = null,
-    var firstName : String,
-    var lastName  : String,
-    var theme     : UserTheme,
+    @get:Exclude var context : Context? = null,
+    var firstName            : String,
+    var lastName             : String,
+    var theme                : UserTheme,
 ): FireBaseModel() {
-
-    /**.
-     * Configures Static Functions And Variables
-     */
-    companion object {
-
-        /**.
-         * Function That Checks Whether The User Is Signed-In
-         * @return Whether the user is signed-in
-         */
-        fun isSignedIn(): Boolean {
-            val user = firebaseAuth.currentUser
-            return user != null
-        }
-    }
 
     /**.
      * Base Function For Adding A User To The Database
@@ -79,12 +65,8 @@ abstract class User(
      */
     protected fun showGeneralError() {
 
-        // When Context Is Null//
-        if (context == null) {
-
-            // Throws A Runtime Error//
-            throw NullPointerException("Context must not be null")
-        }
+        // Gets The Context If It Exists//
+        val context = context ?: throw NullPointerException("Context must not be null")
 
         // Shows The Error Dialog//
         JZActivity.showGeneralDialog(
@@ -100,12 +82,8 @@ abstract class User(
      */
     private fun isValidFirstName(): Boolean {
 
-        // When Context Is Null//
-        if (context == null) {
-
-            // Throws A Runtime Error//
-            throw NullPointerException("Context must not be null")
-        }
+        // Gets The Context If It Exists//
+        val context = context ?: throw NullPointerException("Context must not be null")
 
         // Checks The First-Name For Validity//
         return when {
@@ -157,12 +135,8 @@ abstract class User(
      */
     private fun isValidLastName(): Boolean {
 
-        // When Context Is Null//
-        if (context == null) {
-
-            // Throws A Runtime Error//
-            throw NullPointerException("Context must not be null")
-        }
+        // Gets The Context If It Exists//
+        val context = context ?: throw NullPointerException("Context must not be null")
 
         // Checks The Last-Name For Validity//
         return when {

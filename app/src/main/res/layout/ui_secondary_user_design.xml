@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- CardView UI For Class SecondaryUserView -->
-<androidx.cardview.widget.CardView
+<com.google.android.material.card.MaterialCardView
     xmlns:android              ="http://schemas.android.com/apk/res/android"
     xmlns:node                 ="http://schemas.android.com/apk/res-auto"
-    android:id                 ="@+id/uiSecondaryUserDesign"
+    android:id                 ="@+id/cardSecondaryUser"
     android:clickable          ="true"
     android:fitsSystemWindows  ="true"
     android:focusable          ="true"
-    android:foreground         ="@drawable/ripple"
     android:layout_marginStart ="16dip"
     android:layout_marginEnd  ="16dip"
     android:layout_height     ="wrap_content"
     android:layout_width      ="match_parent"
     node:cardBackgroundColor  ="?attr/colorPrimary"
-    node:cardCornerRadius     ="16dip">
+    node:cardCornerRadius     ="16dip"
+    node:rippleColor          ="@color/white">
 
   <!-- ConstraintLayout UI For Class SecondaryUserView -->
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,7 +36,7 @@
     />
 
     <!-- TextView nameLetter -->
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                              ="@+id/nameLetter"
         android:gravity                         ="center"
         android:text                            ="@string/name_letter_text"
@@ -52,9 +52,9 @@
         node:layout_constraintEnd_toEndOf       ="@id/profileImage"
     />
 
-    <!-- TextView nameText -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id                              ="@+id/nameText"
+    <!-- TextView textName -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id                              ="@+id/textName"
         android:text                            ="@string/name_text"
         android:textColor                       ="@color/white"
         android:textSize                        ="20sp"
@@ -67,9 +67,9 @@
         node:layout_constraintStart_toEndOf     ="@id/profileImage"
     />
 
-    <!-- TextView totalTimeText -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id                              ="@+id/totalTimeText"
+    <!-- TextView textTotalTime -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id                              ="@+id/textTotalTime"
         android:text                            ="@string/time_default_text"
         android:textColor                       ="@color/white"
         android:textSize                        ="14sp"
@@ -80,9 +80,9 @@
         node:layout_constraintEnd_toEndOf       ="parent"
     />
 
-    <!-- TextView titleGradeText -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id                            ="@+id/titleGradeText"
+    <!-- TextView textTitleGrade -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id                            ="@+id/textTitleGrade"
         android:text                          ="@string/title_grade_text"
         android:textColor                     ="@color/white"
         android:textSize                      ="16sp"
@@ -94,22 +94,22 @@
         node:layout_constraintStart_toStartOf ="parent"
     />
 
-    <!-- TextView gradeText -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id                          ="@+id/gradeText"
+    <!-- TextView textGrade -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id                          ="@+id/textGrade"
         android:text                        ="@string/grade"
         android:textColor                   ="@color/white"
         android:textSize                    ="16sp"
         android:layout_marginStart          ="5dip"
         android:layout_height               ="wrap_content"
         android:layout_width                ="wrap_content"
-        node:layout_constraintTop_toTopOf   ="@id/titleGradeText"
-        node:layout_constraintStart_toEndOf ="@id/titleGradeText"
+        node:layout_constraintTop_toTopOf   ="@id/textTitleGrade"
+        node:layout_constraintStart_toEndOf ="@id/textTitleGrade"
     />
 
-    <!-- TextView titleGoalText -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id                          ="@+id/titleGoalText"
+    <!-- TextView textTitleGoal -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id                          ="@+id/textTitleGoal"
         android:text                        ="@string/title_goal_text"
         android:textColor                   ="@color/white"
         android:textSize                    ="16sp"
@@ -117,36 +117,36 @@
         android:layout_marginStart          ="16dip"
         android:layout_height               ="wrap_content"
         android:layout_width                ="wrap_content"
-        node:layout_constraintTop_toTopOf   ="@id/titleGradeText"
-        node:layout_constraintStart_toEndOf ="@id/gradeText"
+        node:layout_constraintTop_toTopOf   ="@id/textTitleGrade"
+        node:layout_constraintStart_toEndOf ="@id/textGrade"
     />
 
-    <!-- TextView goalText -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id                          ="@+id/goalText"
+    <!-- TextView textGoal -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id                          ="@+id/textGoal"
         android:text                        ="@string/goal"
         android:textColor                   ="@color/white"
         android:textSize                    ="16sp"
         android:layout_marginStart          ="5dip"
         android:layout_height               ="wrap_content"
         android:layout_width                ="wrap_content"
-        node:layout_constraintTop_toTopOf   ="@id/titleGradeText"
-        node:layout_constraintStart_toEndOf ="@id/titleGoalText"
+        node:layout_constraintTop_toTopOf   ="@id/textTitleGrade"
+        node:layout_constraintStart_toEndOf ="@id/textTitleGoal"
     />
 
-    <!-- TextView organizationText -->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id                            ="@+id/organizationText"
+    <!-- TextView textOrganization -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id                            ="@+id/textOrganization"
         android:text                          ="@string/organization"
         android:textColor                     ="@color/white"
         android:textSize                      ="16sp"
         android:layout_marginTop              ="16dip"
         android:layout_height                 ="wrap_content"
         android:layout_width                  ="wrap_content"
-        node:layout_constraintTop_toBottomOf  ="@id/titleGradeText"
+        node:layout_constraintTop_toBottomOf  ="@id/textTitleGrade"
         node:layout_constraintStart_toStartOf ="parent"
     />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

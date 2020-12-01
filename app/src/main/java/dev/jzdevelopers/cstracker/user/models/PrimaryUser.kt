@@ -117,6 +117,27 @@ class PrimaryUser(
         }
 
         /**.
+         * Function That Checks Whether The User Is Signed-In
+         * @param [context] Gets the instance from the caller activity
+         * @return Whether the user is signed-in
+         */
+        suspend fun isSignedIn(context: Context): Boolean {
+            return try {
+
+                // Reloads The Current State Of The Primary-User//
+                firebaseAuth.currentUser?.reload()?.await()
+
+                // Gets Whether The Primary User Is Signed In//
+                val user = firebaseAuth.currentUser
+                return user != null
+            }
+            catch (_: Exception) {
+                showGeneralError(context)
+                false
+            }
+        }
+
+        /**.
          * Function That Sends A Verification Email To The User
          * @param [context] Gets the instance from the caller activity
          */
@@ -175,7 +196,7 @@ class PrimaryUser(
 
                 // Authenticates The User//
                 firebaseAuth.signInWithEmailAndPassword(email, password).await()
-                if (!isSignedIn()) return false
+                if (!isSignedIn(context)) return false
 
                 // Gets The Primary-User's Id//
                 val userId = firebaseAuth.currentUser?.uid ?: throw Error()
@@ -230,12 +251,8 @@ class PrimaryUser(
     suspend fun add(loadingBar: ProgressBar, password: String, confirmPassword: String): Boolean {
         try {
 
-            // When Context Is Null//
-            if (context == null) {
-
-                // Throws A Runtime Error//
-                throw NullPointerException("Context must not be null")
-            }
+            // Gets The Context If It Exists//
+            val context = context ?: throw NullPointerException("Context must not be null")
 
             // Checks If The User Input Is Valid//
             if (!super.add(loadingBar)) return false
@@ -279,12 +296,8 @@ class PrimaryUser(
     suspend fun delete(): Boolean {
         try {
 
-            // When Context Is Null//
-            if (context == null) {
-
-                // Throws A Runtime Error//
-                throw NullPointerException("Context must not be null")
-            }
+            // Gets The Context If It Exists//
+            val context = context ?: throw NullPointerException("Context must not be null")
 
             // Gets The Signed-In User//
             val user = firebaseAuth.currentUser ?: throw Error()
@@ -315,12 +328,8 @@ class PrimaryUser(
     suspend fun edit(loadingBar: ProgressBar): Boolean {
         try {
 
-            // When Context Is Null//
-            if (context == null) {
-
-                // Throws A Runtime Error//
-                throw NullPointerException("Context must not be null")
-            }
+            // Gets The Context If It Exists//
+            val context = context ?: throw NullPointerException("Context must not be null")
 
             // Checks If The User Input Is Valid//
             if (!super.edit("", loadingBar)) return false
@@ -358,12 +367,8 @@ class PrimaryUser(
      */
     private fun isValidEmail(): Boolean {
 
-        // When Context Is Null//
-        if (context == null) {
-
-            // Throws A Runtime Error//
-            throw NullPointerException("Context must not be null")
-        }
+        // Gets The Context If It Exists//
+        val context = context ?: throw NullPointerException("Context must not be null")
 
         // Uses The Android Email Pattern For Checking Email Syntax//
         val emailValidator = PatternsCompat.EMAIL_ADDRESS
@@ -409,12 +414,8 @@ class PrimaryUser(
      */
     private fun isValidPassword(password: String, confirmPassword: String): Boolean {
 
-        // When Context Is Null//
-        if (context == null) {
-
-            // Throws A Runtime Error//
-            throw NullPointerException("Context must not be null")
-        }
+        // Gets The Context If It Exists//
+        val context = context ?: throw NullPointerException("Context must not be null")
 
         // Checks The Password For Validity//
         return when {

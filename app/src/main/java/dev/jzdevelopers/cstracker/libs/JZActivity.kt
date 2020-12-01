@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.text.Editable
@@ -35,6 +36,7 @@ import android.os.Build.VERSION_CODES.R as ANDROID_R
 
 // Type Aliases For Lambda Functions//
 private typealias ActivityResult = (requestCode: Int, resultCode: Int, data: Intent?) -> Unit
+private typealias IntentOptions  = (intent: Intent)                                   -> Unit
 
 //<editor-fold desc="Suspend Lambda Type Aliases">
 private typealias Click              = suspend ()                                                                 -> Unit
@@ -457,6 +459,27 @@ abstract class JZActivity: AppCompatActivity() {
     }
 
     /**.
+     * Function That Prepares An Email To Be Sent Using The Users Default Email App
+     * @param [to]      Who the email is being sent to
+     * @param [subject] The subject of the email
+     * @param [body]    A predefined email body, maybe for the user to fill in
+     */
+    protected fun prepareEmailToSend(to: String, subject: String, body: String) {
+
+        // Generates The Email Template//
+        val uri = Uri.parse("mailto:")
+            .buildUpon()
+            .appendQueryParameter("to", to)
+            .appendQueryParameter("subject", subject)
+            .appendQueryParameter("body", body)
+            .build()
+
+        // Opens The Users Default Email App To Send The Message//
+        val emailIntent = Intent(Intent.ACTION_SENDTO, uri)
+        startActivity(Intent.createChooser(emailIntent, "Sending Email..."))
+    }
+
+    /**.
      * Function That Shows A Long Toast Message
      * @param [message] The message to show
      */
@@ -516,13 +539,16 @@ abstract class JZActivity: AppCompatActivity() {
 
     /**.
      * Function That Starts A New Activity
-     * @param [activity]    An android activity kotlin Class
-     * @param [isAnimation] Checks whether to use the default animation
+     * @param [activity]      An android activity kotlin Class
+     * @param [isAnimation]   Checks whether to use the default animation
+     * @param [intentOptions] The different intent options for sending an activity
      */
-    protected fun startActivity(activity: KClass<*>, isAnimation: Boolean) {
+    protected fun startActivity(activity: KClass<*>, isAnimation: Boolean, intentOptions: IntentOptions? = null) {
 
         // Define And Instantiate Intent Value//
-        val newActivity = Intent(this, activity.java)
+        val newActivity = Intent(this, activity.java).apply {
+            intentOptions?.invoke(this)
+        }
 
         // Starts The Activity With The Default Animation//
         if (isAnimation) {
@@ -538,14 +564,17 @@ abstract class JZActivity: AppCompatActivity() {
 
     /**.
      * Function That Starts A New Activity
-     * @param [activity] An android activity kotlin Class
-     * @param [animIn]   The custom start animation
-     * @param [animOut]  The custom end animation
+     * @param [activity]      An android activity kotlin Class
+     * @param [animIn]        The custom start animation
+     * @param [animOut]       The custom end animation
+     * @param [intentOptions] The different intent options for sending an activity
      */
-    protected fun startActivity(activity: KClass<*>, animIn: Int, animOut: Int) {
+    protected fun startActivity(activity: KClass<*>, animIn: Int, animOut: Int, intentOptions: IntentOptions? = null) {
 
         // Define And Instantiate Intent Value//
-        val newActivity = Intent(this, activity.java)
+        val newActivity = Intent(this, activity.java).apply {
+            intentOptions?.invoke(this)
+        }
 
         // Starts The New Activity With The Custom Animation//
         startActivity(newActivity)
@@ -629,8 +658,7 @@ abstract class JZActivity: AppCompatActivity() {
 
     /**.
      * Function That Handles When A EditText's Text Changes
-     * @param [editText]   The edit-text node
-     * @param [textChange] The invoked function for when the edit-text's text changes (lambda)
+     * @param [editText] The edit-text node
      */
     private fun onTextChange(editText: EditText) {
 
@@ -686,13 +714,16 @@ abstract class JZActivity: AppCompatActivity() {
 
         /**.
          * Function That Sets A Custom Navigation Bar Color And Icon Tint
-         * @param [color]       The color resource
+         * @param [color]       The color resource, default is the style item 'colorPrimary'
          * @param [isDarkIcons] Whether the navigation bar icon tint should be dark
          */
         fun navigationColor(@ColorRes color: Int? = null, isDarkIcons: Boolean) {
 
-            // When A Custom Navigation Bar Color Is Set//
-            if (color != null) window.navigationBarColor = getColorCompat(color)
+            // When A Color Exists Or Not//
+            when (color) {
+                null -> window.navigationBarColor = getColorAttr(R.attr.colorPrimary)
+                else -> window.navigationBarColor = getColorCompat(color)
+            }
 
             // Sets The Icon Color of The System Bars//
             isDarkIconsNavigation = isDarkIcons
@@ -701,13 +732,16 @@ abstract class JZActivity: AppCompatActivity() {
 
         /**.
          * Function That Sets A Custom Status Bar Color And Icon Tint
-         * @param [color]       The color resource
+         * @param [color]       The color resource, default is the style item 'colorPrimaryDark'
          * @param [isDarkIcons] Whether the status bar icon tint should be dark
          */
         fun statusBarColor(@ColorRes color: Int? = null, isDarkIcons: Boolean) {
 
-            // When A Custom Status Bar Color Is Set//
-            if (color != null) window.statusBarColor = getColorCompat(color)
+            // When A Color Exists Or Not//
+            when (color) {
+                null -> window.statusBarColor = getColorAttr(R.attr.colorPrimaryDark)
+                else -> window.statusBarColor = getColorCompat(color)
+            }
 
             // Sets The Icon Color of The System Bars//
             isDarkIconsStatus = isDarkIcons
@@ -733,6 +767,8 @@ abstract class JZActivity: AppCompatActivity() {
 
             // Sets The Theme And Layout//
             setTheme(theme)
+            navigationColor(isDarkIcons = false)
+            statusBarColor(isDarkIcons = false)
             setContentView(layout)
         }
 

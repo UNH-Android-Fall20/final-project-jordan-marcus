@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- CoordinatorLayout UI For Class Settings -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android         ="http://schemas.android.com/apk/res/android"
+    xmlns:node            ="http://schemas.android.com/apk/res-auto"
+    xmlns:tools           ="http://schemas.android.com/tools"
+    android:background    ="?attr/layoutPrimary"
+    android:layout_height ="match_parent"
+    android:layout_width  ="match_parent" >
+
+  <!-- ConstraintLayout UI For Class Settings -->
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:id            ="@+id/uiSettings"
+      android:padding       ="16dip"
+      android:layout_height ="match_parent"
+      android:layout_width  ="match_parent"
+      tools:context         =".settings.Settings">
+
+    <!-- TextView activitySettings -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id                        ="@+id/activitySettings"
+        android:gravity                   ="center"
+        android:text                      ="@string/settings"
+        android:textColor                 ="?colorPrimary"
+        android:textSize                  ="30sp"
+        android:textStyle                 ="bold"
+        android:layout_height             ="wrap_content"
+        android:layout_width              ="match_parent"
+        node:layout_constraintTop_toTopOf ="parent"
+    />
+
+    <!-- CardView cardAbout -->
+    <com.google.android.material.card.MaterialCardView
+        android:id                           ="@+id/cardAbout"
+        android:clickable                    ="true"
+        android:focusable                    ="true"
+        android:layout_marginTop             ="32dip"
+        android:layout_height                ="wrap_content"
+        android:layout_width                 ="match_parent"
+        node:cardBackgroundColor             ="?attr/layoutPrimary"
+        node:cardCornerRadius                ="16dip"
+        node:cardElevation                   ="0dip"
+        node:rippleColor                     ="?colorPrimary"
+        node:layout_constraintTop_toBottomOf ="@id/activitySettings">
+
+      <!-- ConstraintLayout UI For cardAbout -->
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_height ="match_parent"
+          android:layout_width  ="match_parent">
+
+        <!-- ImageView iconAbout -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id                              ="@+id/iconAbout"
+            android:src                             ="@drawable/icon_about"
+            android:contentDescription              ="@string/icon_about_description"
+            android:layout_marginTop                ="16dip"
+            android:layout_marginBottom             ="16dip"
+            android:layout_marginStart              ="16dip"
+            android:layout_height                   ="60dip"
+            android:layout_width                    ="60dip"
+            node:layout_constraintTop_toTopOf       ="parent"
+            node:layout_constraintBottom_toBottomOf ="parent"
+            node:layout_constraintStart_toStartOf   ="parent"
+        />
+
+        <!-- TextView textTitleAbout -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id                          ="@+id/textTitleAbout"
+            android:text                        ="@string/title_about_text"
+            android:textSize                    ="18sp"
+            android:textStyle                   ="bold"
+            android:paddingTop                  ="5dip"
+            android:paddingStart                ="16dip"
+            android:paddingEnd                  ="16dip"
+            android:layout_height               ="wrap_content"
+            android:layout_width                ="wrap_content"
+            node:layout_constraintTop_toTopOf   ="@id/iconAbout"
+            node:layout_constraintStart_toEndOf ="@id/iconAbout"
+        />
+
+        <!-- TextView textDescriptionAbout -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id                              ="@+id/textDescriptionAbout"
+            android:text                            ="@string/description_about_text"
+            android:textSize                        ="14sp"
+            android:paddingBottom                   ="5dip"
+            android:paddingStart                    ="16dip"
+            android:paddingEnd                      ="16dip"
+            android:layout_height                   ="wrap_content"
+            android:layout_width                    ="wrap_content"
+            node:layout_constraintBottom_toBottomOf ="@id/iconAbout"
+            node:layout_constraintStart_toEndOf     ="@id/iconAbout"
+        />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- CardView cardTheme -->
+    <com.google.android.material.card.MaterialCardView
+        android:id                           ="@+id/cardTheme"
+        android:clickable                    ="true"
+        android:focusable                    ="true"
+        android:layout_marginTop             ="16dip"
+        android:layout_height                ="wrap_content"
+        android:layout_width                 ="match_parent"
+        node:cardBackgroundColor             ="?attr/layoutPrimary"
+        node:cardCornerRadius                ="16dip"
+        node:cardElevation                   ="0dip"
+        node:rippleColor                     ="?colorPrimary"
+        node:layout_constraintTop_toBottomOf ="@id/cardAbout">
+
+      <!-- ConstraintLayout UI For cardTheme -->
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_height ="match_parent"
+          android:layout_width  ="match_parent">
+
+        <!-- ImageView iconTheme -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id                              ="@+id/iconTheme"
+            android:src                             ="@drawable/icon_theme"
+            android:contentDescription              ="@string/icon_theme_description"
+            android:layout_marginTop                ="16dip"
+            android:layout_marginBottom             ="16dip"
+            android:layout_marginStart              ="16dip"
+            android:layout_height                   ="60dip"
+            android:layout_width                    ="60dip"
+            node:layout_constraintTop_toTopOf       ="parent"
+            node:layout_constraintBottom_toBottomOf ="parent"
+            node:layout_constraintStart_toStartOf   ="parent"
+        />
+
+        <!-- TextView textTitleTheme -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id                          ="@+id/textTitleTheme"
+            android:text                        ="@string/title_theme_text"
+            android:textSize                    ="18sp"
+            android:textStyle                   ="bold"
+            android:paddingTop                  ="5dip"
+            android:paddingStart                ="16dip"
+            android:paddingEnd                  ="16dip"
+            android:layout_height               ="wrap_content"
+            android:layout_width                ="wrap_content"
+            node:layout_constraintTop_toTopOf   ="@id/iconTheme"
+            node:layout_constraintStart_toEndOf ="@id/iconTheme"
+        />
+
+        <!-- TextView textDescriptionTheme -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id                              ="@+id/textDescriptionTheme"
+            android:text                            ="@string/description_theme_text"
+            android:textSize                        ="14sp"
+            android:paddingBottom                   ="5dip"
+            android:paddingStart                    ="16dip"
+            android:paddingEnd                      ="16dip"
+            android:layout_height                   ="wrap_content"
+            android:layout_width                    ="wrap_content"
+            node:layout_constraintBottom_toBottomOf ="@id/iconTheme"
+            node:layout_constraintStart_toEndOf     ="@id/iconTheme"
+        />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- CardView cardUser -->
+    <com.google.android.material.card.MaterialCardView
+        android:id                           ="@+id/cardUser"
+        android:clickable                    ="true"
+        android:focusable                    ="true"
+        android:layout_marginTop             ="16dip"
+        android:layout_height                ="wrap_content"
+        android:layout_width                 ="match_parent"
+        node:cardBackgroundColor             ="?attr/layoutPrimary"
+        node:cardCornerRadius                ="16dip"
+        node:cardElevation                   ="0dip"
+        node:rippleColor                     ="?colorPrimary"
+        node:layout_constraintTop_toBottomOf ="@id/cardTheme">
+
+      <!-- ConstraintLayout UI For cardUser -->
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_height ="match_parent"
+          android:layout_width  ="match_parent">
+
+        <!-- ImageView iconUser -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id                              ="@+id/iconUser"
+            android:src                             ="@drawable/icon_user"
+            android:contentDescription              ="@string/icon_user_description"
+            android:layout_marginTop                ="16dip"
+            android:layout_marginBottom             ="16dip"
+            android:layout_marginStart              ="16dip"
+            android:layout_height                   ="60dip"
+            android:layout_width                    ="60dip"
+            node:layout_constraintTop_toTopOf       ="parent"
+            node:layout_constraintBottom_toBottomOf ="parent"
+            node:layout_constraintStart_toStartOf   ="parent"
+        />
+
+        <!-- TextView textTitleUser -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id                          ="@+id/textTitleUser"
+            android:text                        ="@string/title_user_text"
+            android:textSize                    ="18sp"
+            android:textStyle                   ="bold"
+            android:paddingTop                  ="5dip"
+            android:paddingStart                ="16dip"
+            android:paddingEnd                  ="16dip"
+            android:layout_height               ="wrap_content"
+            android:layout_width                ="wrap_content"
+            node:layout_constraintTop_toTopOf   ="@id/iconUser"
+            node:layout_constraintStart_toEndOf ="@id/iconUser"
+        />
+
+        <!-- TextView textDescriptionUser -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id                              ="@+id/textDescriptionUser"
+            android:text                            ="@string/description_user_text"
+            android:textSize                        ="14sp"
+            android:paddingBottom                   ="5dip"
+            android:paddingStart                    ="16dip"
+            android:paddingEnd                      ="16dip"
+            android:layout_height                   ="wrap_content"
+            android:layout_width                    ="wrap_content"
+            node:layout_constraintBottom_toBottomOf ="@id/iconUser"
+            node:layout_constraintStart_toEndOf     ="@id/iconUser"
+        />
+
+        <!-- Switch switchUserMode -->
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id                              ="@+id/switchUserMode"
+            android:clickable                       ="false"
+            android:layout_marginEnd                ="8dip"
+            android:layout_height                   ="wrap_content"
+            android:layout_width                    ="wrap_content"
+            node:layout_constraintTop_toTopOf       ="parent"
+            node:layout_constraintBottom_toBottomOf ="parent"
+            node:layout_constraintEnd_toEndOf       ="parent"
+        />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- CardView cardSignOut -->
+    <com.google.android.material.card.MaterialCardView
+        android:id                           ="@+id/cardSignOut"
+        android:clickable                    ="true"
+        android:focusable                    ="true"
+        android:layout_marginTop             ="16dip"
+        android:layout_height                ="wrap_content"
+        android:layout_width                 ="match_parent"
+        node:cardBackgroundColor             ="?attr/layoutPrimary"
+        node:cardCornerRadius                ="16dip"
+        node:cardElevation                   ="0dip"
+        node:rippleColor                     ="?colorPrimary"
+        node:layout_constraintTop_toBottomOf ="@id/cardUser">
+
+      <!-- ConstraintLayout UI For cardSignOut -->
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_height ="match_parent"
+          android:layout_width  ="match_parent">
+
+        <!-- ImageView iconSignOut -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id                              ="@+id/iconSignOut"
+            android:src                             ="@drawable/icon_sign_out"
+            android:contentDescription              ="@string/icon_sign_out_description"
+            android:layout_marginTop                ="16dip"
+            android:layout_marginBottom             ="16dip"
+            android:layout_marginStart              ="16dip"
+            android:layout_height                   ="60dip"
+            android:layout_width                    ="60dip"
+            node:layout_constraintTop_toTopOf       ="parent"
+            node:layout_constraintBottom_toBottomOf ="parent"
+            node:layout_constraintStart_toStartOf   ="parent"
+        />
+
+        <!-- TextView textTitleSignOut -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id                          ="@+id/textTitleSignOut"
+            android:text                        ="@string/title_sign_out_text"
+            android:textSize                    ="18sp"
+            android:textStyle                   ="bold"
+            android:paddingTop                  ="5dip"
+            android:paddingStart                ="16dip"
+            android:paddingEnd                  ="16dip"
+            android:layout_height               ="wrap_content"
+            android:layout_width                ="wrap_content"
+            node:layout_constraintTop_toTopOf   ="@id/iconSignOut"
+            node:layout_constraintStart_toEndOf ="@id/iconSignOut"
+        />
+
+        <!-- TextView textDescriptionSignOut -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id                              ="@+id/textDescriptionSignOut"
+            android:text                            ="@string/description_sign_out_text"
+            android:textSize                        ="14sp"
+            android:paddingBottom                   ="5dip"
+            android:paddingStart                    ="16dip"
+            android:paddingEnd                      ="16dip"
+            android:layout_height                   ="wrap_content"
+            android:layout_width                    ="wrap_content"
+            node:layout_constraintBottom_toBottomOf ="@id/iconSignOut"
+            node:layout_constraintStart_toEndOf     ="@id/iconSignOut"
+        />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <!-- FloatingActionButton fabExit -->
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+      android:id                 ="@+id/fabExit"
+      android:src                ="@drawable/menu_clear"
+      android:contentDescription ="@string/fab_exit"
+      android:layout_height      ="wrap_content"
+      android:layout_width       ="wrap_content"
+      node:backgroundTint        ="?colorPrimaryDark"
+      node:fabSize               ="normal"
+      node:layout_anchor         ="@id/bottomBar"
+      node:rippleColor           ="?attr/ripplePrimary"
+      node:tint                  ="@color/white"
+  />
+
+  <!-- BottomBar bottomBar -->
+  <com.google.android.material.bottomappbar.BottomAppBar
+      android:id             ="@+id/bottomBar"
+      android:layout_gravity ="bottom"
+      android:layout_height  ="wrap_content"
+      android:layout_width   ="match_parent"
+      node:backgroundTint    ="?colorPrimary"
+      node:fabAlignmentMode  ="center"
+  />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

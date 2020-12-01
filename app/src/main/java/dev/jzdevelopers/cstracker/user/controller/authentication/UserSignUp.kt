@@ -2,10 +2,11 @@ package dev.jzdevelopers.cstracker.user.controller.authentication
 
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
+import dev.jzdevelopers.cstracker.settings.Theme
 import dev.jzdevelopers.cstracker.user.common.UserTheme.GREEN
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser.Companion.activate
-import dev.jzdevelopers.cstracker.user.models.User.Companion.isSignedIn
+import dev.jzdevelopers.cstracker.user.models.PrimaryUser.Companion.isSignedIn
 import kotlinx.android.synthetic.main.ui_user_sign_up.*
 
 /** Android Activity UserSignUp,
@@ -22,9 +23,22 @@ class UserSignUp: JZActivity() {
         // Creates The UI//
         createUI(R.layout.ui_user_sign_up) {
 
-            // Sets The Icon Color of The System Bars//
-            navigationColor(R.color.white, true)
-            statusBarColor(isDarkIcons  = true)
+            // Sets The Theme//
+            val theme = Theme.getAppTheme(this@UserSignUp)
+            theme(theme)
+
+            // Sets The Bar Colors And Icon Colors//
+            val barColor = Theme.getStatusBarColor(this@UserSignUp)
+            when(barColor) {
+                R.color.white -> {
+                    navigationColor(barColor, true)
+                    statusBarColor(barColor, true)
+                }
+                else -> {
+                    navigationColor(barColor, false)
+                    statusBarColor(barColor, false)
+                }
+            }
         }
     }
 
@@ -55,7 +69,7 @@ class UserSignUp: JZActivity() {
             val primaryUser  = PrimaryUser(this, firstName, lastName, GREEN, isMultiUser, email)
             val isSuccessful = primaryUser.add(progressBar, password, confirmPassword)
             if (!isSuccessful) return@click
-            if (!isSignedIn()) {
+            if (!isSignedIn(this)) {
 
                 // Shows The Error Dialog//
                 showGeneralDialog(

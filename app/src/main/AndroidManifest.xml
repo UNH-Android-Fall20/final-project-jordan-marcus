@@ -15,7 +15,13 @@
         android:label               ="@string/app_name"
         android:roundIcon           ="@mipmap/ic_launcher_round"
         android:supportsRtl         ="true"
-        android:theme               ="@style/GreenTheme">
+        android:theme               ="@style/WhiteTheme">
+
+        <!-- Activity About -->
+        <activity
+            android:name=".settings.About"
+            android:screenOrientation="portrait"
+            />
 
         <!-- Activity EventAdd -->
         <activity
@@ -45,9 +51,21 @@
             android:screenOrientation="portrait"
         />
 
+        <!-- Activity SecondaryUserEdit -->
+        <activity
+            android:name=".user.controller.crud.SecondaryUserEdit"
+            android:screenOrientation="portrait"
+        />
+
         <!-- Activity SecondaryUserView -->
         <activity
             android:name=".user.controller.crud.SecondaryUserView"
+            android:screenOrientation="portrait"
+        />
+
+        <!-- Activity Settings -->
+        <activity
+            android:name=".settings.Settings"
             android:screenOrientation="portrait"
         />
 
@@ -57,11 +75,17 @@
             android:screenOrientation="portrait"
         />
 
+        <!-- Activity Theme -->
+        <activity
+            android:name=".settings.Theme"
+            android:screenOrientation="portrait"
+        />
+
         <!-- Activity UserActivation -->
         <activity
             android:name="dev.jzdevelopers.cstracker.user.controller.authentication.UserActivation"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"
+        />
 
         <!-- Activity UserPasswordReset -->
         <activity
