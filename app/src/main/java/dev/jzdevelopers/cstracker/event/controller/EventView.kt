@@ -109,11 +109,10 @@ class EventView : JZActivity() {
                 listItemsSingleChoice(items = sortTypes, initialSelection = sortNum)
                 listItemsSingleChoice(items = sortTypes) { _, _, text ->
                     when(text) {
-                        "Date"             -> JZPrefs.savePref(this@EventView, prefSort, DATE.ordinal)
                         "Location"         -> JZPrefs.savePref(this@EventView, prefSort, LOCATION.ordinal)
                         "Name"             -> JZPrefs.savePref(this@EventView, prefSort, NAME.ordinal)
-                        "People In Charge" -> JZPrefs.savePref(this@EventView, prefSort, PEOPLE_IN_CHARGE.ordinal)
-//                        "Total Time"       -> JZPrefs.savePref(this@EventView, prefSort, TOTAL_TIME.ordinal)
+                        "Newest to Oldest" -> JZPrefs.savePref(this@EventView, prefSort, NEWEST_TO_OLDEST.ordinal)
+                        "Oldest to Newest" -> JZPrefs.savePref(this@EventView, prefSort, OLDEST_TO_NEWEST.ordinal)
                     }
                 }
                 positiveButton(0, getString(R.string.button_only)) {

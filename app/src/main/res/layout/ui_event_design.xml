@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- CardView UI For Class EventView -->
-<androidx.cardview.widget.CardView
+<com.google.android.material.card.MaterialCardView
     xmlns:android              ="http://schemas.android.com/apk/res/android"
     xmlns:node                 ="http://schemas.android.com/apk/res-auto"
     android:id                 ="@+id/uiEventDesign"
     android:clickable          ="true"
     android:fitsSystemWindows  ="true"
     android:focusable          ="true"
-    android:foreground         ="@drawable/ripple"
     android:layout_marginStart ="16dip"
     android:layout_marginEnd   ="16dip"
     android:layout_height      ="wrap_content"
     android:layout_width       ="match_parent"
     node:cardBackgroundColor   ="?attr/colorPrimary"
-    node:cardCornerRadius      ="16dip">
+    node:cardCornerRadius      ="16dip"
+    node:rippleColor           ="@color/white">
 
     <!-- ConstraintLayout UI For Class EventView -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,7 +24,7 @@
         android:layout_width  ="match_parent">
 
         <!-- TextView titleEventNameText -->
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.textview.MaterialTextView
             android:id                            ="@+id/titleEventNameText"
             android:text                          ="@string/title_event_name_text"
             android:textColor                     ="@color/white"
@@ -37,7 +37,7 @@
             />
 
         <!-- TextView eventNameText -->
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.textview.MaterialTextView
             android:id                          ="@+id/eventNameText"
             android:text                        ="@string/event_name"
             android:textColor                   ="@color/white"
@@ -50,7 +50,7 @@
             />
 
         <!-- TextView titleEventDateText -->
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.textview.MaterialTextView
             android:id                          ="@+id/titleEventDateText"
             android:text                        ="@string/title_event_date_text"
             android:textColor                   ="@color/white"
@@ -64,7 +64,7 @@
             />
 
         <!-- TextView eventDateText -->
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.textview.MaterialTextView
             android:id                        ="@+id/eventDateText"
             android:text                      ="@string/event_date"
             android:textColor                 ="@color/white"
@@ -76,7 +76,7 @@
             />
 
         <!-- TextView titleEventLocationText -->
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.textview.MaterialTextView
             android:id                            ="@+id/titleEventLocationText"
             android:text                          ="@string/title_event_location_text"
             android:textColor                     ="@color/white"
@@ -90,7 +90,7 @@
             />
 
         <!-- TextView eventLocationText -->
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.textview.MaterialTextView
             android:id                			="@+id/eventLocationText"
             android:text              			="@string/location"
             android:textColor         			="@color/white"
@@ -103,7 +103,7 @@
             />
 
         <!-- TextView eventStartTime -->
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id                                  ="@+id/eventStartTime"
             android:clickable                           ="true"
             android:focusable                           ="true"
@@ -122,7 +122,7 @@
             />
 
         <!-- TextView eventStartTimeValue -->
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id                                  ="@+id/eventStartTimeValue"
             android:clickable                           ="true"
             android:focusable                           ="true"
@@ -140,7 +140,7 @@
             />
 
         <!-- TextView eventEndTime -->
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id                                  ="@+id/eventEndTime"
             android:clickable                           ="true"
             android:focusable                           ="true"
@@ -159,7 +159,7 @@
             />
 
         <!-- TextView eventEndTimeValue -->
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id                                  ="@+id/eventEndTimeValue"
             android:clickable                           ="true"
             android:focusable                           ="true"
@@ -177,7 +177,7 @@
             />
 
         <!-- TextView eventTotalTime -->
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id                                  ="@+id/eventTotalTime"
             android:clickable                           ="true"
             android:focusable                           ="true"
@@ -196,7 +196,7 @@
             />
 
         <!-- TextView eventTotalTimeValue -->
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id                                  ="@+id/eventTotalTimeValue"
             android:clickable                           ="true"
             android:focusable                           ="true"
@@ -215,4 +215,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

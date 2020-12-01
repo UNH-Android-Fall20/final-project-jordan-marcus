@@ -17,7 +17,7 @@
       tools:context         =".event.controller.EventAdd">
 
     <!-- TextView eventAdd -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                            ="@+id/eventAdd"
         android:gravity                       ="center"
         android:text                          ="@string/event_add"
@@ -57,7 +57,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- TextView eventDate -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                                  ="@+id/eventDate"
         android:clickable                           ="true"
         android:focusable                           ="true"
@@ -77,7 +77,7 @@
     />
 
     <!-- TextView eventDatePicker -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                                  ="@+id/eventDatePicker"
         android:clickable                           ="true"
         android:focusable                           ="true"
@@ -192,7 +192,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- TextView startTime -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                                  ="@+id/startTime"
         android:clickable                           ="true"
         android:focusable                           ="true"
@@ -211,7 +211,7 @@
     />
 
     <!-- TextView startTimeValue -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                                  ="@+id/startTimeValue"
         android:clickable                           ="true"
         android:focusable                           ="true"
@@ -229,7 +229,7 @@
     />
 
     <!-- TextView endTime -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                                  ="@+id/endTime"
         android:clickable                           ="true"
         android:focusable                           ="true"
@@ -248,7 +248,7 @@
     />
 
     <!-- TextView endTimeValue -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                                  ="@+id/endTimeValue"
         android:clickable                           ="true"
         android:focusable                           ="true"
@@ -266,7 +266,7 @@
     />
 
     <!-- TextView totalTime -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                                  ="@+id/totalTime"
         android:clickable                           ="true"
         android:focusable                           ="true"
@@ -285,7 +285,7 @@
     />
 
     <!-- TextView totalTimeValue -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                                  ="@+id/totalTimeValue"
         android:clickable                           ="true"
         android:focusable                           ="true"

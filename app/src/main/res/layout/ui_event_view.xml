@@ -16,7 +16,7 @@
       tools:context         =".event.controller.EventView">
 
     <!-- TextView eventView -->
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                        ="@+id/eventView"
         android:gravity                   ="center"
         android:text                      ="@string/event_view"

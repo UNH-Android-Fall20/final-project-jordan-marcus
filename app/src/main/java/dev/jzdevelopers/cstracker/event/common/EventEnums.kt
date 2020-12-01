@@ -4,9 +4,8 @@ package dev.jzdevelopers.cstracker.event.common
  *  Enum for getting the ordering of the events
  */
 enum class EventSort {
-    DATE,
     LOCATION,
     NAME,
-    PEOPLE_IN_CHARGE,
-//    TOTAL_TIME
+    NEWEST_TO_OLDEST,
+    OLDEST_TO_NEWEST
 }

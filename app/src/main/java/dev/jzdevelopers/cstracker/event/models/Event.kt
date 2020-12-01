@@ -57,15 +57,6 @@ class Event(
 
             // Returns The Query//
             return when(sort) {
-                EventSort.DATE -> {
-                    fireStore
-                        .collection("Events")
-                        .whereIn("userId", mutableListOf(userId))
-                        .orderBy("date")
-                        .orderBy("name")
-                        .orderBy("location")
-                        .orderBy("peopleInCharge")
-                }
                 EventSort.LOCATION -> {
                     fireStore
                         .collection("Events")
@@ -73,7 +64,6 @@ class Event(
                         .orderBy("location")
                         .orderBy("name")
                         .orderBy("date")
-                        .orderBy("peopleInCharge")
                 }
                 EventSort.NAME -> {
                     fireStore
@@ -82,27 +72,23 @@ class Event(
                         .orderBy("name")
                         .orderBy("date")
                         .orderBy("location")
-                        .orderBy("peopleInCharge")
                 }
-                EventSort.PEOPLE_IN_CHARGE -> {
+                EventSort.NEWEST_TO_OLDEST -> {
                     fireStore
                         .collection("Events")
                         .whereIn("userId", mutableListOf(userId))
-                        .orderBy("peopleInCharge")
-                        .orderBy("name")
                         .orderBy("date")
+                        .orderBy("name")
                         .orderBy("location")
                 }
-//                EventSort.TOTAL_TIME -> {
-//                    fireStore
-//                        .collection("Events")
-//                        .whereIn("userId", mutableListOf(userId))
-//                        .orderBy("totalTime")
-//                        .orderBy("name")
-//                        .orderBy("date")
-//                        .orderBy("location")
-//                        .orderBy("peopleInCharge")
-//                }
+                EventSort.OLDEST_TO_NEWEST -> {
+                    fireStore
+                        .collection("Events")
+                        .whereIn("userId", mutableListOf(userId))
+                        .orderBy("date")
+                        .orderBy("name")
+                        .orderBy("location")
+                }
             }
         }
     }
