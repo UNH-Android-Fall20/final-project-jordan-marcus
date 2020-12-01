@@ -1,7 +1,7 @@
 package dev.jzdevelopers.cstracker.user.controller.authentication
 
 import dev.jzdevelopers.cstracker.R
-import dev.jzdevelopers.cstracker.event.EventView
+import dev.jzdevelopers.cstracker.event.controller.EventView
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.settings.Theme
 import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView

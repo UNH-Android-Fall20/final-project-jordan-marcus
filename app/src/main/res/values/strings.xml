@@ -40,12 +40,14 @@
     <string name="password"         > Password         </string>
     <string name="password_confirm" > Confirm Password </string>
     <string name="people_in_charge" > People In Charge </string>
-    <string name="phone_number"     > Phone Number     </string>
+    <string name="phone_number"     > Phone            </string>
 
     <!-- FAB Content Description -->
-    <string name="fab_add"  > Adds a user profile  </string>
-    <string name="fab_exit" > Exits the activity   </string>
-    <string name="fab_save" > Saves a user profile </string>
+    <string name="fab_add"        > Adds a user profile  </string>
+    <string name="fab_add_event"  > Adds a user event    </string>
+    <string name="fab_exit"       > Exits the activity   </string>
+    <string name="fab_save"       > Saves a user profile </string>
+    <string name="fab_save_event" > Saves a user event   </string>
 
     <!-- FAB Strings -->
     <string name="check_activation" > Check Activation </string>
@@ -60,6 +62,13 @@
     <string name="error_email_blank"          > The email must not be blank                                                                                </string>
     <string name="error_email_match"          > The text entered is not an email                                                                           </string>
     <string name="error_email_verification"   > Your account is still not verified please try again                                                        </string>
+    <string name="error_event_location_blank" > The event location must not be blank                                                                       </string>
+    <string name="error_event_location_long"  > The event location must be smaller or equal to 100 characters                                              </string>
+    <string name="error_event_name_blank"     > The event name must not be blank                                                                           </string>
+    <string name="error_event_name_long"      > The event name must be smaller or equal to 50 characters                                                   </string>
+    <string name="error_event_incharge_blank" > The event people in charge must not be blank                                                               </string>
+    <string name="error_event_incharge_long"  > The event people in charge must be smaller or equal to 50 characters                                       </string>
+    <string name="error_event_notes_long"     > The event notes must be smaller or equal to 1000 characters                                                </string>
     <string name="error_first_name_blank"     > The first name must not be blank                                                                           </string>
     <string name="error_first_name_long"      > The first name must be smaller or equal to 20 characters                                                   </string>
     <string name="error_first_name_symbol"    > The first name must not contain a symbol                                                                   </string>
@@ -84,6 +93,7 @@
     <string name="title_double_check"         > Are You Sure?                                                                                              </string>
     <string name="title_error"                > Uh Oh                                                                                                      </string>
     <string name="title_request"              > Request Sent                                                                                               </string>
+    <string name="title_sort_event"           > Sort Events                                                                                                </string>
     <string name="title_sort_secondary_user"  > Sort User Profiles                                                                                         </string>
     <string name="title_verification_sent"    > Email Verification Sent                                                                                    </string>
 
@@ -95,7 +105,7 @@
     <string name="menu_settings" > Settings </string>
     <string name="menu_sort"     > Sort     </string>
 
-    <!-- TextViews -->
+    <!-- TextView Strings -->
     <string name="back_to_sign_in_text"      > Go back to sign in                           </string>
     <string name="changelog_one_text"        > 1. First release published                   </string>
     <string name="description_about_text"    > CS Tracker and contact info                  </string>
@@ -121,6 +131,9 @@
     <string name="title_changelog_text"      > Changelog                                    </string>
     <string name="title_color_text"          > Color                                        </string>
     <string name="title_contact_us_text"     > Need help? Contact us                        </string>
+    <string name="title_event_date_text"     > Date:                                        </string>
+    <string name="title_event_name_text"     > Name:                                        </string>
+    <string name="title_event_location_text" > Location:                                    </string>
     <string name="title_feedback_text"       > Send us feedback                             </string>
     <string name="title_grade_text"          > Grade:                                       </string>
     <string name="title_goal_text"           > Goal:                                        </string>

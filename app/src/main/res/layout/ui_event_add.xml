@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- ConstraintLayout UI For Class EventAdd -->
-<androidx.constraintlayout.widget.ConstraintLayout
+<!-- CoordinatorLayout UI For Class EventAdd -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android         ="http://schemas.android.com/apk/res/android"
     xmlns:node            ="http://schemas.android.com/apk/res-auto"
     xmlns:tools           ="http://schemas.android.com/tools"
-    android:id            ="@+id/uiEventAdd"
-    android:padding       ="16dip"
     android:layout_height ="match_parent"
-    android:layout_width  ="match_parent"
-    tools:context         =".event.EventView">
+    android:layout_width  ="match_parent" >
+
+  <!-- ConstraintLayout UI For Class EventAdd -->
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:id            ="@+id/uiEventAdd"
+      android:padding       ="16dip"
+      android:layout_height ="match_parent"
+      android:layout_width  ="match_parent"
+      tools:context         =".event.controller.EventAdd">
 
     <!-- TextView eventAdd -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                            ="@+id/eventAdd"
         android:gravity                       ="center"
         android:text                          ="@string/event_add"
@@ -22,7 +27,7 @@
         android:layout_height                 ="wrap_content"
         android:layout_width                  ="match_parent"
         node:layout_constraintTop_toTopOf     ="parent"
-        />
+    />
 
     <!-- EditText eventNameBox -->
     <com.google.android.material.textfield.TextInputLayout
@@ -41,18 +46,18 @@
         node:layout_constraintEnd_toStartOf         ="@id/eventDate"
         tools:ignore                                ="RtlSymmetry">
 
-        <!-- EditText eventName -->
-        <com.google.android.material.textfield.TextInputEditText
-            android:id            ="@+id/eventName"
-            android:hint          ="@string/event_name"
-            android:layout_height ="wrap_content"
-            android:layout_width  ="match_parent"
-            />
+      <!-- EditText eventName -->
+      <com.google.android.material.textfield.TextInputEditText
+          android:id            ="@+id/eventName"
+          android:hint          ="@string/event_name"
+          android:layout_height ="wrap_content"
+          android:layout_width  ="match_parent"
+      />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- TextView eventDate -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                                  ="@+id/eventDate"
         android:clickable                           ="true"
         android:focusable                           ="true"
@@ -69,10 +74,10 @@
         node:layout_constraintTop_toBottomOf        ="@id/eventAdd"
         node:layout_constraintStart_toEndOf         ="@id/eventNameBox"
         node:layout_constraintEnd_toEndOf           ="parent"
-        />
+    />
 
     <!-- TextView eventDatePicker -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                                  ="@+id/eventDatePicker"
         android:clickable                           ="true"
         android:focusable                           ="true"
@@ -88,7 +93,7 @@
         node:layout_constraintTop_toBottomOf        ="@id/eventDate"
         node:layout_constraintStart_toEndOf         ="@id/eventNameBox"
         node:layout_constraintEnd_toEndOf           ="parent"
-        />
+    />
 
     <!-- EditText locationBox -->
     <com.google.android.material.textfield.TextInputLayout
@@ -101,13 +106,13 @@
         node:hintTextColor                   ="?colorPrimary"
         node:layout_constraintTop_toBottomOf ="@id/eventNameBox">
 
-        <!-- EditText location -->
-        <com.google.android.material.textfield.TextInputEditText
-            android:id            ="@+id/location"
-            android:hint          ="@string/location"
-            android:layout_height ="wrap_content"
-            android:layout_width  ="match_parent"
-            />
+      <!-- EditText location -->
+      <com.google.android.material.textfield.TextInputEditText
+          android:id            ="@+id/location"
+          android:hint          ="@string/location"
+          android:layout_height ="wrap_content"
+          android:layout_width  ="match_parent"
+      />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -122,13 +127,13 @@
         node:hintTextColor                   ="?colorPrimary"
         node:layout_constraintTop_toBottomOf ="@id/locationBox">
 
-        <!-- EditText peopleInCharge -->
-        <com.google.android.material.textfield.TextInputEditText
-            android:id            ="@+id/peopleInCharge"
-            android:hint          ="@string/people_in_charge"
-            android:layout_height ="wrap_content"
-            android:layout_width  ="match_parent"
-            />
+      <!-- EditText peopleInCharge -->
+      <com.google.android.material.textfield.TextInputEditText
+          android:id            ="@+id/peopleInCharge"
+          android:hint          ="@string/people_in_charge"
+          android:layout_height ="wrap_content"
+          android:layout_width  ="match_parent"
+      />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -149,13 +154,13 @@
         node:layout_constraintEnd_toStartOf         ="@id/notesBox"
         tools:ignore                                ="RtlSymmetry">
 
-        <!-- EditText phoneNumber -->
-        <com.google.android.material.textfield.TextInputEditText
-            android:id            ="@+id/phoneNumber"
-            android:hint          ="@string/phone_number"
-            android:layout_height ="wrap_content"
-            android:layout_width  ="match_parent"
-            />
+      <!-- EditText phoneNumber -->
+      <com.google.android.material.textfield.TextInputEditText
+          android:id            ="@+id/phoneNumber"
+          android:hint          ="@string/phone_number"
+          android:layout_height ="wrap_content"
+          android:layout_width  ="match_parent"
+      />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -176,18 +181,18 @@
         node:layout_constraintEnd_toEndOf           ="parent"
         tools:ignore                                ="RtlSymmetry">
 
-        <!-- EditText notes -->
-        <com.google.android.material.textfield.TextInputEditText
-            android:id            ="@+id/notes"
-            android:hint          ="@string/event_notes"
-            android:layout_height ="wrap_content"
-            android:layout_width  ="match_parent"
-            />
+      <!-- EditText notes -->
+      <com.google.android.material.textfield.TextInputEditText
+          android:id            ="@+id/notes"
+          android:hint          ="@string/event_notes"
+          android:layout_height ="wrap_content"
+          android:layout_width  ="match_parent"
+      />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- TextView startTime -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                                  ="@+id/startTime"
         android:clickable                           ="true"
         android:focusable                           ="true"
@@ -203,10 +208,10 @@
         node:layout_constraintTop_toBottomOf        ="@id/phoneNumberBox"
         node:layout_constraintStart_toStartOf       ="parent"
         node:layout_constraintEnd_toStartOf         ="@id/endTime"
-        />
+    />
 
     <!-- TextView startTimeValue -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                                  ="@+id/startTimeValue"
         android:clickable                           ="true"
         android:focusable                           ="true"
@@ -221,10 +226,10 @@
         node:layout_constraintTop_toBottomOf        ="@id/startTime"
         node:layout_constraintStart_toStartOf       ="parent"
         node:layout_constraintEnd_toStartOf         ="@id/endTimeValue"
-        />
+    />
 
     <!-- TextView endTime -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                                  ="@+id/endTime"
         android:clickable                           ="true"
         android:focusable                           ="true"
@@ -240,10 +245,10 @@
         node:layout_constraintTop_toBottomOf        ="@id/phoneNumberBox"
         node:layout_constraintStart_toEndOf         ="@id/startTime"
         node:layout_constraintEnd_toStartOf         ="@id/totalTime"
-        />
+    />
 
     <!-- TextView endTimeValue -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                                  ="@+id/endTimeValue"
         android:clickable                           ="true"
         android:focusable                           ="true"
@@ -258,10 +263,10 @@
         node:layout_constraintTop_toBottomOf        ="@id/endTime"
         node:layout_constraintStart_toEndOf         ="@id/startTimeValue"
         node:layout_constraintEnd_toStartOf         ="@id/totalTimeValue"
-        />
+    />
 
     <!-- TextView totalTime -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                                  ="@+id/totalTime"
         android:clickable                           ="true"
         android:focusable                           ="true"
@@ -277,10 +282,10 @@
         node:layout_constraintTop_toBottomOf        ="@id/phoneNumberBox"
         node:layout_constraintStart_toEndOf         ="@id/endTime"
         node:layout_constraintEnd_toEndOf           ="parent"
-        />
+    />
 
     <!-- TextView totalTimeValue -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id                                  ="@+id/totalTimeValue"
         android:clickable                           ="true"
         android:focusable                           ="true"
@@ -292,9 +297,50 @@
         android:layout_height                       ="wrap_content"
         android:layout_width                        ="0dip"
         node:layout_constraintHorizontal_chainStyle ="spread"
-        node:layout_constraintTop_toBottomOf        ="@id/endTime"
+        node:layout_constraintTop_toBottomOf        ="@id/totalTime"
         node:layout_constraintStart_toEndOf         ="@id/endTimeValue"
         node:layout_constraintEnd_toEndOf           ="parent"
-        />
+    />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- ContentLoadingProgressBar progressBar -->
+    <androidx.core.widget.ContentLoadingProgressBar
+        style                                   ="?android:attr/progressBarStyleLarge"
+        android:id                              ="@+id/progressBar"
+        android:indeterminate                   ="true"
+        android:indeterminateTint               ="?colorPrimary"
+        android:visibility                      ="gone"
+        android:layout_height                   ="wrap_content"
+        android:layout_width                    ="wrap_content"
+        node:layout_constraintTop_toTopOf       ="parent"
+        node:layout_constraintBottom_toBottomOf ="parent"
+        node:layout_constraintStart_toStartOf   ="parent"
+        node:layout_constraintEnd_toEndOf       ="parent"
+    />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <!-- FloatingActionButton fabSaveEvent -->
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+      android:id                 ="@+id/fabSaveEvent"
+      android:contentDescription ="@string/fab_save_event"
+      android:src                ="@drawable/save"
+      android:layout_height      ="wrap_content"
+      android:layout_width       ="wrap_content"
+      node:backgroundTint        ="?colorPrimary"
+      node:fabSize               ="normal"
+      node:layout_anchor         ="@id/bottomBar"
+      node:rippleColor           ="?attr/rippleColor"
+      node:tint                  ="@color/white"
+  />
+
+  <!-- BottomBar bottomBar -->
+  <com.google.android.material.bottomappbar.BottomAppBar
+      android:id             ="@+id/bottomBar"
+      android:layout_gravity ="bottom"
+      android:layout_height  ="wrap_content"
+      android:layout_width   ="match_parent"
+      node:backgroundTint    ="?colorPrimary"
+      node:fabAlignmentMode  ="center"
+  />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
