@@ -4,7 +4,6 @@ import android.icu.util.Calendar
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
@@ -13,19 +12,27 @@ import dev.jzdevelopers.cstracker.event.models.Event
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.libs.JZDate
 import dev.jzdevelopers.cstracker.libs.JZDateFormat.AMERICAN
+import dev.jzdevelopers.cstracker.libs.JZTime
 import dev.jzdevelopers.cstracker.settings.Theme
 import kotlinx.android.synthetic.main.ui_event_add.*
 
 
-class EventAdd : JZActivity(), DatePickerDialog.OnDateSetListener {
+class EventAdd : JZActivity(), DatePickerDialog.OnDateSetListener,
+    TimePickerDialog.OnTimeSetListener {
 
     // Defines Secondary User ID Variable//
     private lateinit var secondaryUserId : String
 
     // Defines Date Picker Dialog Attributes//
-    private lateinit var calendar: Calendar
-    private lateinit var datePickerDialog: DatePickerDialog
-    private lateinit var timePickerDialog: TimePickerDialog
+    private lateinit var calendar         : Calendar
+    private lateinit var datePickerDialog : DatePickerDialog
+    private lateinit var timePickerDialog : TimePickerDialog
+
+    // Define And Initializes JZTime Variable//
+    private val jzTime = JZTime()
+
+    // Define And Initializes The Time Button Clicked Last//
+    private var lastTimeIdClicked = 0
 
     /**.
      * What Happens When The Activity Is Created
@@ -38,6 +45,9 @@ class EventAdd : JZActivity(), DatePickerDialog.OnDateSetListener {
             // Sets The Theme//
             val theme = Theme.getAppTheme(this@EventAdd)
             theme(theme)
+
+            // Initializes A Calendar Instance//
+            calendar = Calendar.getInstance()
 
             // Gets The Secondary User's ID//
             secondaryUserId = intent.extras?.get("SECONDARY_USER_ID") as String
@@ -86,13 +96,10 @@ class EventAdd : JZActivity(), DatePickerDialog.OnDateSetListener {
         // When eventDatePicker Is Clicked//
         click(eventDatePicker) {
 
-            // Initializes A Calendar Instance//
-            calendar = Calendar.getInstance()
-
             // Define And Initializes Date Properties//
-            val year = calendar.get(java.util.Calendar.YEAR)
+            val year  = calendar.get(java.util.Calendar.YEAR)
             val month = calendar.get(java.util.Calendar.MONTH)
-            val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
+            val day   = calendar.get(java.util.Calendar.DAY_OF_MONTH)
 
             // Initializes Date Picker Dialog//
             datePickerDialog = DatePickerDialog.newInstance(this@EventAdd, year, month, day)
@@ -103,6 +110,26 @@ class EventAdd : JZActivity(), DatePickerDialog.OnDateSetListener {
 
             // Show Date Picker Dialog//
             datePickerDialog.show(supportFragmentManager, "DatePickerDialog")
+        }
+
+        // When startTime Or startTimeValue Are Clicked//
+        click(startTime, startTimeValue) {
+
+            // Set The Time Button Clicked Last To startTimeValue//
+            lastTimeIdClicked = R.id.startTimeValue
+
+            // Opens The Time Picker Dialog//
+            openTimePicker()
+        }
+
+        // When endTime Or endTimeValue Are Clicked//
+        click(endTime, endTimeValue) {
+
+            // Set The Time Button Clicked Last To endTimeValue//
+            lastTimeIdClicked = R.id.endTimeValue
+
+            // Opens The Time Picker Dialog//
+            openTimePicker()
         }
 
         // When fabSaveEvent Is Clicked//
@@ -151,7 +178,62 @@ class EventAdd : JZActivity(), DatePickerDialog.OnDateSetListener {
         // Logs That The Event Date Was Updated Successfully//
         Log.v("EventAdd", "Event date has been updated: $date")
 
-        val eventDatePicker = findViewById<View>(R.id.eventDatePicker) as TextView
+        // Set The Text Value For eventDatePicker//
+        val eventDatePicker  = findViewById<View>(R.id.eventDatePicker) as TextView
         eventDatePicker.text = date
+    }
+
+    /**.
+     * Function That Runs When Any Of The Times Are Set Using The Time Picker//
+     */
+    override fun onTimeSet(view: TimePickerDialog?, hour: Int, minute: Int, second: Int) {
+
+        // Set Time Value. If Minute Is 0, Use Two Zeros Instead//
+        val time : String = if (minute == 0) "${hour}:00"
+                            else "${hour}:${minute}"
+
+        // Logs That The Event Time Was Updated Successfully And Updates Time Values//
+        when(lastTimeIdClicked) {
+            R.id.startTimeValue -> {
+                Log.v("EventAdd", "Event start time has been updated: $time")
+                jzTime.startTimeHour   = hour
+                jzTime.startTimeMinute = minute
+            }
+            R.id.endTimeValue -> {
+                Log.v("EventAdd", "Event end time has been updated: $time")
+                jzTime.endTimeHour   = hour
+                jzTime.endTimeMinute = minute
+            }
+        }
+
+        // Set The UI Text Value For The lastTimeIdClicked (startTimeValue / endTimeValue)//
+        val timeValue  = findViewById<View>(lastTimeIdClicked) as TextView
+        timeValue.text = time
+
+        // Calculate Total Time If Both Times Are Selected
+        if (jzTime.startTimeHour > -1 && jzTime.startTimeMinute > -1 &&
+            jzTime.endTimeHour   > -1 && jzTime.endTimeMinute   > -1) {
+                val totalTime  = findViewById<View>(R.id.totalTimeValue) as TextView
+                totalTime.text = jzTime.getTimeDifference()
+        }
+    }
+
+    /**.
+     * Function That Handles Opening The Time Picker//
+     */
+    private fun openTimePicker() {
+
+        // Define And Initializes Time Properties//
+        val hour = calendar.get(java.util.Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(java.util.Calendar.MINUTE)
+
+        // Initializes Time Picker Dialog//
+        timePickerDialog = TimePickerDialog.newInstance(this@EventAdd, hour, minute,false )
+        timePickerDialog.isThemeDark = false
+        timePickerDialog.title = "Time Picker"
+        timePickerDialog.version = TimePickerDialog.Version.VERSION_1
+
+        // Show Date Picker Dialog//
+        timePickerDialog.show(supportFragmentManager, "TimePickerDialog")
     }
 }

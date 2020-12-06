@@ -296,6 +296,7 @@ class Event(
                 location = location
                     .trim()
                     .replace("\\s+", " ")
+                    .capitalizeWords()
                 true
             }
         }
