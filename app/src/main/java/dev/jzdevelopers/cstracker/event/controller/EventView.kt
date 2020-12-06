@@ -8,9 +8,11 @@ import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.event.common.EventSort
 import dev.jzdevelopers.cstracker.event.common.EventSort.*
 import dev.jzdevelopers.cstracker.event.models.Event
-import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.libs.JZPrefs
-import dev.jzdevelopers.cstracker.libs.JZRecyclerAdapterFB
+import dev.jzdevelopers.cstracker.libs.*
+import dev.jzdevelopers.cstracker.libs.JZDateFormat.AMERICAN
+import dev.jzdevelopers.cstracker.libs.JZDateFormat.REVERSED
+import dev.jzdevelopers.cstracker.libs.JZTimeFormat.MILITARY
+import dev.jzdevelopers.cstracker.libs.JZTimeFormat.STANDARD
 import dev.jzdevelopers.cstracker.settings.Theme
 import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView
 import kotlinx.android.synthetic.main.ui_event_design.view.*
@@ -25,6 +27,9 @@ class EventView : JZActivity() {
     // Defines JZRecyclerAdapterFB Variable//
     private lateinit var adapter    : JZRecyclerAdapterFB<Event>
     private lateinit var searchView : SearchView
+
+    // Define And Initializes JZTime Variable//
+    val jzTime = JZTime()
 
     // Defines Secondary User ID Variable//
     private lateinit var secondaryUserId : String
@@ -252,14 +257,18 @@ class EventView : JZActivity() {
         adapter = JZRecyclerAdapterFB(this, scope, layout, query, Event::class) { it, _ ->
 
             // Generates The Different Properties//
-            val date = it.date
+            val date = JZDate.switchDateFormat(it.date, REVERSED, AMERICAN)
+            jzTime.startTimeHour   = JZTime.fullTimeToHour(it.startTime, MILITARY)
+            jzTime.startTimeMinute = JZTime.fullTimeToMinute(it.startTime)
+            jzTime.endTimeHour     = JZTime.fullTimeToHour(it.endTime, MILITARY)
+            jzTime.endTimeMinute   = JZTime.fullTimeToMinute(it.endTime)
 
             // Matches The Basic Properties With Their Nodes//
             eventNameText.text       = it.name
             eventDateText.text       = date
             eventLocationText.text   = it.location
-            eventStartTimeValue.text = it.startTime
-            eventEndTimeValue.text   = it.endTime
+            eventStartTimeValue.text = jzTime.getStartTime(STANDARD)
+            eventEndTimeValue.text   = jzTime.getEndTime(STANDARD)
             eventTotalTimeValue.text = it.totalTime
         }
         adapter.attachRecyclerView(eventList)

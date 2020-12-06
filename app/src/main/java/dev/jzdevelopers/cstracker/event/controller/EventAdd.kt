@@ -224,14 +224,14 @@ class EventAdd : JZActivity(), DatePickerDialog.OnDateSetListener,
     private fun openTimePicker() {
 
         // Define And Initializes Time Properties//
-        val hour = calendar.get(java.util.Calendar.HOUR_OF_DAY)
+        val hour   = calendar.get(java.util.Calendar.HOUR_OF_DAY)
         val minute = calendar.get(java.util.Calendar.MINUTE)
 
         // Initializes Time Picker Dialog//
-        timePickerDialog = TimePickerDialog.newInstance(this@EventAdd, hour, minute,false )
+        timePickerDialog             = TimePickerDialog.newInstance(this@EventAdd, hour, minute,false)
         timePickerDialog.isThemeDark = false
-        timePickerDialog.title = "Time Picker"
-        timePickerDialog.version = TimePickerDialog.Version.VERSION_1
+        timePickerDialog.title       = "Time Picker"
+        timePickerDialog.version     = TimePickerDialog.Version.VERSION_1
 
         // Show Date Picker Dialog//
         timePickerDialog.show(supportFragmentManager, "TimePickerDialog")
