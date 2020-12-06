@@ -9,11 +9,10 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import dev.jzdevelopers.cstracker.R
-import dev.jzdevelopers.cstracker.libs.JZDate
 import dev.jzdevelopers.cstracker.event.models.Event
 import dev.jzdevelopers.cstracker.libs.JZActivity
+import dev.jzdevelopers.cstracker.libs.JZDate
 import dev.jzdevelopers.cstracker.libs.JZDateFormat.AMERICAN
-import dev.jzdevelopers.cstracker.libs.JZDateFormat.REVERSED
 import dev.jzdevelopers.cstracker.settings.Theme
 import kotlinx.android.synthetic.main.ui_event_add.*
 
@@ -98,8 +97,9 @@ class EventAdd : JZActivity(), DatePickerDialog.OnDateSetListener {
             // Initializes Date Picker Dialog//
             datePickerDialog = DatePickerDialog.newInstance(this@EventAdd, year, month, day)
             datePickerDialog.isThemeDark = false
-            datePickerDialog.showYearPickerFirst(false)
             datePickerDialog.setTitle("Date Picker")
+            datePickerDialog.showYearPickerFirst(false)
+            datePickerDialog.version = DatePickerDialog.Version.VERSION_1
 
             // Show Date Picker Dialog//
             datePickerDialog.show(supportFragmentManager, "DatePickerDialog")
