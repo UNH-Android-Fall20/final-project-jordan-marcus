@@ -329,7 +329,7 @@
       node:backgroundTint        ="?colorPrimary"
       node:fabSize               ="normal"
       node:layout_anchor         ="@id/bottomBar"
-      node:rippleColor           ="?attr/rippleColor"
+      node:rippleColor           ="?attr/ripplePrimary"
       node:tint                  ="@color/white"
   />
 

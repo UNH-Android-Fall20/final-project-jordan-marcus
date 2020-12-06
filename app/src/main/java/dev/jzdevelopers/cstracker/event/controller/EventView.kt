@@ -12,7 +12,7 @@ import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.libs.JZPrefs
 import dev.jzdevelopers.cstracker.libs.JZRecyclerAdapterFB
 import dev.jzdevelopers.cstracker.settings.Theme
-import dev.jzdevelopers.cstracker.user.models.PrimaryUser
+import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView
 import kotlinx.android.synthetic.main.ui_event_design.view.*
 import kotlinx.android.synthetic.main.ui_event_view.*
 
@@ -25,6 +25,9 @@ class EventView : JZActivity() {
     // Defines JZRecyclerAdapterFB Variable//
     private lateinit var adapter    : JZRecyclerAdapterFB<Event>
     private lateinit var searchView : SearchView
+
+    // Defines Secondary User ID Variable//
+    private lateinit var secondaryUserId : String
 
     // Define And Initializes Int Variable//
     private var sortNum = 0
@@ -67,6 +70,10 @@ class EventView : JZActivity() {
             val theme = Theme.getAppTheme(this@EventView)
             theme(theme)
 
+            // Gets The Secondary User's Data//
+            val secondaryUserFirstName = intent.extras?.get("SECONDARY_USER_FIRST_NAME") as String
+            secondaryUserId            = intent.extras?.get("SECONDARY_USER_ID")         as String
+
             // Sets The Status Bar Color And Icon Color//
             val statusBarColor = Theme.getStatusBarColor(this@EventView)
             when(statusBarColor) {
@@ -78,8 +85,7 @@ class EventView : JZActivity() {
             menu(bottomBar, R.menu.menu_event_view)
 
             // Sets The Title For The Activity//
-            val firstName = intent.extras?.get("SECONDARY_USER_FIRST_NAME") as String
-            title(eventView, "$firstName's Events")
+            title(eventView, "$secondaryUserFirstName's Events")
         }
 
         // Shows The Events//
@@ -94,6 +100,13 @@ class EventView : JZActivity() {
         // Define And Initialize MenuItem Values//
         val sort = menu.findItem(R.id.sort)
 
+        // When Back Is Clicked//
+        clickBack {
+
+            // Starts The SecondaryUserView Activity//
+            startActivity(SecondaryUserView::class, R.anim.faze_in, R.anim.faze_out)
+        }
+
         // When An Adapter Item Is Clicked//
         click(adapter) {
             toastShort("clicked $it")
@@ -103,14 +116,16 @@ class EventView : JZActivity() {
         click(fabAddEvent) {
 
             // Starts The EventAdd Activity//
-            startActivity(EventAdd::class, R.anim.faze_in, R.anim.faze_out)
+            startActivity(EventAdd::class, R.anim.faze_in, R.anim.faze_out) {
+                it.putExtra("SECONDARY_USER_ID", secondaryUserId)
+            }
         }
 
         // When Sort Is Clicked//
         click(sort) {
 
             // Define And Initializes List Value//
-            val sortTypes = listOf("Date", "Location", "Name", "People In Charge", "Total Time")
+            val sortTypes = listOf("Location", "Name", "Newest to Oldest", "Oldest to Newest")
 
             // Shows Sort Dialog//
             MaterialDialog(this).show {
@@ -127,6 +142,10 @@ class EventView : JZActivity() {
                 positiveButton(0, getString(R.string.button_only)) {
 
                     // Restarts The Activity//
+                    /*
+                     * CRASHES WHEN RESTARTING BECAUSE IT RECEIVES NO FIRST
+                     * NAME FROM THE SECONDARY_USER_VIEW ACTIVITY.
+                     */
                     startActivity(EventView::class, false)
                 }
             }
@@ -226,8 +245,8 @@ class EventView : JZActivity() {
         val eventSort = EventSort.values()[sortNum]
 
         // Gets The Query For Showing All Of The Events In A Particular Order//
-        val primaryUserId = PrimaryUser.getId(this)
-        val query         = Event.getAll(primaryUserId, eventSort)
+        val userId = secondaryUserId
+        val query  = Event.getAll(userId, eventSort)
 
         // Creates And Shows The Events//
         adapter = JZRecyclerAdapterFB(this, scope, layout, query, Event::class) { it, _ ->

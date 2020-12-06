@@ -1,13 +1,20 @@
 package dev.jzdevelopers.cstracker.event.controller
 
+import androidx.appcompat.widget.SearchView
+import com.afollestad.materialdialogs.MaterialDialog
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.common.DatePickerFragment
 import dev.jzdevelopers.cstracker.event.models.Event
 import dev.jzdevelopers.cstracker.libs.JZActivity
+import dev.jzdevelopers.cstracker.settings.Theme
+import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser
 import kotlinx.android.synthetic.main.ui_event_add.*
 
 class EventAdd : JZActivity() {
+
+    // Defines Secondary User ID Variable//
+    private lateinit var secondaryUserId : String
 
     /**.
      * What Happens When The Activity Is Created
@@ -17,8 +24,19 @@ class EventAdd : JZActivity() {
         // Creates The UI//
         createUI(R.layout.ui_event_add) {
 
-            // Sets The Theme For The Activity//
-            theme(R.style.GreenTheme)
+            // Sets The Theme//
+            val theme = Theme.getAppTheme(this@EventAdd)
+            theme(theme)
+
+            // Gets The Secondary User's ID//
+            secondaryUserId = intent.extras?.get("SECONDARY_USER_ID") as String
+
+            // Sets The Status Bar Color And Icon Color//
+            val statusBarColor = Theme.getStatusBarColor(this@EventAdd)
+            when(statusBarColor) {
+                R.color.white -> statusBarColor(statusBarColor, true)
+                else          -> statusBarColor(statusBarColor, false)
+            }
         }
     }
 
@@ -26,6 +44,24 @@ class EventAdd : JZActivity() {
      * Function That Handles All Listeners For The Activity
      */
     override fun createListeners() {
+
+        // When Back Is Clicked//
+        clickBack {
+
+            // Shows The Error Dialog//
+            MaterialDialog(this).show {
+                title(R.string.title_double_check)
+                message(R.string.positive_no_save)
+                cancelOnTouchOutside(false)
+                cornerRadius(16.0f)
+                negativeButton(R.string.button_negative)
+                positiveButton(R.string.button_positive) {
+
+                    // Starts The EventView Activity//
+                    exitActivity(R.anim.faze_in, R.anim.faze_out)
+                }
+            }
+        }
 
         // When uiEventAdd Is Clicked//
         click(uiEventAdd) {
@@ -56,20 +92,16 @@ class EventAdd : JZActivity() {
             val peopleInCharge = peopleInCharge.text.toString()
             val phoneNumber    = phoneNumber.text.toString()
             val startTime      = startTimeValue.text.toString()
-            val userId         = PrimaryUser.getId(this)
+            val totalTime      = totalTimeValue.text.toString()
+            val userId         = secondaryUserId
 
             // Adds The New User Event//
-            val event = Event(this, date, endTime, location, eventName, notes, peopleInCharge, phoneNumber, startTime, userId)
+            val event = Event(this, date, endTime, location, eventName, notes, peopleInCharge, phoneNumber, startTime, totalTime, userId)
             val isSuccessful  = event.add(progressBar)
             if (!isSuccessful) return@click
 
             // Starts The EventView Activity//
             startActivity(EventView::class, R.anim.faze_in, R.anim.faze_out)
-        }
-
-        // When The System Back Button Is Clicked//
-        clickBack {
-            exitActivity(R.anim.faze_in, R.anim.faze_out)
         }
     }
 }
