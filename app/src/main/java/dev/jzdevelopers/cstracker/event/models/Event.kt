@@ -12,8 +12,10 @@ import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.common.FireBaseModel
 import dev.jzdevelopers.cstracker.event.common.EventSort
 import dev.jzdevelopers.cstracker.libs.JZActivity
+import dev.jzdevelopers.cstracker.libs.JZDate
+import dev.jzdevelopers.cstracker.libs.JZDateFormat.AMERICAN
+import dev.jzdevelopers.cstracker.libs.JZDateFormat.REVERSED
 import kotlinx.coroutines.tasks.await
-import java.text.DateFormat
 import java.util.*
 import java.util.regex.Pattern
 
@@ -113,12 +115,14 @@ class Event(
 
             // Checks If The Event Input Is Valid//
             if (!isValidName()) return false
-            // if (!isValidDate()) return false
+            if (!isValidDate()) return false
             if (!isValidLocation()) return false
             if (!isValidPeopleInCharge()) return false
             if (!isValidPhoneNumber()) return false
             if (!isValidNotes()) return false
-            // !isValidUserId
+
+            // Reverse Date For Database Storage//
+            date = JZDate.switchDateFormat(date, AMERICAN, REVERSED)
 
             // Shows The Loading Bar//
             loadingBar.visibility = View.VISIBLE
@@ -152,12 +156,11 @@ class Event(
 
             // Checks If The Event Input Is Valid//
             if (!isValidName()) return false
-            // if (!isValidDate()) return false
+            if (!isValidDate()) return false
             if (!isValidLocation()) return false
             if (!isValidPeopleInCharge()) return false
             if (!isValidPhoneNumber()) return false
             if (!isValidNotes()) return false
-            // !isValidUserId
 
             // Shows The Loading Bar//
             loadingBar.visibility = View.VISIBLE
@@ -235,18 +238,19 @@ class Event(
             throw NullPointerException("Context must not be null")
         }
 
-        // Reformat The Event Date To A String//
-        val dateString: String = date.toString()
-        val df: DateFormat = DateFormat.getDateInstance()
-        df.isLenient = false
-
         // Checks The Event Date For Validity//
         return try {
 
             // Successfully Parse The Date String//
-            var d = df.parse(dateString)
+            val date = JZDate.fullDateToDay(date, AMERICAN)
             true
-        } catch (e: Exception) {
+        } catch (_: Exception) {
+            // When The Event Date Is Blank Or Invalid//
+            JZActivity.showGeneralDialog(
+                context,
+                R.string.title_error,
+                R.string.error_event_date_blank
+            )
             false
         }
     }

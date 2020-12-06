@@ -62,6 +62,7 @@
     <string name="error_email_blank"          > The email must not be blank                                                                                </string>
     <string name="error_email_match"          > The text entered is not an email                                                                           </string>
     <string name="error_email_verification"   > Your account is still not verified please try again                                                        </string>
+    <string name="error_event_date_blank"     > You must choose an event date                                                                              </string>
     <string name="error_event_location_blank" > The event location must not be blank                                                                       </string>
     <string name="error_event_location_long"  > The event location must be smaller or equal to 100 characters                                              </string>
     <string name="error_event_name_blank"     > The event name must not be blank                                                                           </string>

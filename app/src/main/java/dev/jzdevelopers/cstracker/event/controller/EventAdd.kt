@@ -1,20 +1,32 @@
 package dev.jzdevelopers.cstracker.event.controller
 
-import androidx.appcompat.widget.SearchView
+import android.icu.util.Calendar
+import android.util.Log
+import android.view.View
+import android.widget.TextView
+import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import dev.jzdevelopers.cstracker.R
-import dev.jzdevelopers.cstracker.common.DatePickerFragment
+import dev.jzdevelopers.cstracker.libs.JZDate
 import dev.jzdevelopers.cstracker.event.models.Event
 import dev.jzdevelopers.cstracker.libs.JZActivity
+import dev.jzdevelopers.cstracker.libs.JZDateFormat.AMERICAN
+import dev.jzdevelopers.cstracker.libs.JZDateFormat.REVERSED
 import dev.jzdevelopers.cstracker.settings.Theme
-import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView
-import dev.jzdevelopers.cstracker.user.models.PrimaryUser
 import kotlinx.android.synthetic.main.ui_event_add.*
 
-class EventAdd : JZActivity() {
+
+class EventAdd : JZActivity(), DatePickerDialog.OnDateSetListener {
 
     // Defines Secondary User ID Variable//
     private lateinit var secondaryUserId : String
+
+    // Defines Date Picker Dialog Attributes//
+    private lateinit var calendar: Calendar
+    private lateinit var datePickerDialog: DatePickerDialog
+    private lateinit var timePickerDialog: TimePickerDialog
 
     /**.
      * What Happens When The Activity Is Created
@@ -73,15 +85,28 @@ class EventAdd : JZActivity() {
         }
 
         // When eventDatePicker Is Clicked//
-        click (eventDatePicker) {
-            // Initialize a new DatePickerFragment
-            val newFragment = DatePickerFragment()
-            // Show the date picker dialog
-            newFragment.show(fragmentManager, "Date Picker")
+        click(eventDatePicker) {
+
+            // Initializes A Calendar Instance//
+            calendar = Calendar.getInstance()
+
+            // Define And Initializes Date Properties//
+            val year = calendar.get(java.util.Calendar.YEAR)
+            val month = calendar.get(java.util.Calendar.MONTH)
+            val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
+
+            // Initializes Date Picker Dialog//
+            datePickerDialog = DatePickerDialog.newInstance(this@EventAdd, year, month, day)
+            datePickerDialog.isThemeDark = false
+            datePickerDialog.showYearPickerFirst(false)
+            datePickerDialog.setTitle("Date Picker")
+
+            // Show Date Picker Dialog//
+            datePickerDialog.show(supportFragmentManager, "DatePickerDialog")
         }
 
         // When fabSaveEvent Is Clicked//
-        click (fabSaveEvent) {
+        click(fabSaveEvent) {
 
             // Gets The Inputted String Data//
             val date           = eventDatePicker.text.toString()
@@ -96,12 +121,37 @@ class EventAdd : JZActivity() {
             val userId         = secondaryUserId
 
             // Adds The New User Event//
-            val event = Event(this, date, endTime, location, eventName, notes, peopleInCharge, phoneNumber, startTime, totalTime, userId)
+            val event = Event(
+                this,
+                date,
+                endTime,
+                location,
+                eventName,
+                notes,
+                peopleInCharge,
+                phoneNumber,
+                startTime,
+                totalTime,
+                userId
+            )
             val isSuccessful  = event.add(progressBar)
             if (!isSuccessful) return@click
 
             // Starts The EventView Activity//
             startActivity(EventView::class, R.anim.faze_in, R.anim.faze_out)
         }
+    }
+
+    /**.
+     * Function That Runs When The Date Is Set Using The Date Picker//
+     */
+    override fun onDateSet(view: DatePickerDialog?, year: Int, month: Int, day: Int) {
+        val date = JZDate.getDate(day, month + 1, year, AMERICAN)
+
+        // Logs That The Event Date Was Updated Successfully//
+        Log.v("EventAdd", "Event date has been updated: $date")
+
+        val eventDatePicker = findViewById<View>(R.id.eventDatePicker) as TextView
+        eventDatePicker.text = date
     }
 }
