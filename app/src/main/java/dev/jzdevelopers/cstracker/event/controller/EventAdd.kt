@@ -127,7 +127,7 @@ class EventAdd: JZActivity() {
 
         // Gets The Current Year, Month And Day//
         var currentYear  = JZDate.getCurrentYear()
-        var currentMonth = JZDate.getCurrentMonth()
+        var currentMonth = JZDate.getCurrentMonth() - 1
         var currentDay   = JZDate.getCurrentDay()
 
         // Define And Instantiate DatePickerDialog Value//
@@ -139,7 +139,7 @@ class EventAdd: JZActivity() {
             currentDay   = day
 
             // Shows Date Values//
-            eventDatePicker.text = JZDate.getDate(day, month, year, AMERICAN)
+            eventDatePicker.text = JZDate.getDate(day, month + 1, year, AMERICAN)
         }
 
         // When eventDatePicker Is Clicked//
