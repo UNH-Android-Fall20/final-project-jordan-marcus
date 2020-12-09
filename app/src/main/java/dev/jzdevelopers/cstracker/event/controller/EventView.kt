@@ -22,14 +22,14 @@ import kotlinx.android.synthetic.main.ui_event_view.*
  *  Activity That Shows All Of The Events Under The Signed In Primary User
  *  @author Jordan Zimmitti, Marcus Novoa
  */
-class EventView : JZActivity() {
+class EventView: JZActivity() {
 
     // Defines JZRecyclerAdapterFB Variable//
     private lateinit var adapter    : JZRecyclerAdapterFB<Event>
     private lateinit var searchView : SearchView
 
     // Define And Initializes JZTime Variable//
-    val jzTime = JZTime()
+    private val jzTime = JZTime()
 
     // Defines Secondary User ID Variable//
     private lateinit var secondaryUserId : String

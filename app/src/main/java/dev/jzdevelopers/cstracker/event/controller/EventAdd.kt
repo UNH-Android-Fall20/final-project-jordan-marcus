@@ -8,6 +8,8 @@ import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.event.models.Event
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.libs.JZDate
+import dev.jzdevelopers.cstracker.libs.JZDateFormat.AMERICAN
+import dev.jzdevelopers.cstracker.libs.JZDateFormat.REVERSED
 import dev.jzdevelopers.cstracker.libs.JZTime
 import dev.jzdevelopers.cstracker.libs.JZTimeFormat.MILITARY
 import dev.jzdevelopers.cstracker.libs.JZTimeFormat.STANDARD
@@ -22,9 +24,6 @@ class EventAdd: JZActivity() {
 
     // Define And Initializes JZTime Variable//
     private val jzTime = JZTime()
-
-    // Define And Initializes The Time Button Clicked Last//
-    private var lastTimeIdClicked = 0
 
     /**.
      * What Happens When The Activity Is Created
@@ -93,7 +92,7 @@ class EventAdd: JZActivity() {
             val notes          = notes.text.toString()
             val peopleInCharge = peopleInCharge.text.toString()
             val phoneNumber    = phoneNumber.text.toString()
-            val startTime      = jzTime.getStartTime(MILITARY)
+            val startTime      = startTimeValue.text.toString()
             val totalTime      = totalTimeValue.text.toString()
             val userId         = secondaryUserId
 
@@ -111,7 +110,7 @@ class EventAdd: JZActivity() {
                 totalTime,
                 userId
             )
-            val isSuccessful  = event.add(progressBar)
+            val isSuccessful = event.add(progressBar)
             if (!isSuccessful) return@click
 
             // Starts The EventView Activity//
@@ -126,36 +125,60 @@ class EventAdd: JZActivity() {
 
     private fun pickDate() {
 
-        // Define And Instantiate TimePickerDialog Value//
+        // Gets The Current Year, Month And Day//
+        var currentYear  = JZDate.getCurrentYear()
+        var currentMonth = JZDate.getCurrentMonth()
+        var currentDay   = JZDate.getCurrentDay()
+
+        // Define And Instantiate DatePickerDialog Value//
         val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
 
+            // Saves The Date Preset Set By The User//
+            currentYear  = year
+            currentMonth = month
+            currentDay   = day
+
+            // Shows Date Values//
+            eventDatePicker.text = JZDate.getDate(day, month, year, AMERICAN)
         }
 
         // When eventDatePicker Is Clicked//
         click(eventDatePicker) {
 
-            // Define And Initializes Date Properties//
-            val year  = JZDate.getCurrentYear()
-            val month = calendar.get(java.util.Calendar.MONTH)
-            val day   = calendar.get(java.util.Calendar.DAY_OF_MONTH)
-
-//            // Initializes Date Picker Dialog//
-//            datePickerDialog = DatePickerDialog.newInstance(this@EventAdd, year, month, day)
-//            datePickerDialog.isThemeDark = false
-//            datePickerDialog.setTitle("Date Picker")
-//            datePickerDialog.showYearPickerFirst(false)
-//            datePickerDialog.version = DatePickerDialog.Version.VERSION_1
-//
-//            // Show Date Picker Dialog//
-//            datePickerDialog.show(supportFragmentManager, "DatePickerDialog")
+            // Shows The Date Picker//
+            DatePickerDialog.newInstance(dateSetListener, currentYear, currentMonth, currentDay)
+                .show(supportFragmentManager, "DatePickerDialog")
         }
     }
 
     private fun pickEndTime() {
 
+        // Gets The Current Hour And Minute//
+        var currentHour   = JZTime.getCurrentHour(MILITARY)
+        var currentMinute = JZTime.getCurrentMinute()
+
         // Define And Instantiate TimePickerDialog Value//
         val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute, _ ->
 
+            // Saves The Time Preset Set By The User//
+            currentHour   = hour
+            currentMinute = minute
+
+            // Sets The Picked Time Values//
+            jzTime.endTimeHour   = hour
+            jzTime.endTimeMinute = minute
+
+            // Shows Start-Time And Total-Time Values//
+            endTimeValue.text   = jzTime.getEndTime(STANDARD)
+            totalTimeValue.text = jzTime.getTimeDifference()
+        }
+
+        // When endTime And endTimeValue Are Clicked//
+        click(endTime, endTimeValue) {
+
+            // Shows The Time Picker//
+            TimePickerDialog.newInstance(timeSetListener, currentHour, currentMinute, false)
+                .show(supportFragmentManager, "TimePickerDialog")
         }
     }
 
