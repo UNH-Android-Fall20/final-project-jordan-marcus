@@ -200,7 +200,7 @@ class JZRecyclerAdapterFB<TYPE : Any>(
 
         // Sets That Searching Is Not Occurring//
         isSearch = false
-
+        
         // Reattach The Adapter//
         recyclerView.adapter = fireBaseAdapter
 

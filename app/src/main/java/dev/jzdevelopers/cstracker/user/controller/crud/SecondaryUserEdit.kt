@@ -245,7 +245,7 @@ class SecondaryUserEdit: JZActivity() {
         if (profileImageReference == null) {
             nameLetter.text          = secondaryUser.nameLetter
             nameLetter.visibility    = View.VISIBLE
-            profileImage.borderColor = getColorCompat(R.color.green)
+            profileImage.borderColor = getColorAttr(R.attr.colorPrimary)
         }
         else {
             nameLetter.visibility    = View.INVISIBLE

@@ -171,48 +171,6 @@ class SecondaryUserView: JZActivity() {
             }
         }
 
-        // When The Adapter Items Are Scrolling//
-        adapter.itemsScrolling {
-            when {
-
-                // When Items Are Scrolling And The SearchView Isn't Open//
-                it > 0 && fabAddProfile.isShown -> fabAddProfile.hide()
-
-                // When The SearchView Is Open//
-                !searchView.isIconified -> fabAddProfile.hide()
-
-                // When No Above Condition Is Met//
-                else   -> fabAddProfile.show()
-            }
-        }
-
-        // When An Adapter Item Is Swiped//
-        adapter.itemSwipe {
-
-            // Gets The SecondaryUser//
-            val id = adapter.getItemId(it)
-            val secondaryUser = adapter.getItem(it)
-
-            // Shows The Alert Dialog//
-            MaterialDialog(this).show {
-                title(R.string.title_double_check)
-                message(R.string.general_delete_check_user)
-                cancelOnTouchOutside(false)
-                cornerRadius(16.0f)
-                negativeButton(R.string.button_negative) {
-                    adapter.restart()
-                }
-                positiveButton(R.string.button_positive) {
-
-                    // Deletes The Secondary User//
-                    lifecycleScope.launch { secondaryUser.delete(id) }
-
-                    // Shows The User A Message That The Item Was Deleted//
-                    toastShort("${secondaryUser.firstName} ${secondaryUser.lastName} was deleted")
-                }
-            }
-        }
-
         // When The Adapter Items Are Multi-Selected//
         adapter.itemMultiSelect { itemPosition, itemSelectedCount, isSelected ->
 
@@ -304,6 +262,51 @@ class SecondaryUserView: JZActivity() {
                     if (index != -1) {
                         selectedItemList.removeAt(index)
                     }
+                }
+            }
+        }
+
+        // When The Adapter Items Are Scrolling//
+        adapter.itemsScrolling {
+            when {
+
+                // When Items Are Scrolling And The SearchView Isn't Open//
+                it > 0 && fabAddProfile.isShown -> fabAddProfile.hide()
+
+                // When The SearchView Is Open//
+                !searchView.isIconified -> fabAddProfile.hide()
+
+                // When No Above Condition Is Met//
+                else   -> fabAddProfile.show()
+            }
+        }
+
+        // When An Adapter Item Is Swiped//
+        adapter.itemSwipe {
+
+            // Gets The SecondaryUser//
+            val id = adapter.getItemId(it)
+            val secondaryUser = adapter.getItem(it)
+
+            // Shows The Alert Dialog//
+            MaterialDialog(this).show {
+                title(R.string.title_double_check)
+                message(R.string.general_delete_check_user)
+                cancelOnTouchOutside(false)
+                cornerRadius(16.0f)
+                negativeButton(R.string.button_negative) {
+                    adapter.restart()
+                }
+                positiveButton(R.string.button_positive) {
+
+                    // Deletes The Secondary User//
+                    lifecycleScope.launch { secondaryUser.delete(id) }
+
+                    // Restarts The Adapter//
+                    adapter.restart()
+
+                    // Shows The User A Message That The Item Was Deleted//
+                    toastShort("${secondaryUser.firstName} ${secondaryUser.lastName} was deleted")
                 }
             }
         }

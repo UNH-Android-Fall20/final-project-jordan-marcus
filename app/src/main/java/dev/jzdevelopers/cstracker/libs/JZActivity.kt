@@ -620,7 +620,6 @@ abstract class JZActivity: AppCompatActivity() {
                 }
                 return true
             }
-
         })
     }
 
