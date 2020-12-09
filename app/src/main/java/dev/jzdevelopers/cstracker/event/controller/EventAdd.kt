@@ -138,14 +138,42 @@ class EventAdd: JZActivity() {
 
             // Shows Date Values//
             eventDatePicker.text = JZDate.getDate(day, month + 1, year, AMERICAN)
+
+            // Sets The Status Bar Color And Icon Color//
+            val statusBarColor = Theme.getStatusBarColor(this@EventAdd)
+            when(statusBarColor) {
+                R.color.white -> UI().statusBarColor(statusBarColor, true)
+                else          -> UI().statusBarColor(statusBarColor, false)
+            }
         }
 
         // When eventDatePicker Is Clicked//
         click(eventDatePicker) {
 
+            // Creates The Date Picker//
+            val datePicker = DatePickerDialog.newInstance(
+                dateSetListener,
+                currentYear,
+                currentMonth,
+                currentDay
+            )
+
+            // Stops Vibration//
+            datePicker.vibrate(false)
+
+            // When Date
+            datePicker.setOnCancelListener {
+
+                // Sets The Status Bar Color And Icon Color//
+                val statusBarColor = Theme.getStatusBarColor(this@EventAdd)
+                when(statusBarColor) {
+                    R.color.white -> UI().statusBarColor(statusBarColor, true)
+                    else          -> UI().statusBarColor(statusBarColor, false)
+                }
+            }
+
             // Shows The Date Picker//
-            DatePickerDialog.newInstance(dateSetListener, currentYear, currentMonth, currentDay)
-                .show(supportFragmentManager, "DatePickerDialog")
+            datePicker.show(supportFragmentManager, "DatePickerDialog")
         }
     }
 
@@ -174,9 +202,19 @@ class EventAdd: JZActivity() {
         // When endTime And endTimeValue Are Clicked//
         click(endTime, endTimeValue) {
 
+            // Creates The Time Picker//
+            val timePicker = TimePickerDialog.newInstance(
+                timeSetListener,
+                currentHour,
+                currentMinute,
+                false
+            )
+
+            // Stops Vibration//
+            timePicker.vibrate(false)
+
             // Shows The Time Picker//
-            TimePickerDialog.newInstance(timeSetListener, currentHour, currentMinute, false)
-                .show(supportFragmentManager, "TimePickerDialog")
+            timePicker.show(supportFragmentManager, "TimePickerDialog")
         }
     }
 
@@ -208,9 +246,19 @@ class EventAdd: JZActivity() {
         // When startTime And startTimeValue Are Clicked//
         click(startTime, startTimeValue) {
 
+            // Creates The Time Picker//
+            val timePicker = TimePickerDialog.newInstance(
+                timeSetListener,
+                currentHour,
+                currentMinute,
+                false
+            )
+
+            // Stops Vibration//
+            timePicker.vibrate(false)
+
             // Shows The Time Picker//
-            TimePickerDialog.newInstance(timeSetListener, currentHour, currentMinute, false)
-                .show(supportFragmentManager, "TimePickerDialog")
+            timePicker.show(supportFragmentManager, "TimePickerDialog")
         }
     }
 }

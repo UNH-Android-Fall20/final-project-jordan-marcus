@@ -693,7 +693,7 @@ abstract class JZActivity: AppCompatActivity() {
      *  Inner Class For Easily Configuring UI Options
      *  @author Jordan Zimmitti
      */
-    protected inner class UI(@LayoutRes private val layout: Int) {
+    protected inner class UI(@LayoutRes private val layout: Int = 0) {
 
         // Define And Initializes Boolean Variables//
         private var isDarkIconsStatus     = false
