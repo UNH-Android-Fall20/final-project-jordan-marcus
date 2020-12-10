@@ -2,6 +2,8 @@ package dev.jzdevelopers.cstracker.settings
 
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
+import dev.jzdevelopers.cstracker.settings.Theme.Companion.getAppStatusBarColor
+import dev.jzdevelopers.cstracker.settings.Theme.Companion.getAppTheme
 import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView
 import kotlinx.android.synthetic.main.ui_about.*
 import kotlinx.android.synthetic.main.ui_settings.*
@@ -22,11 +24,11 @@ class About: JZActivity() {
         createUI(R.layout.ui_about) {
 
             // Sets The Theme//
-            val theme = Theme.getAppTheme(this@About)
+            val theme = getAppTheme(this@About)
             theme(theme)
 
             // Sets The Status Bar Color And Icon Color//
-            val statusBarColor = Theme.getStatusBarColor(this@About)
+            val statusBarColor = getAppStatusBarColor(this@About)
             when(statusBarColor) {
                 R.color.white -> statusBarColor(statusBarColor, true)
                 else          -> statusBarColor(statusBarColor, false)

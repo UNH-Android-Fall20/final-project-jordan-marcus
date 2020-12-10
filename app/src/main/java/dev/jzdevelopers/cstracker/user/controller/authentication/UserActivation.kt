@@ -3,7 +3,8 @@ package dev.jzdevelopers.cstracker.user.controller.authentication
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.event.controller.EventView
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.settings.Theme
+import dev.jzdevelopers.cstracker.settings.Theme.Companion.getAppStatusBarColor
+import dev.jzdevelopers.cstracker.settings.Theme.Companion.getAppTheme
 import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserAdd
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser.Companion.getCachedMultiUser
@@ -25,11 +26,11 @@ class UserActivation: JZActivity() {
         createUI(R.layout.ui_user_activation) {
 
             // Sets The Theme//
-            val theme = Theme.getAppTheme(this@UserActivation)
+            val theme = getAppTheme(this@UserActivation)
             theme(theme)
 
             // Sets The Bar Colors And Icon Colors//
-            val barColor = Theme.getStatusBarColor(this@UserActivation)
+            val barColor = getAppStatusBarColor(this@UserActivation)
             when(barColor) {
                 R.color.white -> {
                     navigationColor(barColor, true)

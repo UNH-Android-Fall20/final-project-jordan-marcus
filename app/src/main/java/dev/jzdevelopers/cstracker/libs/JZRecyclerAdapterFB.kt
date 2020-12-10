@@ -39,7 +39,7 @@ private typealias ScrollFB          = suspend (dy: Int)                         
  *  @param [views]    Matches the nodes in the layout with the properties in the model (lambda)
  */
 @Suppress("unused")
-class JZRecyclerAdapterFB<TYPE : Any>(
+class JZRecyclerAdapterFB<TYPE: Any>(
     private val context : Context,
     private val scope   : LifecycleCoroutineScope,
     layoutId : Int,
@@ -213,7 +213,7 @@ class JZRecyclerAdapterFB<TYPE : Any>(
 
     /**.
      * Function That Searches Items
-     * @param [searchConditional] - The invoked conditional function for what item fits the search criteria
+     * @param [searchConditional] The invoked conditional function for what item fits the search criteria
      */
     fun search (searchConditional: (item: TYPE) -> Boolean) {
 
@@ -242,9 +242,9 @@ class JZRecyclerAdapterFB<TYPE : Any>(
     }
 
     /**.
-     * Function That Gets The State Of The Items Foreground Color
+     * Function That Gets The State Of The Items Foreground Color When Scrolling
      * @param [position] The position of the item in the recycler-view
-     * @return The state of items foreground color
+     * @return The items foreground color
      */
     private fun getForegroundState(position: Int): ColorDrawable? {
 

@@ -2,7 +2,8 @@ package dev.jzdevelopers.cstracker.user.controller.authentication
 
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.settings.Theme
+import dev.jzdevelopers.cstracker.settings.Theme.Companion.getAppStatusBarColor
+import dev.jzdevelopers.cstracker.settings.Theme.Companion.getAppTheme
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser
 import kotlinx.android.synthetic.main.ui_user_password_reset.*
 
@@ -21,11 +22,11 @@ class UserPasswordReset: JZActivity() {
         createUI(R.layout.ui_user_password_reset) {
 
             // Sets The Theme//
-            val theme = Theme.getAppTheme(this@UserPasswordReset)
+            val theme = getAppTheme(this@UserPasswordReset)
             theme(theme)
 
             // Sets The Bar Colors And Icon Colors//
-            val barColor = Theme.getStatusBarColor(this@UserPasswordReset)
+            val barColor = getAppStatusBarColor(this@UserPasswordReset)
             when(barColor) {
                 R.color.white -> {
                     navigationColor(barColor, true)

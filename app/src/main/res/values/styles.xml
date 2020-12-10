@@ -290,11 +290,12 @@
         <item name="layoutPrimary" >@color/blackMatte </item>
 
         <!-- Material Dialog Options -->
-        <item name="md_background_color"  >@color/blackMatte </item>
-        <item name="md_color_button_text" >@color/grey       </item>
-        <item name="md_color_content"     >@color/grey       </item>
-        <item name="md_color_title"       >@color/grey       </item>
-        <item name="md_corner_radius"     >16dp              </item>
+        <item name="md_background_color"      >@color/blackMatte </item>
+        <item name="md_color_button_text"      >@color/grey      </item>
+        <item name="md_color_content"          >@color/grey      </item>
+        <item name="md_color_title"            >@color/grey      </item>
+        <item name="md_color_widget_unchecked" >@color/greyDark  </item>
+        <item name="md_corner_radius"          >16dp             </item>
 
         <!-- Menu Item Options -->
         <item name="popupMenuStyle">@style/PopupStyle</item>
@@ -318,11 +319,12 @@
         <item name="layoutPrimary" >@color/blackOled </item>
 
         <!-- Material Dialog Options -->
-        <item name="md_background_color"  >@color/blackMatte </item>
-        <item name="md_color_button_text" >@color/grey       </item>
-        <item name="md_color_content"     >@color/grey       </item>
-        <item name="md_color_title"       >@color/grey       </item>
-        <item name="md_corner_radius"     >16dp              </item>
+        <item name="md_background_color"      >@color/blackMatte </item>
+        <item name="md_color_button_text"      >@color/grey      </item>
+        <item name="md_color_content"          >@color/grey      </item>
+        <item name="md_color_title"            >@color/grey      </item>
+        <item name="md_color_widget_unchecked" >@color/greyDark  </item>
+        <item name="md_corner_radius"          >16dp             </item>
 
         <!-- Menu Item Options -->
         <item name="popupMenuStyle">@style/PopupStyle</item>

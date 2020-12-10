@@ -37,6 +37,21 @@ class JZTime(
         private const val NO_INPUT = -1
 
         /**.
+         * Function That Takes In Minutes And Gets The Hour And Minutes
+         * @param [totalMinutes] The total number of minutes
+         * @return The time in hours and minutes (hh:mm)
+         */
+        fun minutesToFullTime(totalMinutes: Int): String {
+
+            // Gets The Hours And Minutes From The Total Minutes//
+            val hours   = totalMinutes / 60
+            val minutes = totalMinutes % 60
+
+            // Returns The Hours And Minutes//
+            return "$hours:$minutes"
+        }
+
+        /**.
          * Function That Takes In The Time And Gets The Hour
          * @param [time]       The time (hh:mm) or (hh:mm aa)
          * @param [timeFormat] The format for the returned hour

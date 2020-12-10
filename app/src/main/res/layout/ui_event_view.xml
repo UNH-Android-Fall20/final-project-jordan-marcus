@@ -5,6 +5,7 @@
     xmlns:android         ="http://schemas.android.com/apk/res/android"
     xmlns:node            ="http://schemas.android.com/apk/res-auto"
     xmlns:tools           ="http://schemas.android.com/tools"
+    android:background    ="?attr/layoutPrimary"
     android:layout_height ="match_parent"
     android:layout_width  ="match_parent">
 
@@ -45,7 +46,7 @@
   <!-- FloatingActionButton fabAddEvent -->
   <com.google.android.material.floatingactionbutton.FloatingActionButton
       android:id                 ="@+id/fabAddEvent"
-      android:src                ="@drawable/user"
+      android:src                ="@drawable/event"
       android:contentDescription ="@string/fab_add_event"
       android:layout_height      ="wrap_content"
       android:layout_width       ="wrap_content"
