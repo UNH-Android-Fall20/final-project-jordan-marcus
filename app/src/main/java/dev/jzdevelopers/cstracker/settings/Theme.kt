@@ -33,12 +33,13 @@ class Theme: JZActivity() {
         private const val NO_THEME = -1
 
         // Define And Initializes Int Values//
-        private var theme       = NO_THEME
-        private var themeNumber = NO_THEME
+        private var theme           = NO_THEME
+        private var themeNumberApp  = NO_THEME
+        private var themeNumberUser = NO_THEME
 
         /**.
          * Function That Gets The Theme For The App Based On The Users Preference
-         * @param [context] - Gets the instance from the caller activity
+         * @param [context] Gets the instance from the caller activity
          * @return The theme
          */
         fun getAppTheme(context: Context): Int {
@@ -47,17 +48,44 @@ class Theme: JZActivity() {
             val isRandomChecked = JZPrefs.getPref(context, PF_RANDOM, false)
             val savedTheme = JZPrefs.getPref(context, PF_THEME, GREEN.ordinal)
 
-            // Returns The Set Theme//
+            // Returns The App Theme//
             return when {
 
                 // When The User Wants A Random Theme//
                 isRandomChecked && theme != NO_THEME -> theme
 
                 // When The Theme Or Black Type Has Changed//
-                themeNumber != savedTheme || themeNumber == BLACK.ordinal -> getTheme(context, savedTheme)
+                themeNumberApp != savedTheme || themeNumberApp == BLACK.ordinal -> getTheme(context, savedTheme)
 
                 // Returns The Picked Theme//
                 else -> theme
+            }
+        }
+
+        /**.
+         * Function That Gets The Theme For The User Based On Their Saved Theme
+         * @param [context]    Gets the instance from the caller activity
+         * @param [savedTheme] The theme saved by the user
+         */
+        fun getUserTheme(context: Context, savedTheme: UserTheme): Int {
+
+            // Saves The User's Theme Number//
+            themeNumberUser = savedTheme.ordinal
+
+            // Returns The User Theme//
+            return when(savedTheme) {
+                DEFAULT -> getAppTheme(context)
+                RED     -> R.style.RedTheme
+                ORANGE  -> R.style.OrangeTheme
+                YELLOW  -> R.style.YellowTheme
+                GREEN   -> R.style.RedTheme
+                BLUE    -> R.style.BlueTheme
+                INDIGO  -> R.style.IndigoTheme
+                VIOLET  -> R.style.VioletTheme
+                PINK    -> R.style.PinkTheme
+                TEAL    -> R.style.TealTheme
+                BROWN   -> R.style.BrownTheme
+                BLACK   -> getBlackTheme(context)
             }
         }
 
@@ -92,10 +120,10 @@ class Theme: JZActivity() {
          */
         fun getStatusBarColor(context: Context): Int {
 
+            // Returns The Status Bar Color//
             return when {
-                themeNumber != BLACK.ordinal -> R.color.white
+                themeNumberApp != BLACK.ordinal && themeNumberUser != BLACK.ordinal -> R.color.white
                 else -> getBlackColor(context)
-
             }
         }
 
@@ -112,7 +140,7 @@ class Theme: JZActivity() {
             if (isRandomChecked) return getRandomTheme(context)
 
             // Sets The Theme Number//
-            themeNumber = savedTheme
+            themeNumberApp = savedTheme
 
             // Sets The Saved Theme//
             theme = when(savedTheme) {

@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -99,6 +99,7 @@ class JZRecyclerAdapterFB<TYPE : Any>(
 
     /**.
      * Function That Gets An Item Shown In The RecyclerView
+     * @param [position] The position of the item in the recycler-view
      * @return The item
      */
     fun getItem(position: Int): TYPE {
@@ -107,6 +108,7 @@ class JZRecyclerAdapterFB<TYPE : Any>(
 
     /**.
      * Function That Gets The Item Id Shown In The RecyclerView
+     * @param [position] The position of the item in the recycler-view
      * @return The item
      */
     fun getItemId(position: Int): String {
@@ -240,6 +242,25 @@ class JZRecyclerAdapterFB<TYPE : Any>(
     }
 
     /**.
+     * Function That Gets The State Of The Items Foreground Color
+     * @param [position] The position of the item in the recycler-view
+     * @return The state of items foreground color
+     */
+    private fun getForegroundState(position: Int): ColorDrawable? {
+
+        // Gets The Index If The Item Is Already Selected//
+        val index = multiSelectedList.indexOfFirst { savedPosition ->
+            savedPosition == position
+        }
+
+        // Returns The State Of The Items Foreground//
+        return when(index) {
+            -1   -> null
+            else -> ColorDrawable(getColor(context, multiSelectColor))
+        }
+    }
+
+    /**.
      * Function That Handles When A RecyclerView Item Is Multi-Selected
      * @param [holder]   Where the nodes are defined and initialized
      * @param [position] Where the specific item is located in the recycler-view
@@ -254,7 +275,7 @@ class JZRecyclerAdapterFB<TYPE : Any>(
             -1   -> {
 
                 // Highlights The Selected Item//
-                val color = ColorDrawable(ContextCompat.getColor(context, multiSelectColor))
+                val color = ColorDrawable(getColor(context, multiSelectColor))
                 holder.itemView.foreground = color
 
                 // Adds Items Position To The Multi-Selected List//
@@ -387,6 +408,13 @@ class JZRecyclerAdapterFB<TYPE : Any>(
             // Binds The Layout Nodes With The Model Properties//
             holder.itemView.views(model, holder.adapterPosition)
 
+            // When Items Are Being Multi-Selected//
+            if (multiSelectedList.size != 0) {
+
+                // Sets The Appropriate Foreground Color//
+                holder.itemView.foreground = getForegroundState(position)
+            }
+
             // When An RecyclerView Item Is Clicked//
             holder.itemView.setOnClickListener {
 
@@ -431,6 +459,7 @@ class JZRecyclerAdapterFB<TYPE : Any>(
 
         /**.
          * Function That Gets The Item At The Specified Position From The Backing Snapshot Array
+         * @param [position] The position of the item in the recycler-view
          * @return The item
          */
         override fun getItem(position: Int): TYPE {

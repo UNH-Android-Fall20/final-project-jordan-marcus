@@ -2,7 +2,9 @@ package dev.jzdevelopers.cstracker.event.controller
 
 import com.afollestad.materialdialogs.MaterialDialog
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.event.models.Event
 import dev.jzdevelopers.cstracker.libs.JZActivity
@@ -12,13 +14,13 @@ import dev.jzdevelopers.cstracker.libs.JZTime
 import dev.jzdevelopers.cstracker.libs.JZTimeFormat.MILITARY
 import dev.jzdevelopers.cstracker.libs.JZTimeFormat.STANDARD
 import dev.jzdevelopers.cstracker.settings.Theme
+import dev.jzdevelopers.cstracker.user.common.UserTheme
 import kotlinx.android.synthetic.main.ui_event_add.*
-
 
 class EventAdd: JZActivity() {
 
-    // Defines Secondary User ID Variable//
-    private lateinit var secondaryUserId : String
+    // Define And Initializes Boolean Variable//
+    private var isThemeDark = false
 
     // Define And Initializes JZTime Variable//
     private val jzTime = JZTime()
@@ -28,21 +30,21 @@ class EventAdd: JZActivity() {
      */
     override fun createActivity() {
 
+        // Gets The Secondary User's Data//
+        val secondaryUserTheme = intent.extras?.get("SECONDARY_USER_THEME") as UserTheme
+
         // Creates The UI//
         createUI(R.layout.ui_event_add) {
 
             // Sets The Theme//
-            val theme = Theme.getAppTheme(this@EventAdd)
+            val theme = Theme.getUserTheme(this@EventAdd, secondaryUserTheme)
             theme(theme)
 
-            // Gets The Secondary User's ID//
-            secondaryUserId = intent.extras?.get("SECONDARY_USER_ID") as String
-
-            // Sets The Status Bar Color And Icon Color//
+            // Sets The Status Bar Color And Icon Color And Gets Whether The Theme Is Dark//
             val statusBarColor = Theme.getStatusBarColor(this@EventAdd)
-            when(statusBarColor) {
-                R.color.white -> statusBarColor(statusBarColor, true)
-                else          -> statusBarColor(statusBarColor, false)
+            isThemeDark = when(statusBarColor) {
+                R.color.white -> {statusBarColor(statusBarColor, true); false}
+                else          -> {statusBarColor(statusBarColor, false); true}
             }
         }
     }
@@ -64,7 +66,7 @@ class EventAdd: JZActivity() {
                 negativeButton(R.string.button_negative)
                 positiveButton(R.string.button_positive) {
 
-                    // Starts The EventView Activity//
+                    // Exits The EventAdd Activity//
                     exitActivity(R.anim.faze_in, R.anim.faze_out)
                 }
             }
@@ -92,11 +94,14 @@ class EventAdd: JZActivity() {
             val phoneNumber    = phoneNumber.text.toString()
             val startTime      = startTimeValue.text.toString()
             val totalTime      = totalTimeValue.text.toString()
-            val userId         = secondaryUserId
+            val totalTimeInMin = jzTime.getTimeDifferenceInMin()
+            val userId         = intent.extras?.get("SECONDARY_USER_ID") as String
 
-            // Adds The New User Event//
+            // Creates The New Event//
             val event = Event(
                 this,
+                totalTimeInMin,
+                userId,
                 date,
                 endTime,
                 location,
@@ -106,13 +111,14 @@ class EventAdd: JZActivity() {
                 phoneNumber,
                 startTime,
                 totalTime,
-                userId
             )
+
+            // Adds The Event To The Database//
             val isSuccessful = event.add(progressBar)
             if (!isSuccessful) return@click
 
-            // Starts The EventView Activity//
-            startActivity(EventView::class, R.anim.faze_in, R.anim.faze_out)
+            // Exits The EventAdd Activity//
+            exitActivity(R.anim.faze_in, R.anim.faze_out)
         }
 
         // When Pickers Are Clicked//
@@ -121,6 +127,9 @@ class EventAdd: JZActivity() {
         pickStartTime()
     }
 
+    /**.
+     * Function That Picks The Date
+     */
     private fun pickDate() {
 
         // Gets The Current Year, Month And Day//
@@ -129,7 +138,7 @@ class EventAdd: JZActivity() {
         var currentDay   = JZDate.getCurrentDay()
 
         // Define And Instantiate DatePickerDialog Value//
-        val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
+        val dateSetListener = OnDateSetListener { _, year, month, day ->
 
             // Saves The Date Preset Set By The User//
             currentYear  = year
@@ -138,19 +147,12 @@ class EventAdd: JZActivity() {
 
             // Shows Date Values//
             eventDatePicker.text = JZDate.getDate(day, month + 1, year, AMERICAN)
-
-            // Sets The Status Bar Color And Icon Color//
-            val statusBarColor = Theme.getStatusBarColor(this@EventAdd)
-            when(statusBarColor) {
-                R.color.white -> UI().statusBarColor(statusBarColor, true)
-                else          -> UI().statusBarColor(statusBarColor, false)
-            }
         }
 
         // When eventDatePicker Is Clicked//
-        click(eventDatePicker) {
+        click(eventDate, eventDatePicker) {
 
-            // Creates The Date Picker//
+            // Creates The Date-Picker//
             val datePicker = DatePickerDialog.newInstance(
                 dateSetListener,
                 currentYear,
@@ -158,11 +160,12 @@ class EventAdd: JZActivity() {
                 currentDay
             )
 
-            // Stops Vibration//
+            // Sets Date-Picker Preferences//
+            datePicker.isThemeDark = isThemeDark
             datePicker.vibrate(false)
 
-            // When Date
-            datePicker.setOnCancelListener {
+            // When Date-Picker Is Dismissed//
+            datePicker.setOnDismissListener {
 
                 // Sets The Status Bar Color And Icon Color//
                 val statusBarColor = Theme.getStatusBarColor(this@EventAdd)
@@ -172,11 +175,14 @@ class EventAdd: JZActivity() {
                 }
             }
 
-            // Shows The Date Picker//
+            // Shows The Date-Picker//
             datePicker.show(supportFragmentManager, "DatePickerDialog")
         }
     }
 
+    /**.
+     * Function That Picks The End-Time
+     */
     private fun pickEndTime() {
 
         // Gets The Current Hour And Minute//
@@ -184,7 +190,7 @@ class EventAdd: JZActivity() {
         var currentMinute = JZTime.getCurrentMinute()
 
         // Define And Instantiate TimePickerDialog Value//
-        val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute, _ ->
+        val timeSetListener = OnTimeSetListener { _, hour, minute, _ ->
 
             // Saves The Time Preset Set By The User//
             currentHour   = hour
@@ -202,7 +208,7 @@ class EventAdd: JZActivity() {
         // When endTime And endTimeValue Are Clicked//
         click(endTime, endTimeValue) {
 
-            // Creates The Time Picker//
+            // Creates The Time-Picker//
             val timePicker = TimePickerDialog.newInstance(
                 timeSetListener,
                 currentHour,
@@ -210,10 +216,11 @@ class EventAdd: JZActivity() {
                 false
             )
 
-            // Stops Vibration//
+            // Sets Time-Picker Preferences//
+            timePicker.isThemeDark = isThemeDark
             timePicker.vibrate(false)
 
-            // Shows The Time Picker//
+            // Shows The Time-Picker//
             timePicker.show(supportFragmentManager, "TimePickerDialog")
         }
     }
@@ -228,7 +235,7 @@ class EventAdd: JZActivity() {
         var currentMinute = JZTime.getCurrentMinute()
 
         // Define And Instantiate TimePickerDialog Value//
-        val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute, _ ->
+        val timeSetListener = OnTimeSetListener { _, hour, minute, _ ->
 
             // Saves The Time Preset Set By The User//
             currentHour   = hour
@@ -246,7 +253,7 @@ class EventAdd: JZActivity() {
         // When startTime And startTimeValue Are Clicked//
         click(startTime, startTimeValue) {
 
-            // Creates The Time Picker//
+            // Creates The Time-Picker//
             val timePicker = TimePickerDialog.newInstance(
                 timeSetListener,
                 currentHour,
@@ -254,10 +261,11 @@ class EventAdd: JZActivity() {
                 false
             )
 
-            // Stops Vibration//
+            // Sets Time-Picker Preferences//
+            timePicker.isThemeDark = isThemeDark
             timePicker.vibrate(false)
 
-            // Shows The Time Picker//
+            // Shows The Time-Picker//
             timePicker.show(supportFragmentManager, "TimePickerDialog")
         }
     }

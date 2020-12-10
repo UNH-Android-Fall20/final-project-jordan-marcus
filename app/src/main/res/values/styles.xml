@@ -20,10 +20,10 @@
         <item name="layoutPrimary" >@color/white </item>
 
         <!-- Material Dialog Options -->
-        <item name="md_color_button_text" >@color/red       </item>
-        <item name="md_color_content"     >@color/blackOled </item>
-        <item name="md_color_title"       >@color/redDark   </item>
-        <item name="md_corner_radius"     >16dp             </item>
+        <item name="md_color_button_text" >@color/red      </item>
+        <item name="md_color_content"     >@color/greyDark </item>
+        <item name="md_color_title"       >@color/red      </item>
+        <item name="md_corner_radius"     >16dp            </item>
 
         <!-- Menu Item Options -->
         <item name="popupMenuStyle">@style/PopupStyle</item>
@@ -47,10 +47,10 @@
         <item name="layoutPrimary" >@color/white  </item>
 
         <!-- Material Dialog Options -->
-        <item name="md_color_button_text" >@color/orange     </item>
-        <item name="md_color_content"     >@color/blackOled  </item>
-        <item name="md_color_title"       >@color/orangeDark </item>
-        <item name="md_corner_radius"     >16dp              </item>
+        <item name="md_color_button_text" >@color/orange   </item>
+        <item name="md_color_content"     >@color/greyDark </item>
+        <item name="md_color_title"       >@color/orange   </item>
+        <item name="md_corner_radius"     >16dp            </item>
 
         <!-- Menu Item Options -->
         <item name="popupMenuStyle">@style/PopupStyle</item>
@@ -74,10 +74,10 @@
         <item name="layoutPrimary" >@color/white  </item>
 
         <!-- Material Dialog Options -->
-        <item name="md_color_button_text" >@color/yellow     </item>
-        <item name="md_color_content"     >@color/blackOled  </item>
-        <item name="md_color_title"       >@color/yellowDark </item>
-        <item name="md_corner_radius"     >16dp              </item>
+        <item name="md_color_button_text" >@color/yellow   </item>
+        <item name="md_color_content"     >@color/greyDark </item>
+        <item name="md_color_title"       >@color/yellow   </item>
+        <item name="md_corner_radius"     >16dp            </item>
 
         <!-- Menu Item Options -->
         <item name="popupMenuStyle">@style/PopupStyle</item>
@@ -102,7 +102,7 @@
 
         <!-- Material Dialog Options -->
         <item name="md_color_button_text" >@color/green     </item>
-        <item name="md_color_content"     >@color/blackOled </item>
+        <item name="md_color_content"     >@color/greyDark  </item>
         <item name="md_color_title"       >@color/green     </item>
         <item name="md_corner_radius"     >16dp             </item>
 
@@ -129,7 +129,7 @@
 
         <!-- Material Dialog Options -->
         <item name="md_color_button_text" >@color/blue      </item>
-        <item name="md_color_content"     >@color/blackOled </item>
+        <item name="md_color_content"     >@color/greyDark  </item>
         <item name="md_color_title"       >@color/blue      </item>
         <item name="md_corner_radius"     >16dp             </item>
 
@@ -156,7 +156,7 @@
 
         <!-- Material Dialog Options -->
         <item name="md_color_button_text" >@color/indigo    </item>
-        <item name="md_color_content"     >@color/blackOled </item>
+        <item name="md_color_content"     >@color/greyDark  </item>
         <item name="md_color_title"       >@color/indigo    </item>
         <item name="md_corner_radius"     >16dp             </item>
 
@@ -183,7 +183,7 @@
 
         <!-- Material Dialog Options -->
         <item name="md_color_button_text" >@color/violet    </item>
-        <item name="md_color_content"     >@color/blackOled </item>
+        <item name="md_color_content"     >@color/greyDark  </item>
         <item name="md_color_title"       >@color/violet    </item>
         <item name="md_corner_radius"     >16dp             </item>
 
@@ -210,7 +210,7 @@
 
         <!-- Material Dialog Options -->
         <item name="md_color_button_text" >@color/pink      </item>
-        <item name="md_color_content"     >@color/blackOled </item>
+        <item name="md_color_content"     >@color/greyDark  </item>
         <item name="md_color_title"       >@color/pink      </item>
         <item name="md_corner_radius"     >16dp             </item>
 
@@ -237,7 +237,7 @@
 
         <!-- Material Dialog Options -->
         <item name="md_color_button_text" >@color/teal      </item>
-        <item name="md_color_content"     >@color/blackOled </item>
+        <item name="md_color_content"     >@color/greyDark  </item>
         <item name="md_color_title"       >@color/teal      </item>
         <item name="md_corner_radius"     >16dp             </item>
 
@@ -264,7 +264,7 @@
 
         <!-- Material Dialog Options -->
         <item name="md_color_button_text" >@color/brown     </item>
-        <item name="md_color_content"     >@color/blackOled </item>
+        <item name="md_color_content"     >@color/greyDark  </item>
         <item name="md_color_title"       >@color/brown     </item>
         <item name="md_corner_radius"     >16dp             </item>
 

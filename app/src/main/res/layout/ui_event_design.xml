@@ -105,8 +105,6 @@
         <!-- TextView eventStartTime -->
         <com.google.android.material.textview.MaterialTextView
             android:id                                  ="@+id/eventStartTime"
-            android:clickable                           ="true"
-            android:focusable                           ="true"
             android:gravity                             ="center"
             android:text                                ="@string/start_time"
             android:textColor                           ="@color/white"
@@ -124,8 +122,6 @@
         <!-- TextView eventStartTimeValue -->
         <com.google.android.material.textview.MaterialTextView
             android:id                                  ="@+id/eventStartTimeValue"
-            android:clickable                           ="true"
-            android:focusable                           ="true"
             android:gravity                             ="center"
             android:text                                ="@string/time_default_text"
             android:textColor                           ="@color/white"
@@ -142,8 +138,6 @@
         <!-- TextView eventEndTime -->
         <com.google.android.material.textview.MaterialTextView
             android:id                                  ="@+id/eventEndTime"
-            android:clickable                           ="true"
-            android:focusable                           ="true"
             android:gravity                             ="center"
             android:text                                ="@string/end_time"
             android:textColor                           ="@color/white"
@@ -161,8 +155,6 @@
         <!-- TextView eventEndTimeValue -->
         <com.google.android.material.textview.MaterialTextView
             android:id                                  ="@+id/eventEndTimeValue"
-            android:clickable                           ="true"
-            android:focusable                           ="true"
             android:gravity                             ="center"
             android:text                                ="@string/time_default_text"
             android:textColor                           ="@color/white"
@@ -179,8 +171,6 @@
         <!-- TextView eventTotalTime -->
         <com.google.android.material.textview.MaterialTextView
             android:id                                  ="@+id/eventTotalTime"
-            android:clickable                           ="true"
-            android:focusable                           ="true"
             android:gravity                             ="center"
             android:text                                ="@string/total_time"
             android:textColor                           ="@color/white"
@@ -198,8 +188,6 @@
         <!-- TextView eventTotalTimeValue -->
         <com.google.android.material.textview.MaterialTextView
             android:id                                  ="@+id/eventTotalTimeValue"
-            android:clickable                           ="true"
-            android:focusable                           ="true"
             android:gravity                             ="center"
             android:text                                ="@string/time_default_text"
             android:textColor                           ="@color/white"

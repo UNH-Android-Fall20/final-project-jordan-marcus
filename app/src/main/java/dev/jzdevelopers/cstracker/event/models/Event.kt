@@ -34,7 +34,9 @@ import java.util.regex.Pattern
  *  @param [userId]         The id of the user that the event belongs to
  */
 class Event(
-    @get:Exclude val context : Context? = null,
+    @get:Exclude var context : Context? = null,
+    val totalTimeInMin       : Int      = 0,
+    val userId               : String   = "",
     var date                 : String   = "MM/DD/YYYY",
     var endTime              : String   = "0:00",
     var location             : String   = "",
@@ -44,7 +46,6 @@ class Event(
     var phoneNumber          : String   = "000-000-0000",
     var startTime            : String   = "0:00",
     var totalTime            : String   = "0:00",
-    val userId               : String   = ""
 ): FireBaseModel() {
 
     /**.
@@ -106,13 +107,6 @@ class Event(
     public override suspend fun add(loadingBar: ProgressBar): Boolean {
         try {
 
-            // When Context Is Null//
-            if (context == null) {
-
-                // Throws A Runtime Error//
-                throw NullPointerException("Context must not be null")
-            }
-
             // Checks If The Event Input Is Valid//
             if (!isValidName()) return false
             if (!isValidDate()) return false
@@ -121,11 +115,11 @@ class Event(
             if (!isValidPhoneNumber()) return false
             if (!isValidNotes()) return false
 
-            // Reverse Date For Database Storage//
-            date = JZDate.switchDateFormat(date, AMERICAN, REVERSED)
-
             // Shows The Loading Bar//
             loadingBar.visibility = View.VISIBLE
+
+            // Reverse Date For Database Storage//
+            date = JZDate.switchDateFormat(date, AMERICAN, REVERSED)
 
             // Adds The Event Data To The Database//
             fireStore.collection("Events").add(this).await()
@@ -210,12 +204,8 @@ class Event(
      */
     private fun showGeneralError() {
 
-        // When Context Is Null//
-        if (context == null) {
-
-            // Throws A Runtime Error//
-            throw NullPointerException("Context must not be null")
-        }
+        // Gets The Context If It Exists//
+        val context = context ?: throw NullPointerException("Context must not be null")
 
         // Shows The Error Dialog//
         JZActivity.showGeneralDialog(
@@ -231,12 +221,8 @@ class Event(
      */
     private fun isValidDate(): Boolean {
 
-        // When Context Is Null//
-        if (context == null) {
-
-            // Throws A Runtime Error//
-            throw NullPointerException("Context must not be null")
-        }
+        // Gets The Context If It Exists//
+        val context = context ?: throw NullPointerException("Context must not be null")
 
         // Checks The Event Date For Validity//
         return try {
@@ -261,12 +247,8 @@ class Event(
      */
     private fun isValidLocation(): Boolean {
 
-        // When Context Is Null//
-        if (context == null) {
-
-            // Throws A Runtime Error//
-            throw NullPointerException("Context must not be null")
-        }
+        // Gets The Context If It Exists//
+        val context = context ?: throw NullPointerException("Context must not be null")
 
         // Checks The Event Location For Validity//
         return when {
@@ -296,7 +278,8 @@ class Event(
                 location = location
                     .trim()
                     .replace("\\s+", " ")
-                    .capitalizeWords()
+                    .split(" ")
+                    .joinToString(" ") { it.capitalize(Locale.getDefault()) }
                 true
             }
         }
@@ -308,12 +291,8 @@ class Event(
      */
     private fun isValidName(): Boolean {
 
-        // When Context Is Null//
-        if (context == null) {
-
-            // Throws A Runtime Error//
-            throw NullPointerException("Context must not be null")
-        }
+        // Gets The Context If It Exists//
+        val context = context ?: throw NullPointerException("Context must not be null")
 
         // Checks The Event Name For Validity//
         return when {
@@ -344,7 +323,8 @@ class Event(
                     .trim()
                     .replace("\\s+", " ")
                     .toLowerCase(Locale.getDefault())
-                    .capitalizeWords()
+                    .split(" ")
+                    .joinToString(" ") { it.capitalize(Locale.getDefault()) }
                 true
             }
         }
@@ -356,12 +336,8 @@ class Event(
      */
     private fun isValidNotes(): Boolean {
 
-        // When Context Is Null//
-        if (context == null) {
-
-            // Throws A Runtime Error//
-            throw NullPointerException("Context must not be null")
-        }
+        // Gets The Context If It Exists//
+        val context = context ?: throw NullPointerException("Context must not be null")
 
         // Checks The Event Notes For Validity//
         return when {
@@ -392,12 +368,8 @@ class Event(
      */
     private fun isValidPeopleInCharge(): Boolean {
 
-        // When Context Is Null//
-        if (context == null) {
-
-            // Throws A Runtime Error//
-            throw NullPointerException("Context must not be null")
-        }
+        // Gets The Context If It Exists//
+        val context = context ?: throw NullPointerException("Context must not be null")
 
         // Checks The Event People In Charge For Validity//
         return when {
@@ -428,7 +400,8 @@ class Event(
                     .trim()
                     .replace("\\s+", " ")
                     .toLowerCase(Locale.getDefault())
-                    .capitalizeWords()
+                    .split(" ")
+                    .joinToString(" ") { it.capitalize(Locale.getDefault()) }
                 true
             }
         }
@@ -440,31 +413,17 @@ class Event(
      */
     private fun isValidPhoneNumber(): Boolean {
 
-        // When Context Is Null//
-        if (context == null) {
-
-            // Throws A Runtime Error//
-            throw NullPointerException("Context must not be null")
-        }
-
         // Checks The Event Phone Number For Validity//
         return try {
 
             // Successfully Find The Phone Number Via Regex//
-            val reg = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*\$"
-            val p: Pattern = Pattern.compile(reg)
-            p.matcher(phoneNumber).find()
+            val reg = "^[+]*[(]?[0-9]{1,4}[)]?[-\\s./0-9]*\$"
+            val pattern = Pattern.compile(reg)
+            pattern.matcher(phoneNumber).find()
             true
-        } catch (e: Exception) {
+        }
+        catch (e: Exception) {
             false
         }
     }
-
-    /**.
-     * Function That Capitalizes Every Word In A String
-     * @return New string with the first letter of every word capitalized
-     */
-    private fun String.capitalizeWords(): String = split(" ")
-        .map { it.capitalize(Locale.getDefault()) }
-        .joinToString(" ")
 }

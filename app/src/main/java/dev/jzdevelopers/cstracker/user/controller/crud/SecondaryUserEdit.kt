@@ -40,7 +40,7 @@ class SecondaryUserEdit: JZActivity() {
     override fun createActivity() {
 
         // Gets The Secondary-User And Its Id That Was Clicked On//
-        secondaryUser = intent.extras?.get("SECONDARY_USER")    as SecondaryUser
+        secondaryUser = intent.extras?.get("SECONDARY_USER") as SecondaryUser
 
         // Creates The UI//
         createUI(R.layout.ui_secondary_user_add_edit) {

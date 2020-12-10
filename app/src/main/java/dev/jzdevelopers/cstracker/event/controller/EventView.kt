@@ -14,6 +14,7 @@ import dev.jzdevelopers.cstracker.libs.JZDateFormat.REVERSED
 import dev.jzdevelopers.cstracker.libs.JZTimeFormat.MILITARY
 import dev.jzdevelopers.cstracker.libs.JZTimeFormat.STANDARD
 import dev.jzdevelopers.cstracker.settings.Theme
+import dev.jzdevelopers.cstracker.user.common.UserTheme
 import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView
 import kotlinx.android.synthetic.main.ui_event_design.view.*
 import kotlinx.android.synthetic.main.ui_event_view.*
@@ -24,15 +25,14 @@ import kotlinx.android.synthetic.main.ui_event_view.*
  */
 class EventView: JZActivity() {
 
-    // Defines JZRecyclerAdapterFB Variable//
-    private lateinit var adapter    : JZRecyclerAdapterFB<Event>
-    private lateinit var searchView : SearchView
+    //<editor-fold desc="Class Variables">
 
-    // Define And Initializes JZTime Variable//
-    private val jzTime = JZTime()
-
-    // Defines Secondary User ID Variable//
-    private lateinit var secondaryUserId : String
+    // Defines Lateinit Variables//
+    private lateinit var adapter                : JZRecyclerAdapterFB<Event>
+    private lateinit var searchView             : SearchView
+    private lateinit var secondaryUserFirstName : String
+    private lateinit var secondaryUserId        : String
+    private lateinit var secondaryUserTheme     : UserTheme
 
     // Define And Initializes Int Variable//
     private var sortNum = 0
@@ -40,8 +40,13 @@ class EventView: JZActivity() {
     // Define And Instantiates ArrayList Value//
     private val selectedItemList = ArrayList<Int>()
 
+    // Define And Initializes JZTime Variable//
+    private val jzTime = JZTime()
+
     // Define And Initializes SavedPreference Value//
     private val prefSort = "dev.jzdevelopers.cstracker.eventSort"
+
+    //</editor-fold>
 
     /**.
      * What Happens When The Activity First Starts
@@ -49,7 +54,7 @@ class EventView: JZActivity() {
     override fun onStart() {
         super.onStart()
 
-        // Starts Listening For Query Changed//
+        // Starts Listening For Query Changes//
         adapter.startListening()
     }
 
@@ -59,7 +64,7 @@ class EventView: JZActivity() {
     override fun onStop() {
         super.onStop()
 
-        // Stops Listening For Query Changed//
+        // Stops Listening For Query Changes//
         adapter.stopListening()
     }
 
@@ -68,16 +73,17 @@ class EventView: JZActivity() {
      */
     override fun createActivity() {
 
+        // Gets The Secondary User's Data//
+        secondaryUserFirstName = intent.extras?.get("SECONDARY_USER_FIRST_NAME") as String
+        secondaryUserId        = intent.extras?.get("SECONDARY_USER_ID")         as String
+        secondaryUserTheme     = intent.extras?.get("SECONDARY_USER_THEME")      as UserTheme
+
         // Creates The UI//
         createUI(R.layout.ui_event_view) {
 
             // Sets The Theme//
-            val theme = Theme.getAppTheme(this@EventView)
+            val theme = Theme.getUserTheme(this@EventView, secondaryUserTheme)
             theme(theme)
-
-            // Gets The Secondary User's Data//
-            val secondaryUserFirstName = intent.extras?.get("SECONDARY_USER_FIRST_NAME") as String
-            secondaryUserId            = intent.extras?.get("SECONDARY_USER_ID")         as String
 
             // Sets The Status Bar Color And Icon Color//
             val statusBarColor = Theme.getStatusBarColor(this@EventView)
@@ -123,6 +129,7 @@ class EventView: JZActivity() {
             // Starts The EventAdd Activity//
             startActivity(EventAdd::class, R.anim.faze_in, R.anim.faze_out) {
                 it.putExtra("SECONDARY_USER_ID", secondaryUserId)
+                it.putExtra("SECONDARY_USER_THEME", secondaryUserTheme)
             }
         }
 
@@ -147,11 +154,11 @@ class EventView: JZActivity() {
                 positiveButton(0, getString(R.string.button_only)) {
 
                     // Restarts The Activity//
-                    /*
-                     * CRASHES WHEN RESTARTING BECAUSE IT RECEIVES NO FIRST
-                     * NAME FROM THE SECONDARY_USER_VIEW ACTIVITY.
-                     */
-                    startActivity(EventView::class, false)
+                    startActivity(EventView::class, false) {
+                        it.putExtra("SECONDARY_USER_FIRST_NAME", secondaryUserFirstName)
+                        it.putExtra("SECONDARY_USER_ID", secondaryUserId)
+                        it.putExtra("SECONDARY_USER_THEME", secondaryUserTheme)
+                    }
                 }
             }
         }
@@ -246,7 +253,7 @@ class EventView: JZActivity() {
         val scope = lifecycleScope
 
         // Gets The User's Preference For Sorting The Events//
-        sortNum       = JZPrefs.getPref(this, prefSort, NAME.ordinal)
+        sortNum       = JZPrefs.getPref(this, prefSort, NEWEST_TO_OLDEST.ordinal)
         val eventSort = EventSort.values()[sortNum]
 
         // Gets The Query For Showing All Of The Events In A Particular Order//

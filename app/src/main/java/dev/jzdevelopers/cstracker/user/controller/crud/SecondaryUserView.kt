@@ -52,7 +52,7 @@ class SecondaryUserView: JZActivity() {
     override fun onStart() {
         super.onStart()
 
-        // Starts Listening For Query Changed//
+        // Starts Listening For Query Changes//
         adapter.startListening()
     }
 
@@ -62,7 +62,7 @@ class SecondaryUserView: JZActivity() {
     override fun onStop() {
         super.onStop()
 
-        // Stops Listening For Query Changed//
+        // Stops Listening For Query Changes//
         adapter.stopListening()
     }
 

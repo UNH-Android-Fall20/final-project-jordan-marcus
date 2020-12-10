@@ -17,7 +17,7 @@ import dev.jzdevelopers.cstracker.user.common.UserTheme
 import dev.jzdevelopers.cstracker.user.common.UserTheme.GREEN
 import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
-import java.util.*
+import java.util.Locale.getDefault
 import java.util.UUID.randomUUID
 
 /** Kotlin Class SecondaryUser,
@@ -158,13 +158,6 @@ class SecondaryUser(
      */
     suspend fun add(loadingBar: ProgressBar, profileImage: Drawable?): Boolean {
         try {
-
-            // When Context Is Null//
-            if (context == null) {
-
-                // Throws A Runtime Error//
-                throw NullPointerException("Context must not be null")
-            }
 
             // Checks If The User Input Is Valid//
             if (!super.add(loadingBar)) return false
@@ -375,9 +368,9 @@ class SecondaryUser(
             else -> {
                 organization = organization
                     .trim()
-                    .toLowerCase(Locale.getDefault())
+                    .toLowerCase(getDefault())
                     .split(" ")
-                    .joinToString(" ") { it.capitalize(Locale.getDefault()) }
+                    .joinToString(" ") { it.capitalize(getDefault()) }
                 true
             }
         }

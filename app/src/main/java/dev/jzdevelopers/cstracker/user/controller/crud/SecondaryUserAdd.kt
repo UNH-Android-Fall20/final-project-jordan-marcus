@@ -69,8 +69,8 @@ class SecondaryUserAdd: JZActivity() {
                 negativeButton(R.string.button_negative)
                 positiveButton(R.string.button_positive) {
 
-                    // Starts The SecondaryUserView Activity//
-                    startActivity(SecondaryUserView::class, R.anim.faze_in, R.anim.faze_out)
+                    // Exits The SecondaryUserAdd Activity//
+                    exitActivity(R.anim.faze_in, R.anim.faze_out)
                 }
             }
         }
@@ -96,13 +96,27 @@ class SecondaryUserAdd: JZActivity() {
             val primaryUserId = PrimaryUser.getId(this)
             val theme         = getPickedTheme()
 
-            // Signs Up The New Secondary User//
-            val secondaryUser = SecondaryUser(this, firstName, lastName, theme, goal, 0, grade, nameLetter, organization, primaryUserId, "0:00")
+            // Creates The New Secondary User//
+            val secondaryUser = SecondaryUser(
+                this,
+                firstName,
+                lastName,
+                theme,
+                goal,
+                0,
+                grade,
+                nameLetter,
+                organization,
+                primaryUserId,
+                "0:00"
+            )
+
+            // Adds The Secondary User To The Database//
             val isSuccessful  = secondaryUser.add(progressBar, profileImageDrawable)
             if (!isSuccessful) return@click
 
-            // Starts The SecondaryUserView Activity//
-            startActivity(SecondaryUserView::class, R.anim.faze_in, R.anim.faze_out)
+            // Exits The SecondaryUserAdd Activity//
+            exitActivity(R.anim.faze_in, R.anim.faze_out)
         }
 
         // When profileImage Is Clicked//

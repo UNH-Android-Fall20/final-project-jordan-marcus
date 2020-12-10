@@ -7,7 +7,7 @@ import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.common.FireBaseModel
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.user.common.UserTheme
-import java.util.*
+import java.util.Locale.getDefault
 
 /** Kotlin Abstract Class User,
  *   Class That Handles Common User Functions/Properties
@@ -122,8 +122,8 @@ abstract class User(
             else -> {
                 firstName = firstName
                     .trim()
-                    .toLowerCase(Locale.getDefault())
-                    .capitalize(Locale.getDefault())
+                    .toLowerCase(getDefault())
+                    .capitalize(getDefault())
                 true
             }
         }
@@ -175,8 +175,8 @@ abstract class User(
             else -> {
                 lastName = lastName
                     .trim()
-                    .toLowerCase(Locale.getDefault())
-                    .capitalize(Locale.getDefault())
+                    .toLowerCase(getDefault())
+                    .capitalize(getDefault())
                 true
             }
         }

@@ -5,6 +5,7 @@
     xmlns:android         ="http://schemas.android.com/apk/res/android"
     xmlns:node            ="http://schemas.android.com/apk/res-auto"
     xmlns:tools           ="http://schemas.android.com/tools"
+    android:background    ="?attr/layoutPrimary"
     android:layout_height ="match_parent"
     android:layout_width  ="match_parent" >
 
@@ -33,6 +34,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id                                  ="@+id/eventNameBox"
         style                                       ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:textColorHint                       ="@color/greyDark"
         android:paddingEnd                          ="5dip"
         android:layout_marginTop                    ="16dip"
         android:layout_height                       ="wrap_content"
@@ -50,6 +52,7 @@
       <com.google.android.material.textfield.TextInputEditText
           android:id            ="@+id/eventName"
           android:hint          ="@string/event_name"
+          android:textColor     ="@color/greyDark"
           android:layout_height ="wrap_content"
           android:layout_width  ="match_parent"
       />
@@ -99,6 +102,7 @@
     <com.google.android.material.textfield.TextInputLayout
         style                                ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:id                           ="@+id/locationBox"
+        android:textColorHint                ="@color/greyDark"
         android:layout_marginTop             ="16dip"
         android:layout_height                ="wrap_content"
         android:layout_width                 ="match_parent"
@@ -110,6 +114,7 @@
       <com.google.android.material.textfield.TextInputEditText
           android:id            ="@+id/location"
           android:hint          ="@string/location"
+          android:textColor     ="@color/greyDark"
           android:layout_height ="wrap_content"
           android:layout_width  ="match_parent"
       />
@@ -120,6 +125,7 @@
     <com.google.android.material.textfield.TextInputLayout
         style                                ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:id                           ="@+id/peopleInChargeBox"
+        android:textColorHint                ="@color/greyDark"
         android:layout_marginTop             ="16dip"
         android:layout_height                ="wrap_content"
         android:layout_width                 ="match_parent"
@@ -131,6 +137,7 @@
       <com.google.android.material.textfield.TextInputEditText
           android:id            ="@+id/peopleInCharge"
           android:hint          ="@string/people_in_charge"
+          android:textColor     ="@color/greyDark"
           android:layout_height ="wrap_content"
           android:layout_width  ="match_parent"
       />
@@ -141,6 +148,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id                                  ="@+id/phoneNumberBox"
         style                                       ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:textColorHint                       ="@color/greyDark"
         android:paddingEnd                          ="5dip"
         android:layout_marginTop                    ="16dip"
         android:layout_height                       ="wrap_content"
@@ -148,7 +156,7 @@
         node:boxStrokeColor                         ="?colorPrimary"
         node:hintTextColor                          ="?colorPrimary"
         node:layout_constraintHorizontal_chainStyle ="spread"
-        node:layout_constraintHorizontal_weight     ="33"
+        node:layout_constraintHorizontal_weight     ="35"
         node:layout_constraintTop_toBottomOf        ="@id/peopleInChargeBox"
         node:layout_constraintStart_toStartOf       ="parent"
         node:layout_constraintEnd_toStartOf         ="@id/notesBox"
@@ -158,6 +166,7 @@
       <com.google.android.material.textfield.TextInputEditText
           android:id            ="@+id/phoneNumber"
           android:hint          ="@string/phone_number"
+          android:textColor     ="@color/greyDark"
           android:layout_height ="wrap_content"
           android:layout_width  ="match_parent"
       />
@@ -168,6 +177,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id                                  ="@+id/notesBox"
         style                                       ="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:textColorHint                       ="@color/greyDark"
         android:paddingStart                        ="5dip"
         android:layout_marginTop                    ="16dip"
         android:layout_height                       ="wrap_content"
@@ -185,6 +195,7 @@
       <com.google.android.material.textfield.TextInputEditText
           android:id            ="@+id/notes"
           android:hint          ="@string/event_notes"
+          android:textColor     ="@color/greyDark"
           android:layout_height ="wrap_content"
           android:layout_width  ="match_parent"
       />
