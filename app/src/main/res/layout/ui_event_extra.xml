@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- CoordinatorLayout UI For Class EventExtra -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android         ="http://schemas.android.com/apk/res/android"
+  xmlns:node            ="http://schemas.android.com/apk/res-auto"
+  xmlns:tools           ="http://schemas.android.com/tools"
+  android:background    ="?attr/layoutPrimary"
+  android:layout_height ="match_parent"
+  android:layout_width  ="match_parent">
+
+  <!-- ConstraintLayout UI For Class EventExtra -->
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id            ="@+id/uiEventExtra"
+    android:padding       ="16dip"
+    android:layout_height ="match_parent"
+    android:layout_width  ="match_parent"
+    tools:context         =".event.controller.EventExtra">
+
+    <!-- TextView extraTitle -->
+    <TextView
+      android:id                        ="@+id/extraTitle"
+      android:gravity                   ="center"
+      android:text                      ="Event Title"
+      android:textColor                 ="?colorPrimary"
+      android:textSize                  ="30sp"
+      android:textStyle                 ="bold"
+      android:layout_height             ="wrap_content"
+      android:layout_width              ="match_parent"
+      node:layout_constraintTop_toTopOf ="parent"
+      />
+
+    <!-- TextView extraPeopleInCharge -->
+    <TextView
+      android:id                            ="@+id/extraPeopleInCharge"
+      android:text                          ="@string/people_in_charge"
+      android:textColor                     ="?colorPrimary"
+      android:textSize                      ="16sp"
+      android:textStyle                     ="bold"
+      android:layout_marginTop              ="48dip"
+      android:layout_height                 ="wrap_content"
+      android:layout_width                  ="wrap_content"
+      node:layout_constraintTop_toBottomOf  ="@id/extraTitle"
+      node:layout_constraintStart_toStartOf ="parent"
+      />
+
+    <!-- TextView extraPeopleInChargeText -->
+    <TextView
+      android:id                            ="@+id/extraPeopleInChargeText"
+      android:text                          =""
+      android:textColor                     ="?colorPrimary"
+      android:textSize                      ="16sp"
+      android:layout_marginTop              ="8dip"
+      android:layout_height                 ="wrap_content"
+      android:layout_width                  ="wrap_content"
+      node:layout_constraintTop_toBottomOf  ="@id/extraPeopleInCharge"
+      node:layout_constraintStart_toStartOf ="parent"
+      />
+
+    <!-- TextView extraPhone -->
+    <TextView
+      android:id                            ="@+id/extraPhone"
+      android:text                          ="@string/phone_number"
+      android:textColor                     ="?colorPrimary"
+      android:textSize                      ="16sp"
+      android:textStyle                     ="bold"
+      android:layout_marginTop              ="48dip"
+      android:layout_height                 ="wrap_content"
+      android:layout_width                  ="wrap_content"
+      node:layout_constraintTop_toBottomOf  ="@id/extraPeopleInChargeText"
+      node:layout_constraintStart_toStartOf ="parent"
+      />
+
+    <!-- TextView extraPhoneText -->
+    <TextView
+      android:id                            ="@+id/extraPhoneText"
+      android:text                          =""
+      android:textColor                     ="?colorPrimary"
+      android:textSize                      ="16sp"
+      android:layout_marginTop              ="8dip"
+      android:layout_height                 ="wrap_content"
+      android:layout_width                  ="wrap_content"
+      node:layout_constraintTop_toBottomOf  ="@id/extraPhone"
+      node:layout_constraintStart_toStartOf ="parent"
+      />
+
+    <!-- TextView extraNotes -->
+    <TextView
+      android:id                            ="@+id/extraNotes"
+      android:text                          ="@string/event_notes"
+      android:textColor                     ="?colorPrimary"
+      android:textSize                      ="16sp"
+      android:textStyle                     ="bold"
+      android:layout_marginTop              ="48dip"
+      android:layout_height                 ="wrap_content"
+      android:layout_width                  ="wrap_content"
+      node:layout_constraintTop_toBottomOf  ="@id/extraPhoneText"
+      node:layout_constraintStart_toStartOf ="parent"
+      />
+
+    <!-- TextView extraNotesText -->
+    <TextView
+      android:id                            ="@+id/extraNotesText"
+      android:text                          =""
+      android:textColor                     ="?colorPrimary"
+      android:textSize                      ="16sp"
+      android:layout_marginTop              ="8dip"
+      android:layout_height                 ="wrap_content"
+      android:layout_width                  ="wrap_content"
+      node:layout_constraintTop_toBottomOf  ="@id/extraNotes"
+      node:layout_constraintStart_toStartOf ="parent"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <!-- FloatingActionButton fabCloseExtra -->
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id                 ="@+id/fabCloseExtra"
+    android:contentDescription ="@string/fab_save_event"
+    android:src                ="@drawable/menu_clear"
+    android:layout_height      ="wrap_content"
+    android:layout_width       ="wrap_content"
+    node:backgroundTint        ="?colorPrimary"
+    node:fabSize               ="normal"
+    node:layout_anchor         ="@id/bottomBar"
+    node:rippleColor           ="?attr/ripplePrimary"
+    node:tint                  ="@color/white"
+    />
+
+  <!-- BottomBar bottomBar -->
+  <com.google.android.material.bottomappbar.BottomAppBar
+    android:id             ="@+id/bottomBar"
+    android:layout_gravity ="bottom"
+    android:layout_height  ="wrap_content"
+    android:layout_width   ="match_parent"
+    node:backgroundTint    ="?colorPrimary"
+    node:fabAlignmentMode  ="center"
+    />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

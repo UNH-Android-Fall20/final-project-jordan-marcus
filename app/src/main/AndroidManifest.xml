@@ -29,6 +29,12 @@
             android:screenOrientation="portrait"
         />
 
+        <!-- Activity EventExtra -->
+        <activity
+            android:name=".event.controller.EventExtra"
+            android:screenOrientation="portrait"
+            />
+
         <!-- Activity EventView -->
         <activity
             android:name=".event.controller.EventView"

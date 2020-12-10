@@ -119,8 +119,21 @@ class EventView: JZActivity() {
         }
 
         // When An Adapter Item Is Clicked//
-        click(adapter) {
-            toastShort("clicked $it")
+        click(adapter) {position ->
+
+            // Gets The Secondary User Data//
+            val eventId = adapter.getItemId(position)
+            val event   = adapter.getItem(position)
+
+            // Starts The EventView Activity//
+            startActivity(EventExtra::class, R.anim.faze_in, R.anim.faze_out) {
+                it.putExtra("EVENT_ID", eventId)
+                it.putExtra("EVENT_NAME", event.name)
+                it.putExtra("EVENT_PEOPLE_IN_CHARGE", event.peopleInCharge)
+                it.putExtra("EVENT_PHONE_NUMBER", event.phoneNumber)
+                it.putExtra("EVENT_NOTES", event.notes)
+                it.putExtra("SECONDARY_USER_THEME", secondaryUserTheme)
+            }
         }
 
         // When fabAddEvent Is Clicked//
