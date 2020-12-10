@@ -7,7 +7,8 @@ import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.settings.Theme
+import dev.jzdevelopers.cstracker.settings.Theme.Companion.getAppStatusBarColor
+import dev.jzdevelopers.cstracker.settings.Theme.Companion.getAppTheme
 import dev.jzdevelopers.cstracker.user.common.UserTheme
 import dev.jzdevelopers.cstracker.user.common.UserTheme.*
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser
@@ -40,11 +41,11 @@ class SecondaryUserAdd: JZActivity() {
         createUI(R.layout.ui_secondary_user_add_edit) {
 
             // Sets The Theme//
-            val theme = Theme.getAppTheme(this@SecondaryUserAdd)
+            val theme = getAppTheme(this@SecondaryUserAdd)
             theme(theme)
 
             // Sets The Status Bar Color And Icon Color//
-            val statusBarColor = Theme.getStatusBarColor(this@SecondaryUserAdd)
+            val statusBarColor = getAppStatusBarColor(this@SecondaryUserAdd)
             when(statusBarColor) {
                 R.color.white -> statusBarColor(statusBarColor, true)
                 else          -> statusBarColor(statusBarColor, false)

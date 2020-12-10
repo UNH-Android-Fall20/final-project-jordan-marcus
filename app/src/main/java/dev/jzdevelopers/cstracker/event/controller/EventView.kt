@@ -13,7 +13,8 @@ import dev.jzdevelopers.cstracker.libs.JZDateFormat.AMERICAN
 import dev.jzdevelopers.cstracker.libs.JZDateFormat.REVERSED
 import dev.jzdevelopers.cstracker.libs.JZTimeFormat.MILITARY
 import dev.jzdevelopers.cstracker.libs.JZTimeFormat.STANDARD
-import dev.jzdevelopers.cstracker.settings.Theme
+import dev.jzdevelopers.cstracker.settings.Theme.Companion.getUserStatusBarColor
+import dev.jzdevelopers.cstracker.settings.Theme.Companion.getUserTheme
 import dev.jzdevelopers.cstracker.user.common.UserTheme
 import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView
 import kotlinx.android.synthetic.main.ui_event_design.view.*
@@ -35,7 +36,8 @@ class EventView: JZActivity() {
     private lateinit var secondaryUserTheme     : UserTheme
 
     // Define And Initializes Int Variable//
-    private var sortNum = 0
+    private var sortNum      = 0
+    private var totalMinutes = 0
 
     // Define And Instantiates ArrayList Value//
     private val selectedItemList = ArrayList<Int>()
@@ -82,11 +84,11 @@ class EventView: JZActivity() {
         createUI(R.layout.ui_event_view) {
 
             // Sets The Theme//
-            val theme = Theme.getUserTheme(this@EventView, secondaryUserTheme)
+            val theme = getUserTheme(this@EventView, secondaryUserTheme)
             theme(theme)
 
             // Sets The Status Bar Color And Icon Color//
-            val statusBarColor = Theme.getStatusBarColor(this@EventView)
+            val statusBarColor = getUserStatusBarColor(this@EventView)
             when(statusBarColor) {
                 R.color.white -> statusBarColor(statusBarColor, true)
                 else          -> statusBarColor(statusBarColor, false)

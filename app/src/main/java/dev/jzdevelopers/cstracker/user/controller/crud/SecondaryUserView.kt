@@ -12,7 +12,8 @@ import dev.jzdevelopers.cstracker.event.controller.EventView
 import dev.jzdevelopers.cstracker.libs.*
 import dev.jzdevelopers.cstracker.libs.JZDateFormat.*
 import dev.jzdevelopers.cstracker.settings.Settings
-import dev.jzdevelopers.cstracker.settings.Theme
+import dev.jzdevelopers.cstracker.settings.Theme.Companion.getAppStatusBarColor
+import dev.jzdevelopers.cstracker.settings.Theme.Companion.getAppTheme
 import dev.jzdevelopers.cstracker.settings.Theme.Companion.getCardColor
 import dev.jzdevelopers.cstracker.user.common.UserSort
 import dev.jzdevelopers.cstracker.user.common.UserSort.*
@@ -75,11 +76,11 @@ class SecondaryUserView: JZActivity() {
         createUI(R.layout.ui_secondary_user_view) {
 
             // Sets The Theme//
-            val theme = Theme.getAppTheme(this@SecondaryUserView)
+            val theme = getAppTheme(this@SecondaryUserView)
             theme(theme)
 
             // Sets The Status Bar Color And Icon Color//
-            val statusBarColor = Theme.getStatusBarColor(this@SecondaryUserView)
+            val statusBarColor = getAppStatusBarColor(this@SecondaryUserView)
             when(statusBarColor) {
                 R.color.white -> statusBarColor(statusBarColor, true)
                 else          -> statusBarColor(statusBarColor, false)

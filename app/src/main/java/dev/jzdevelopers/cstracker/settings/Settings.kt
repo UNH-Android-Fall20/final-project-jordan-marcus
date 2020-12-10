@@ -3,6 +3,8 @@ package dev.jzdevelopers.cstracker.settings
 import com.afollestad.materialdialogs.MaterialDialog
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.libs.JZActivity
+import dev.jzdevelopers.cstracker.settings.Theme.Companion.getAppStatusBarColor
+import dev.jzdevelopers.cstracker.settings.Theme.Companion.getAppTheme
 import dev.jzdevelopers.cstracker.user.controller.authentication.UserSignIn
 import dev.jzdevelopers.cstracker.user.controller.crud.SecondaryUserView
 import dev.jzdevelopers.cstracker.user.models.PrimaryUser
@@ -23,11 +25,11 @@ class Settings: JZActivity() {
         createUI(R.layout.ui_settings) {
 
             // Sets The Theme//
-            val theme = Theme.getAppTheme(this@Settings)
+            val theme = getAppTheme(this@Settings)
             theme(theme)
 
             // Sets The Status Bar Color And Icon Color//
-            val statusBarColor = Theme.getStatusBarColor(this@Settings)
+            val statusBarColor = getAppStatusBarColor(this@Settings)
             when(statusBarColor) {
                 R.color.white -> statusBarColor(statusBarColor, true)
                 else          -> statusBarColor(statusBarColor, false)

@@ -13,7 +13,6 @@ import dev.jzdevelopers.cstracker.common.FireBaseModel
 import dev.jzdevelopers.cstracker.event.common.EventSort
 import dev.jzdevelopers.cstracker.libs.JZActivity
 import dev.jzdevelopers.cstracker.libs.JZDate
-import dev.jzdevelopers.cstracker.libs.JZDateFormat.AMERICAN
 import dev.jzdevelopers.cstracker.libs.JZDateFormat.REVERSED
 import kotlinx.coroutines.tasks.await
 import java.util.*
@@ -118,9 +117,6 @@ class Event(
             // Shows The Loading Bar//
             loadingBar.visibility = View.VISIBLE
 
-            // Reverse Date For Database Storage//
-            date = JZDate.switchDateFormat(date, AMERICAN, REVERSED)
-
             // Adds The Event Data To The Database//
             fireStore.collection("Events").add(this).await()
 
@@ -131,8 +127,7 @@ class Event(
             Log.v("Event", "Event [$name] has been added to user id: $userId")
             return true
         }
-        catch (e: Exception) {
-            e.printStackTrace()
+        catch (_: Exception) {
             loadingBar.visibility = View.GONE
             showGeneralError()
             return false
@@ -228,7 +223,7 @@ class Event(
         return try {
 
             // Successfully Parse The Date String//
-            val date = JZDate.fullDateToDay(date, AMERICAN)
+            JZDate.fullDateToDay(date, REVERSED)
             true
         } catch (_: Exception) {
             // When The Event Date Is Blank Or Invalid//

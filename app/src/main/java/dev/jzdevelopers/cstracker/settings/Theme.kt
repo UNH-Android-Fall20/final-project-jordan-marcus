@@ -114,15 +114,31 @@ class Theme: JZActivity() {
         }
 
         /**.
-         * Function That Gets The Status Bar Color Based On The Picked Theme
+         * Function That Gets The Status Bar Color Based On The Picked App Theme
          * @param [context] Gets the instance from the caller activity
          * @return The status bar color
          */
-        fun getStatusBarColor(context: Context): Int {
+        fun getAppStatusBarColor(context: Context): Int {
 
             // Returns The Status Bar Color//
             return when {
-                themeNumberApp != BLACK.ordinal && themeNumberUser != BLACK.ordinal -> R.color.white
+                themeNumberApp != BLACK.ordinal -> R.color.white
+                else -> getBlackColor(context)
+            }
+        }
+
+        /**.
+         * Function That Gets The Status Bar Color Based On The Picked User Theme
+         * @param [context] Gets the instance from the caller activity
+         * @return The status bar color
+         */
+        fun getUserStatusBarColor(context: Context): Int {
+
+            // Returns The Status Bar Color//
+            return when {
+                themeNumberUser == DEFAULT.ordinal && themeNumberApp != BLACK.ordinal -> R.color.white
+                themeNumberUser == DEFAULT.ordinal && themeNumberApp == BLACK.ordinal -> getBlackColor(context)
+                themeNumberUser != BLACK.ordinal -> R.color.white
                 else -> getBlackColor(context)
             }
         }
@@ -285,7 +301,7 @@ class Theme: JZActivity() {
             theme(theme)
 
             // Sets The Status Bar Color And Icon Color//
-            val statusBarColor = getStatusBarColor(this@Theme)
+            val statusBarColor = getAppStatusBarColor(this@Theme)
             when(statusBarColor) {
                 R.color.white -> statusBarColor(statusBarColor, true)
                 else          -> statusBarColor(statusBarColor, false)

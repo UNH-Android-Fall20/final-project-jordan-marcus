@@ -8,7 +8,8 @@ import com.afollestad.materialdialogs.MaterialDialog
 import dev.jzdevelopers.cstracker.R
 import dev.jzdevelopers.cstracker.common.GlideApp
 import dev.jzdevelopers.cstracker.libs.JZActivity
-import dev.jzdevelopers.cstracker.settings.Theme
+import dev.jzdevelopers.cstracker.settings.Theme.Companion.getAppStatusBarColor
+import dev.jzdevelopers.cstracker.settings.Theme.Companion.getAppTheme
 import dev.jzdevelopers.cstracker.user.common.UserTheme
 import dev.jzdevelopers.cstracker.user.common.UserTheme.*
 import dev.jzdevelopers.cstracker.user.models.SecondaryUser
@@ -46,11 +47,11 @@ class SecondaryUserEdit: JZActivity() {
         createUI(R.layout.ui_secondary_user_add_edit) {
 
             // Sets The Theme//
-            val theme = Theme.getAppTheme(this@SecondaryUserEdit)
+            val theme = getAppTheme(this@SecondaryUserEdit)
             theme(theme)
 
             // Sets The Status Bar Color And Icon Color//
-            val statusBarColor = Theme.getStatusBarColor(this@SecondaryUserEdit)
+            val statusBarColor = getAppStatusBarColor(this@SecondaryUserEdit)
             when(statusBarColor) {
                 R.color.white -> statusBarColor(statusBarColor, true)
                 else          -> statusBarColor(statusBarColor, false)
